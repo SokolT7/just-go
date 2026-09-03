@@ -5,6 +5,8 @@ import WhatHappensNext from '@/components/forms/WhatHappensNext.astro';
 import LogoWall from '@/components/proof/LogoWall.astro';
 import TestimonialCard from '@/components/proof/TestimonialCard.astro';
 import Faq, { type FaqItem } from '@/components/ui/Faq.astro';
+import { Image } from 'astro:assets';
+import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
 import { testimonials, hasTestimonials } from '@/data/proof';
 import { path, type Locale } from '@/i18n/routes';
 
@@ -21,6 +23,9 @@ const copy = {
     h1: 'Tell us what you’re working on',
     lede:
       'One sentence about what is not working is enough to start. Berislav reads every message and replies personally — not an assistant, not an autoresponder.',
+    whoTitle: 'Who reads this',
+    whoBody: 'Berislav reads every message himself and replies the same working day. There is no inbox triage and no assistant in between.',
+    whoRole: 'Founder & CEO',
     directTitle: 'Or reach us directly',
     emailLabel: 'Email',
     linkedinLabel: 'LinkedIn',
@@ -41,6 +46,9 @@ const copy = {
     h1: 'Recite nam na čemu radite',
     lede:
       'Dovoljna je jedna rečenica o tome što ne funkcionira. Berislav čita svaku poruku i odgovara osobno — ne asistent i ne automatski odgovor.',
+    whoTitle: 'Tko ovo čita',
+    whoBody: 'Berislav sam čita svaku poruku i odgovara isti radni dan. Nema filtriranja inboxa ni asistenta u sredini.',
+    whoRole: 'Osnivač i direktor',
     directTitle: 'Ili nam se javite izravno',
     emailLabel: 'Email',
     linkedinLabel: 'LinkedIn',
@@ -108,6 +116,32 @@ const faqSchema = {
         <ContactForm locale={locale} />
 
         <div class="space-y-10">
+          <div class="border border-rule bg-surface p-6">
+            <h2 class="eyebrow text-horizon-text mb-5">{copy.whoTitle}</h2>
+            <div class="flex items-start gap-4">
+              <Image
+                src={berislavPhoto}
+                alt="Berislav Sokač"
+                widths={[72, 144, 216]}
+                sizes="72px"
+                loading="lazy"
+                decoding="async"
+                format="avif"
+                quality={82}
+                width={72}
+                height={72}
+                class="h-18 w-18 shrink-0 object-cover bg-ridge"
+              />
+              <div>
+                <p class="font-display font-semibold text-[1rem] text-navy">Berislav Sokač</p>
+                <p class="mt-0.5 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                  {copy.whoRole}
+                </p>
+              </div>
+            </div>
+            <p class="mt-4 text-small text-ink-soft leading-relaxed">{copy.whoBody}</p>
+          </div>
+
           <WhatHappensNext locale={locale} />
 
           <div class="border-t border-rule pt-8">

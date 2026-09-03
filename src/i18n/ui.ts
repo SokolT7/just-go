@@ -73,7 +73,6 @@ const en = {
   'label.mission': 'Why we do it',
   'label.contact': 'Get in touch',
   'label.insights': 'Insights',
-  'label.day': 'A day at Just Go',
   'label.milestones': 'Milestones',
 
   /* --- Footer ----------------------------------------------------------- */
@@ -158,7 +157,6 @@ const hr: Record<UIKey, string> = {
   'label.mission': 'Zašto to radimo',
   'label.contact': 'Javite nam se',
   'label.insights': 'Članci',
-  'label.day': 'Dan u Just Go',
   'label.milestones': 'Prekretnice',
 
   /* --- Podnožje --------------------------------------------------------- */

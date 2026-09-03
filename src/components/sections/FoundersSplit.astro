@@ -1,57 +1,69 @@
 ---
+import { Image } from 'astro:assets';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
-import Portrait from '@/components/ui/Portrait.astro';
 import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
 import odinPhoto from '@/assets/images/people/odin-portrait.jpg';
+import bothPhoto from '@/assets/images/people/berislav-odin.jpg';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 /*
-  Real faces are a trust signal; stock photography is an anti-signal.
-  `Portrait` still falls back to an initials tile if a photo is ever missing.
+  The pair photograph carries this section because it is the only people image
+  with resolution to spare (2855px). The individual portraits are held at 112px,
+  which is the largest size Berislav's 328px source stays sharp at on a 2x
+  screen — pushing them larger would upscale and read as amateur.
 */
-const photos = { BS: berislavPhoto, OS: odinPhoto } as const;
 const people = {
   en: [
     {
       name: 'Berislav Sokač',
       role: 'Founder & CEO',
-      line: 'Leads every client engagement directly, start to finish. Twenty-five years in sales and business development, eleven of them running Oracle’s sales across the Baltics and Central & Eastern Europe.',
+      line: 'Leads every client engagement directly. Twenty-five years in sales and business development, eleven of them running Oracle’s sales across the Baltics and Central & Eastern Europe.',
       href: 'https://www.linkedin.com/in/berislavsokac/',
-      initials: 'BS',
+      photo: berislavPhoto,
     },
     {
       name: 'Odin Sokač',
       role: 'Co-Founder, Brand & Creative',
       line: 'Owns brand, story and the creative side of client work — how an offer looks, how it reads, and whether it earns a second meeting.',
       href: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
-      initials: 'OS',
+      photo: odinPhoto,
     },
   ],
   hr: [
     {
       name: 'Berislav Sokač',
       role: 'Osnivač i direktor',
-      line: 'Vodi svaki klijentski angažman izravno, od početka do kraja. Dvadeset pet godina u prodaji i razvoju poslovanja, od toga jedanaest na čelu Oracleove prodaje za Baltik te srednju i istočnu Europu.',
+      line: 'Vodi svaki klijentski angažman izravno. Dvadeset pet godina u prodaji i razvoju poslovanja, od toga jedanaest na čelu Oracleove prodaje za Baltik te srednju i istočnu Europu.',
       href: 'https://www.linkedin.com/in/berislavsokac/',
-      initials: 'BS',
+      photo: berislavPhoto,
     },
     {
       name: 'Odin Sokač',
       role: 'Suosnivač, brend i kreativa',
       line: 'Vodi brend, priču i kreativnu stranu rada s klijentima — kako ponuda izgleda, kako se čita i hoće li zaraditi drugi sastanak.',
       href: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
-      initials: 'OS',
+      photo: odinPhoto,
     },
   ],
 }[locale];
 
 const copy = {
-  en: { title: 'Two people, and you work with both of them directly.' },
-  hr: { title: 'Dvoje ljudi, i s oboje radite izravno.' },
+  en: {
+    title: 'Two people, and you work with both of them directly.',
+    link: 'Full profile',
+    pairAlt: 'Berislav and Odin Sokač at the International Sound & Film Music Festival',
+    caption: 'Berislav and Odin — International Sound & Film Music Festival',
+  },
+  hr: {
+    title: 'Dvoje ljudi, i s oboje radite izravno.',
+    link: 'Cijeli profil',
+    pairAlt: 'Berislav i Odin Sokač na Međunarodnom festivalu filmske glazbe',
+    caption: 'Berislav i Odin — International Sound & Film Music Festival',
+  },
 }[locale];
 ---
 
@@ -62,47 +74,76 @@ const copy = {
       <h2 class="text-h2 text-navy">{copy.title}</h2>
     </div>
 
-    <div class="mt-12 grid gap-px bg-rule border border-rule md:grid-cols-2">
-      {
-        people.map((person) => (
-          <div class="bg-snow p-7 lg:p-9">
-            <div class="flex items-start gap-5">
-              <Portrait
-                image={photos[person.initials as keyof typeof photos]}
+    <div class="mt-12 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:items-start">
+      <figure class="lg:sticky lg:top-28">
+        <Image
+          src={bothPhoto}
+          alt={copy.pairAlt}
+          widths={[420, 640, 860]}
+          sizes="(min-width: 1024px) 26rem, 100vw"
+          loading="lazy"
+          decoding="async"
+          format="avif"
+          quality={76}
+          width={860}
+          height={1147}
+          class="w-full h-auto border border-rule"
+        />
+        <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+          {copy.caption}
+        </figcaption>
+      </figure>
+
+      <div class="grid gap-10 sm:gap-12">
+        {
+          people.map((person) => (
+            <article class="grid gap-5 sm:grid-cols-[7rem_1fr] sm:gap-7">
+              <Image
+                src={person.photo}
                 alt={person.name}
-                initials={person.initials}
-                size={64}
-                class="shrink-0 h-16 w-16"
+                widths={[112, 224, 328]}
+                sizes="112px"
+                loading="lazy"
+                decoding="async"
+                format="avif"
+                quality={82}
+                width={112}
+                height={112}
+                class="h-28 w-28 object-cover bg-ridge"
               />
               <div>
-                <h3 class="font-display font-bold text-h3 text-navy">{person.name}</h3>
-                <p class="mt-1 font-mono text-label uppercase tracking-[0.1em] text-horizon-text">
+                <h3 class="font-display font-bold text-[1.35rem] tracking-[-0.02em] text-navy">
+                  {person.name}
+                </h3>
+                <p class="mt-1.5 font-mono text-label uppercase tracking-[0.1em] text-horizon-text">
                   {person.role}
                 </p>
+                <p class="mt-4 text-body text-ink-soft leading-relaxed max-w-[46ch]">
+                  {person.line}
+                </p>
+                <div class="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                  <a
+                    href={path('team', locale)}
+                    class="font-display text-[0.9rem] font-semibold text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2"
+                  >
+                    {copy.link}
+                  </a>
+                  <a
+                    href={person.href}
+                    rel="noopener"
+                    class="font-display text-[0.9rem] font-semibold text-ink-soft hover:text-navy transition-colors inline-flex items-center gap-1.5"
+                  >
+                    LinkedIn
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true" class="opacity-60">
+                      <path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
-            <p class="mt-6 text-body text-ink-soft leading-relaxed max-w-[46ch]">{person.line}</p>
-            <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <a
-                href={path('team', locale)}
-                class="font-display text-[0.9rem] font-semibold text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2"
-              >
-                {locale === 'hr' ? 'Cijeli profil' : 'Full profile'}
-              </a>
-              <a
-                href={person.href}
-                rel="noopener"
-                class="font-display text-[0.9rem] font-semibold text-ink-soft hover:text-navy transition-colors inline-flex items-center gap-1.5"
-              >
-                LinkedIn
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true" class="opacity-60">
-                  <path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        ))
-      }
+            </article>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>

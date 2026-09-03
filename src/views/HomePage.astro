@@ -5,7 +5,7 @@ import ProofBar from '@/components/sections/ProofBar.astro';
 import ProblemNamed from '@/components/sections/ProblemNamed.astro';
 import EngagementCards from '@/components/sections/EngagementCards.astro';
 import FoundersSplit from '@/components/sections/FoundersSplit.astro';
-import DayInTheLife from '@/components/sections/DayInTheLife.astro';
+import HowWeStart from '@/components/sections/HowWeStart.astro';
 import RunCroatiaPanel from '@/components/sections/RunCroatiaPanel.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import { engagements } from '@/data/engagements';
@@ -54,7 +54,7 @@ const serviceSchema = engagements.map((eng) => ({
   <ProblemNamed locale={locale} />
   <EngagementCards locale={locale} />
   <FoundersSplit locale={locale} />
-  <DayInTheLife locale={locale} />
+  <HowWeStart locale={locale} />
   <RunCroatiaPanel locale={locale} />
   <CtaBand locale={locale} from="var(--color-surface)" />
 </Base>

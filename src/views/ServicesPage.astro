@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import Faq, { type FaqItem } from '@/components/ui/Faq.astro';
 import Button from '@/components/ui/Button.astro';
+import QuoteBand from '@/components/sections/QuoteBand.astro';
 import { engagements } from '@/data/engagements';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
@@ -27,6 +28,8 @@ const copy = {
     howItRuns: 'How it runs',
     outcomes: 'What you walk away with',
     proof: 'Where this comes from',
+    bandQuote: 'Always think one or two steps ahead. Not five — five is fantasy. Two is the distance at which you can still see the ground.',
+    bandBy: 'Berislav Sokač, Founder',
     alsoTitle: 'Also engaged for',
     alsoBody:
       'Executive coaching, leadership development, team building, brand work and event delivery. Real capabilities, drawn on inside larger engagements — they are simply not what we lead with.',
@@ -61,6 +64,8 @@ const copy = {
     howItRuns: 'Kako teče',
     outcomes: 'S čime odlazite',
     proof: 'Odakle to dolazi',
+    bandQuote: 'Uvijek razmišljajte jedan do dva koraka unaprijed. Ne pet — pet je mašta. Dva su udaljenost s koje još vidite tlo.',
+    bandBy: 'Berislav Sokač, osnivač',
     alsoTitle: 'Radimo i na',
     alsoBody:
       'Executive coaching, razvoj vodstva, team building, brend i organizacija događaja. Stvarne kompetencije koje koristimo unutar većih angažmana — jednostavno nisu ono s čim krećemo.',
@@ -208,6 +213,8 @@ const serviceSchema = engagements.map((eng) => ({
       </section>
     ))
   }
+
+  <QuoteBand quote={copy.bandQuote} attribution={copy.bandBy} position="62% 40%" />
 
   <!-- Also engaged for -->
   <section class="bg-snow">

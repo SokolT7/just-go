@@ -2,6 +2,8 @@
 import Base from '@/layouts/Base.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
 import { articlePath, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
 
@@ -59,11 +61,35 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'hr' ? 'hr-HR' : 'en-GB', {
                   href={articlePath(slug, locale)}
                   class="group grid gap-4 py-8 sm:grid-cols-[9rem_1fr] sm:gap-10 focus-visible:outline-horizon"
                 >
-                  <p class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft sm:pt-1.5">
-                    <time datetime={post.data.publishDate.toISOString()}>
-                      {dateFmt.format(post.data.publishDate)}
-                    </time>
-                  </p>
+                  <div class="flex items-center gap-3 sm:block sm:pt-1.5">
+                    <Image
+                      src={berislavPhoto}
+                      alt=""
+                      widths={[36, 72, 108]}
+                      sizes="36px"
+                      loading="lazy"
+                      decoding="async"
+                      format="avif"
+                      quality={82}
+                      width={36}
+                      height={36}
+                      class="h-9 w-9 shrink-0 rounded-full object-cover bg-ridge sm:mb-3"
+                    />
+                    <p class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft leading-relaxed">
+                      <span class="text-navy">{post.data.author}</span>
+                      <span class="hidden sm:block">
+                        <time datetime={post.data.publishDate.toISOString()}>
+                          {dateFmt.format(post.data.publishDate)}
+                        </time>
+                      </span>
+                      <span class="sm:hidden">
+                        {' · '}
+                        <time datetime={post.data.publishDate.toISOString()}>
+                          {dateFmt.format(post.data.publishDate)}
+                        </time>
+                      </span>
+                    </p>
+                  </div>
                   <div>
                     <h2 class="font-display font-bold text-[1.4rem] leading-[1.22] tracking-[-0.02em] text-navy text-balance group-hover:text-horizon-text transition-colors">
                       {post.data.title}

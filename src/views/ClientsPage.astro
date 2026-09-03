@@ -4,6 +4,7 @@ import CtaBand from '@/components/sections/CtaBand.astro';
 import LogoWall from '@/components/proof/LogoWall.astro';
 import TestimonialCard from '@/components/proof/TestimonialCard.astro';
 import RunCroatiaPanel from '@/components/sections/RunCroatiaPanel.astro';
+import QuoteBand from '@/components/sections/QuoteBand.astro';
 import { caseStudies, testimonials, hasCaseStudies, hasTestimonials } from '@/data/proof';
 import type { Locale } from '@/i18n/routes';
 
@@ -32,6 +33,8 @@ const copy = {
     csEmptyTitle: 'Written case studies are being prepared',
     csEmptyBody:
       'Most of the work above sits under client confidentiality, and we will not publish a name or a number before we have written permission to use it. Anonymised case studies with real figures are in preparation. In the meantime, the fastest way to judge whether the experience is relevant to you is a thirty-minute call — ask for specifics and you will get them.',
+    bandQuote: 'It is easy to recommend a strategy you will never have to live with. We prefer advice from people who have carried the risk themselves.',
+    bandBy: 'Berislav Sokač, Founder',
     testimonialsTitle: 'What clients say',
     proofLabel: 'The numbers behind the work',
   },
@@ -56,6 +59,8 @@ const copy = {
     csEmptyTitle: 'Pisane studije slučaja su u pripremi',
     csEmptyBody:
       'Većina navedenog rada pod ugovorom je o povjerljivosti i nećemo objaviti ime ni brojku prije nego dobijemo pisano dopuštenje. Anonimizirane studije slučaja sa stvarnim brojkama su u pripremi. Do tada, najbrži način da procijenite je li iskustvo relevantno za vas jest poziv od trideset minuta — pitajte za konkretno i dobit ćete.',
+    bandQuote: 'Lako je preporučiti strategiju s kojom nikad nećete morati živjeti. Više volimo savjet ljudi koji su sami nosili rizik.',
+    bandBy: 'Berislav Sokač, osnivač',
     testimonialsTitle: 'Što kažu klijenti',
     proofLabel: 'Brojke iza posla',
   },
@@ -159,6 +164,8 @@ const copy = {
       </section>
     )
   }
+
+  <QuoteBand quote={copy.bandQuote} attribution={copy.bandBy} position="25% 60%" />
 
   <RunCroatiaPanel locale={locale} />
   <CtaBand locale={locale} from="var(--color-surface)" />

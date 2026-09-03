@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '@/assets/images/hero-mountains.avif';
+
+interface Props {
+  quote: string;
+  attribution: string;
+  /** Which part of the range to show, so repeat uses do not look identical. */
+  position?: string;
+}
+const { quote, attribution, position = '50% 45%' } = Astro.props;
+
+/*
+  An atmospheric band using the same range as the hero, cropped differently each
+  time it appears. It carries a real quote rather than existing as decoration —
+  a photograph with nothing to say is the definition of generic.
+*/
+---
+
+<section class="relative bg-navy text-snow overflow-hidden">
+  <div class="absolute inset-0">
+    <Image
+      src={heroImage}
+      alt=""
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      loading="lazy"
+      decoding="async"
+      format="avif"
+      quality={68}
+      class="h-full w-full object-cover"
+      style={`object-position:${position}`}
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-navy/92 via-navy/70 to-navy/40" aria-hidden="true"></div>
+  </div>
+
+  <div class="relative wrap py-16 sm:py-20">
+    <figure class="max-w-[42rem]">
+      <div class="h-[2px] w-10 bg-horizon mb-6" aria-hidden="true"></div>
+      <blockquote>
+        <p class="font-display font-bold text-[1.4rem] sm:text-[1.75rem] leading-[1.28] tracking-[-0.02em] text-snow text-balance">
+          “{quote}”
+        </p>
+      </blockquote>
+      <figcaption class="mt-5 font-mono text-label uppercase tracking-[0.12em] text-mist">
+        {attribution}
+      </figcaption>
+    </figure>
+  </div>
+</section>
