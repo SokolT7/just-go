@@ -163,6 +163,43 @@
   .prose-jg > * + * { margin-block-start: 1rem; }
   .prose-jg h3 { margin-block-start: 2.25rem; }
 
+  /*
+    Full-screen hero. Written here rather than as Tailwind arbitrary values so
+    the vh → svh fallback can use real cascade order; two competing arbitrary
+    utilities on one element resolve by stylesheet emission order, not intent.
+
+    svh (small viewport height) is deliberate: it is the viewport with mobile
+    browser chrome EXPANDED, so the hero is never cut off when the URL bar is
+    showing. dvh would resize mid-scroll and jank; lvh would clip.
+
+    The header is in normal flow above this, so its height is subtracted to make
+    the hero end exactly at the fold.
+  */
+  .hero-full {
+    min-height: calc(100vh - 4rem);
+    min-height: calc(100svh - 4rem);
+  }
+  @media (min-width: 768px) {
+    .hero-full {
+      min-height: calc(100vh - 5rem);
+      min-height: calc(100svh - 5rem);
+    }
+  }
+
+  /* Scroll cue: a hairline that drifts down its track. */
+  @keyframes hero-cue {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    45%  { transform: scaleY(1); transform-origin: top; }
+    55%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  .hero-cue-line {
+    animation: hero-cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cue-line { animation: none; transform: scaleY(1); }
+  }
+
   /* Skip link — visible only on keyboard focus. */
   .skip-link {
     position: absolute;
@@ -179,4 +216,47 @@
     transition: top 0.15s ease;
   }
   .skip-link:focus { top: 1rem; }
+}
+
+/* =========================================================================
+   Hero fit
+   These must sit in the utilities layer: Tailwind's utilities layer always
+   beats the components layer, so `text-display-xl` and `mt-8` would otherwise
+   win over any rule written above. Same layer + higher specificity wins.
+   ========================================================================= */
+
+@layer utilities {
+/*
+  Short viewports — laptops at 720p, phones at 667px, anything landscape.
+  The constraint here is vertical, so these are height queries, not width
+  queries: compress the hero until it fits rather than letting it spill past
+  the fold, which is the exact thing a full-screen hero is supposed to avoid.
+*/
+@media (max-height: 820px) {
+  .hero-full .hero-body { padding-block: 1.5rem; }
+  .hero-full .hero-title { font-size: clamp(2rem, 5.2vw, 3.4rem); }
+  .hero-full .hero-rule { margin-top: 1.15rem; }
+  .hero-full .hero-lede {
+    margin-top: 1.15rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .hero-full .hero-actions { margin-top: 1.5rem; }
+  .hero-full .hero-promise { margin-top: 1rem; }
+}
+
+@media (max-height: 700px) {
+  .hero-full .hero-body { padding-block: 1rem; }
+  .hero-full .hero-title { font-size: clamp(1.75rem, 4.4vw, 2.6rem); }
+  .hero-full .hero-rule { margin-top: 0.85rem; }
+  .hero-full .hero-lede {
+    margin-top: 0.85rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .hero-full .hero-actions { margin-top: 1.15rem; }
+  .hero-full .hero-promise { margin-top: 0.75rem; }
+  /* Decorative, and the first thing to go when space runs out. */
+  .hero-full .hero-cue-wrap { display: none; }
+}
 }

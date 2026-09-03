@@ -31,13 +31,13 @@ const elsewhere = [
         <p class="font-display font-bold text-[1.3rem] tracking-[-0.03em] text-snow">Just Go</p>
         <div class="mt-3 h-[2px] w-8 bg-horizon" aria-hidden="true"></div>
         <p class="mt-4 max-w-[34ch] text-small text-mist">{t('footer.tagline')}</p>
-        <p class="mt-5 font-mono text-label uppercase tracking-[0.12em] text-mist/70">
+        <p class="mt-5 font-mono text-label uppercase tracking-[0.12em] text-mist/80">
           {t('footer.based')}
         </p>
       </div>
 
       <nav aria-label={t('footer.nav')}>
-        <h2 class="eyebrow text-mist/60 mb-4">{t('footer.nav')}</h2>
+        <h2 class="eyebrow text-mist/80 mb-4">{t('footer.nav')}</h2>
         <ul class="space-y-2.5">
           {
             NAV_KEYS.map((key: RouteKey) => (
@@ -57,7 +57,7 @@ const elsewhere = [
       </nav>
 
       <div>
-        <h2 class="eyebrow text-mist/60 mb-4">{t('footer.elsewhere')}</h2>
+        <h2 class="eyebrow text-mist/80 mb-4">{t('footer.elsewhere')}</h2>
         <ul class="space-y-2.5">
           {
             elsewhere.map((link) => (
@@ -76,7 +76,7 @@ const elsewhere = [
             ))
           }
         </ul>
-        <h2 class="eyebrow text-mist/60 mt-8 mb-3">{t('footer.contact')}</h2>
+        <h2 class="eyebrow text-mist/80 mt-8 mb-3">{t('footer.contact')}</h2>
         <a
           href="mailto:bero.sokac@gmail.com"
           class="text-small text-snow hover:text-horizon transition-colors break-all"
@@ -87,14 +87,14 @@ const elsewhere = [
     </div>
 
     <div class="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-      <p class="font-mono text-label uppercase tracking-[0.1em] text-mist/60">
+      <p class="font-mono text-label uppercase tracking-[0.1em] text-mist/80">
         © {year} Just Go. {t('footer.rights')}
       </p>
       <div class="sm:ml-auto flex gap-5">
-        <a href={path('privacy', locale)} class="font-mono text-label uppercase tracking-[0.1em] text-mist/60 hover:text-snow transition-colors">
+        <a href={path('privacy', locale)} class="font-mono text-label uppercase tracking-[0.1em] text-mist/80 hover:text-snow transition-colors">
           {t('nav.privacy')}
         </a>
-        <a href={path('terms', locale)} class="font-mono text-label uppercase tracking-[0.1em] text-mist/60 hover:text-snow transition-colors">
+        <a href={path('terms', locale)} class="font-mono text-label uppercase tracking-[0.1em] text-mist/80 hover:text-snow transition-colors">
           {t('nav.terms')}
         </a>
       </div>
