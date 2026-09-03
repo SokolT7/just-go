@@ -1,0 +1,87 @@
+---
+import { path, type Locale } from '@/i18n/routes';
+import { testimonials } from '@/data/proof';
+
+interface Props {
+  locale: Locale;
+  /** Extra JSON-LD nodes for this page (Service, FAQPage, Article…). */
+  extra?: Record<string, unknown>[];
+}
+const { locale, extra = [] } = Astro.props;
+
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+const url = (p: string) => `${site}${p}`;
+const lang = locale === 'hr' ? 'hr-HR' : 'en';
+
+const berislav = {
+  '@type': 'Person',
+  '@id': `${site}/#berislav`,
+  name: 'Berislav Sokač',
+  jobTitle: locale === 'hr' ? 'Osnivač i direktor' : 'Founder & CEO',
+  worksFor: { '@id': `${site}/#organization` },
+  sameAs: [
+    'https://www.linkedin.com/in/berislavsokac/',
+    'http://runcroatia.hr/',
+  ],
+};
+
+const odin = {
+  '@type': 'Person',
+  '@id': `${site}/#odin`,
+  name: 'Odin Sokač',
+  jobTitle: locale === 'hr' ? 'Suosnivač, brend i kreativa' : 'Co-Founder, Brand & Creative',
+  worksFor: { '@id': `${site}/#organization` },
+  sameAs: [
+    'https://www.linkedin.com/in/odin-sokac-00353a411/',
+    'https://odin-s.vercel.app/',
+  ],
+};
+
+const organization = {
+  '@type': ['Organization', 'ProfessionalService'],
+  '@id': `${site}/#organization`,
+  name: 'Just Go',
+  url: url(path('home', locale)),
+  inLanguage: lang,
+  description:
+    locale === 'hr'
+      ? 'Konzalting za prodaju i razvoj poslovanja iz Zagreba, za klijente diljem svijeta.'
+      : 'Sales and business development consultancy based in Zagreb, working with clients worldwide.',
+  founder: [{ '@id': `${site}/#berislav` }, { '@id': `${site}/#odin` }],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Zagreb',
+    addressCountry: 'HR',
+  },
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
+  knowsLanguage: ['en', 'hr'],
+  sameAs: [
+    'https://www.linkedin.com/in/berislavsokac/',
+    'https://www.linkedin.com/in/odin-sokac-00353a411/',
+  ],
+  // Aggregate ratings are emitted only when real, attributed reviews exist.
+  ...(testimonials.length > 0
+    ? {
+        review: testimonials.map((t) => ({
+          '@type': 'Review',
+          reviewBody: t.quote[locale],
+          author: { '@type': 'Person', name: t.name },
+        })),
+      }
+    : {}),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${site}/#website`,
+  url: site,
+  name: 'Just Go',
+  inLanguage: lang,
+  publisher: { '@id': `${site}/#organization` },
+};
+
+const graph = [organization, website, berislav, odin, ...extra];
+const json = { '@context': 'https://schema.org', '@graph': graph };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(json)} is:inline />

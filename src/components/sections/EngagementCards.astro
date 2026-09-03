@@ -1,0 +1,55 @@
+---
+import { engagements } from '@/data/engagements';
+import { path, type Locale } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const copy = {
+  en: { title: 'Three ways we work', lede: 'Not ten services. Three engagements, each with a defined shape, a timeline and a result you can hold us to.' },
+  hr: { title: 'Tri načina na koja radimo', lede: 'Ne deset usluga. Tri angažmana, svaki s jasnim oblikom, rokom i rezultatom za koji nas možete držati odgovornima.' },
+}[locale];
+---
+
+<section class="bg-surface border-y border-rule">
+  <div class="wrap section-y">
+    <div class="max-w-[40rem]">
+      <p class="eyebrow text-horizon-text mb-4">{t('label.services')}</p>
+      <h2 class="text-h2 text-navy">{copy.title}</h2>
+      <p class="mt-5 text-body-l text-ink-soft max-w-[52ch]">{copy.lede}</p>
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      {
+        engagements.map((eng) => (
+          <article class="group flex flex-col border border-rule bg-snow p-7 lg:p-8 transition-colors hover:border-navy/35">
+            <p class="font-mono text-label uppercase tracking-[0.12em] text-horizon-text">
+              {eng.name[locale]}
+            </p>
+            <h3 class="mt-4 font-display font-bold text-[1.35rem] leading-[1.2] tracking-[-0.02em] text-navy text-balance">
+              {eng.headline[locale]}
+            </h3>
+            <p class="mt-4 text-small text-ink-soft leading-relaxed">{eng.whatWeFix[locale]}</p>
+
+            <div class="mt-6 pt-5 border-t border-rule flex items-center justify-between gap-4 mt-auto">
+              <span class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                {eng.timeline[locale]}
+              </span>
+              <a
+                href={`${path('services', locale)}#${eng.id}`}
+                class="font-display text-[0.9rem] font-semibold text-horizon-text inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all"
+              >
+                {t('cta.readMore')}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

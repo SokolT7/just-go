@@ -1,0 +1,108 @@
+---
+import { path, type Locale } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+import Portrait from '@/components/ui/Portrait.astro';
+import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
+import odinPhoto from '@/assets/images/people/odin-portrait.jpg';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  Real faces are a trust signal; stock photography is an anti-signal.
+  `Portrait` still falls back to an initials tile if a photo is ever missing.
+*/
+const photos = { BS: berislavPhoto, OS: odinPhoto } as const;
+const people = {
+  en: [
+    {
+      name: 'Berislav Sokač',
+      role: 'Founder & CEO',
+      line: 'Leads every client engagement directly, start to finish. Twenty-five years in sales and business development, eleven of them running Oracle’s sales across the Baltics and Central & Eastern Europe.',
+      href: 'https://www.linkedin.com/in/berislavsokac/',
+      initials: 'BS',
+    },
+    {
+      name: 'Odin Sokač',
+      role: 'Co-Founder, Brand & Creative',
+      line: 'Owns brand, story and the creative side of client work — how an offer looks, how it reads, and whether it earns a second meeting.',
+      href: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
+      initials: 'OS',
+    },
+  ],
+  hr: [
+    {
+      name: 'Berislav Sokač',
+      role: 'Osnivač i direktor',
+      line: 'Vodi svaki klijentski angažman izravno, od početka do kraja. Dvadeset pet godina u prodaji i razvoju poslovanja, od toga jedanaest na čelu Oracleove prodaje za Baltik te srednju i istočnu Europu.',
+      href: 'https://www.linkedin.com/in/berislavsokac/',
+      initials: 'BS',
+    },
+    {
+      name: 'Odin Sokač',
+      role: 'Suosnivač, brend i kreativa',
+      line: 'Vodi brend, priču i kreativnu stranu rada s klijentima — kako ponuda izgleda, kako se čita i hoće li zaraditi drugi sastanak.',
+      href: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
+      initials: 'OS',
+    },
+  ],
+}[locale];
+
+const copy = {
+  en: { title: 'Two people, and you work with both of them directly.' },
+  hr: { title: 'Dvoje ljudi, i s oboje radite izravno.' },
+}[locale];
+---
+
+<section class="bg-snow">
+  <div class="wrap section-y">
+    <div class="max-w-[40rem]">
+      <p class="eyebrow text-horizon-text mb-4">{t('label.people')}</p>
+      <h2 class="text-h2 text-navy">{copy.title}</h2>
+    </div>
+
+    <div class="mt-12 grid gap-px bg-rule border border-rule md:grid-cols-2">
+      {
+        people.map((person) => (
+          <div class="bg-snow p-7 lg:p-9">
+            <div class="flex items-start gap-5">
+              <Portrait
+                image={photos[person.initials as keyof typeof photos]}
+                alt={person.name}
+                initials={person.initials}
+                size={64}
+                class="shrink-0 h-16 w-16"
+              />
+              <div>
+                <h3 class="font-display font-bold text-h3 text-navy">{person.name}</h3>
+                <p class="mt-1 font-mono text-label uppercase tracking-[0.1em] text-horizon-text">
+                  {person.role}
+                </p>
+              </div>
+            </div>
+            <p class="mt-6 text-body text-ink-soft leading-relaxed max-w-[46ch]">{person.line}</p>
+            <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+              <a
+                href={path('team', locale)}
+                class="font-display text-[0.9rem] font-semibold text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2"
+              >
+                {locale === 'hr' ? 'Cijeli profil' : 'Full profile'}
+              </a>
+              <a
+                href={person.href}
+                rel="noopener"
+                class="font-display text-[0.9rem] font-semibold text-ink-soft hover:text-navy transition-colors inline-flex items-center gap-1.5"
+              >
+                LinkedIn
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true" class="opacity-60">
+                  <path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

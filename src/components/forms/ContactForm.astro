@@ -1,0 +1,152 @@
+---
+import { useTranslations } from '@/i18n/utils';
+import type { Locale } from '@/i18n/routes';
+import Button from '@/components/ui/Button.astro';
+
+interface Props { locale: Locale; formName?: string; class?: string; }
+const { locale, formName = `contact-${locale}`, class: className = '' } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  Four fields. Not five (PLAN §8).
+  Netlify Forms handles delivery and spam filtering — no backend.
+  Progressive enhancement: without JS the native POST runs and Netlify redirects
+  to the thanks page; with JS we intercept and swap in an inline success state.
+*/
+const thanksPath = locale === 'hr' ? '/hr/hvala' : '/thanks';
+const fieldCls =
+  'w-full bg-surface border border-rule px-4 py-3 text-body text-navy ' +
+  'placeholder:text-ink-soft/55 focus:border-navy focus:outline-none ' +
+  'focus-visible:outline-2 focus-visible:outline-horizon focus-visible:outline-offset-1 ' +
+  'transition-colors';
+const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-ink-soft mb-2';
+---
+
+<div class={className} data-contact-form>
+  <form
+    name={formName}
+    method="POST"
+    action={thanksPath}
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+    class="space-y-5"
+  >
+    <input type="hidden" name="form-name" value={formName} />
+    <input type="hidden" name="locale" value={locale} />
+    <p class="hidden" aria-hidden="true">
+      <label>Do not fill this in: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label class={labelCls} for="cf-name">{t('form.name')}</label>
+        <input class={fieldCls} type="text" id="cf-name" name="name" required autocomplete="name" />
+        <p class="mt-1.5 text-small text-[#A2422B] hidden" data-error-for="cf-name">{t('form.errorName')}</p>
+      </div>
+      <div>
+        <label class={labelCls} for="cf-email">{t('form.email')}</label>
+        <input class={fieldCls} type="email" id="cf-email" name="email" required autocomplete="email" />
+        <p class="mt-1.5 text-small text-[#A2422B] hidden" data-error-for="cf-email">{t('form.errorEmail')}</p>
+      </div>
+    </div>
+
+    <div>
+      <label class={labelCls} for="cf-company">{t('form.company')}</label>
+      <input class={fieldCls} type="text" id="cf-company" name="company" autocomplete="organization" />
+    </div>
+
+    <div>
+      <label class={labelCls} for="cf-message">{t('form.message')}</label>
+      <textarea
+        class={`${fieldCls} min-h-[8.5rem] resize-y`}
+        id="cf-message"
+        name="message"
+        rows="5"
+        required
+        placeholder={t('form.messagePlaceholder')}></textarea>
+      <p class="mt-1.5 text-small text-[#A2422B] hidden" data-error-for="cf-message">{t('form.errorMessage')}</p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
+      <Button type="submit" variant="primary" size="lg" data-submit data-sending={t('form.sending')}>
+        {t('form.submit')}
+      </Button>
+      <p class="text-small text-ink-soft">{t('promise.sameDay')}</p>
+    </div>
+
+    <p class="text-small text-ink-soft pt-1">
+      {t('form.orEmail')}{' '}
+      <a href="mailto:bero.sokac@gmail.com" class="text-horizon-text underline underline-offset-4">
+        bero.sokac@gmail.com
+      </a>
+    </p>
+  </form>
+
+  <!-- Inline success state; replaces the form in place, no redirect. -->
+  <div
+    class="hidden border border-horizon/40 bg-horizon-wash p-7"
+    data-success
+    role="status"
+    aria-live="polite"
+    tabindex="-1"
+  >
+    <div class="h-[2px] w-8 bg-horizon mb-5" aria-hidden="true"></div>
+    <p class="font-display font-bold text-h3 text-navy">{t('form.successTitle')}</p>
+    <p class="mt-3 text-body text-navy/80 max-w-[42ch]">{t('form.successBody')}</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-contact-form]').forEach((root) => {
+    const form = root.querySelector('form');
+    const success = root.querySelector<HTMLElement>('[data-success]');
+    const submit = root.querySelector<HTMLButtonElement>('[data-submit]');
+    if (!form || !success || !submit) return;
+
+    const showError = (id: string, show: boolean) => {
+      const msg = form.querySelector<HTMLElement>(`[data-error-for="${id}"]`);
+      const field = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#${id}`);
+      msg?.classList.toggle('hidden', !show);
+      field?.setAttribute('aria-invalid', String(show));
+      if (show && msg) field?.setAttribute('aria-describedby', msg.id || (msg.id = `${id}-err`));
+    };
+
+    const validate = () => {
+      let ok = true;
+      for (const id of ['cf-name', 'cf-email', 'cf-message']) {
+        const field = form.querySelector<HTMLInputElement>(`#${id}`);
+        if (!field) continue;
+        const bad = !field.value.trim() || (field.type === 'email' && !field.checkValidity());
+        showError(id, bad);
+        if (bad && ok) { field.focus(); ok = false; }
+      }
+      return ok;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+
+      const label = submit.textContent;
+      submit.disabled = true;
+      submit.textContent = submit.dataset.sending ?? '…';
+
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        });
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+        success.focus();
+      } catch {
+        // Network failure — fall back to a normal submit so the message is not lost.
+        form.submit();
+      } finally {
+        submit.disabled = false;
+        if (label) submit.textContent = label;
+      }
+    });
+  });
+</script>

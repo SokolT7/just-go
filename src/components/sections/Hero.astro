@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '@/assets/images/hero-mountains.avif';
+import { path, type Locale } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+import Button from '@/components/ui/Button.astro';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  Headline formula (PLAN, blueprint §02): [who you help] + [problem you solve]
+  + [outcome]. Not a slogan.
+
+  This is the LCP element on the most important page: eager, high priority,
+  explicit dimensions, and sized to what it holds rather than to 100vh.
+*/
+const copy = {
+  en: {
+    kicker: 'Sales & business development · Zagreb, worldwide',
+    h1a: 'Just go.',
+    h1b: 'The rest is momentum.',
+    lede:
+      'We help founders and sales teams fix what is actually stopping the deal — the positioning, the process, and the conversations nobody is starting. Twenty-five years of doing it, not theorising about it.',
+    secondary: 'See how we work',
+  },
+  hr: {
+    kicker: 'Prodaja i razvoj poslovanja · Zagreb, svijet',
+    h1a: 'Samo kreni.',
+    h1b: 'Ostalo je zalet.',
+    lede:
+      'Pomažemo osnivačima i prodajnim timovima riješiti ono što zaista koči posao — pozicioniranje, proces i razgovore koje nitko ne započinje. Dvadeset pet godina prakse, ne teorije.',
+    secondary: 'Pogledajte kako radimo',
+  },
+}[locale];
+---
+
+<section class="relative bg-navy text-snow overflow-hidden">
+  <!-- Photograph -->
+  <div class="absolute inset-0">
+    <Image
+      src={heroImage}
+      alt=""
+      widths={[640, 1024, 1600, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      format="avif"
+      quality={72}
+      class="h-full w-full object-cover object-[55%_60%]"
+    />
+    <!--
+      Two overlays: a vertical wash so the headline sits on the clean sky, and a
+      left-weighted gradient so text stays legible on narrow viewports where the
+      crop shifts.
+    -->
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/28 to-navy/88"
+      aria-hidden="true"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/12 to-transparent"
+      aria-hidden="true"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative wrap pt-11 pb-12 sm:pt-24 sm:pb-20 lg:pt-36 lg:pb-28">
+    <div class="max-w-[46rem]">
+      <p class="eyebrow text-horizon">{copy.kicker}</p>
+
+      <h1 class="mt-5 sm:mt-6 text-display-xl text-snow">
+        {copy.h1a}<br />
+        <span class="text-mist-light">{copy.h1b}</span>
+      </h1>
+
+      <div class="mt-6 sm:mt-7 h-[2px] w-14 bg-horizon" aria-hidden="true"></div>
+
+      <p class="mt-5 sm:mt-7 max-w-[52ch] text-body sm:text-body-l text-mist-light">
+        {copy.lede}
+      </p>
+
+      <div class="mt-8 sm:mt-10 flex flex-col xs:flex-row flex-wrap items-stretch xs:items-center gap-4">
+        <Button href={path('contact', locale)} variant="primary" size="lg">
+          {t('cta.primary')}
+        </Button>
+        <Button href={path('services', locale)} variant="onDark" size="lg">
+          {copy.secondary}
+        </Button>
+      </div>
+
+      <p class="mt-5 sm:mt-6 font-mono text-label uppercase tracking-[0.12em] text-mist/80">
+        {t('promise.sameDay')}
+      </p>
+    </div>
+  </div>
+</section>

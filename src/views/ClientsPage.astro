@@ -1,0 +1,165 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import LogoWall from '@/components/proof/LogoWall.astro';
+import TestimonialCard from '@/components/proof/TestimonialCard.astro';
+import RunCroatiaPanel from '@/components/sections/RunCroatiaPanel.astro';
+import { caseStudies, testimonials, hasCaseStudies, hasTestimonials } from '@/data/proof';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const copy = {
+  en: {
+    metaTitle: 'Clients & Track Record | Just Go',
+    metaDesc:
+      'Twenty-five years across financial services, retail and hospitality, telecommunications and utilities, and government and transportation — plus a decade of events built from nothing.',
+    eyebrow: 'Track record',
+    h1: 'Where the experience comes from',
+    lede:
+      'Twenty-five years of enterprise sales across four industries, and ten years building an events business that had to win its own sponsors.',
+    sectorsTitle: 'Four industries we know deeply',
+    sectorsLede:
+      'These are the sectors where the buying process, the procurement reality and the internal politics are already familiar. Outside them, we will say so.',
+    sectors: [
+      { t: 'Financial services', b: 'Long cycles, many stakeholders, and a compliance function that can stop a deal at any stage. Selling here is mostly about sequencing who says yes, and in what order.' },
+      { t: 'Retail & hospitality', b: 'Thin margins and fast decisions, where the pitch has to survive being repeated by somebody else to somebody more senior.' },
+      { t: 'Telecommunications & utilities', b: 'Large, structurally conservative buyers with formal procurement. The work is usually in qualifying early enough to avoid twelve months in the wrong opportunity.' },
+      { t: 'Government & transportation', b: 'Public tender rules, published criteria, and a timetable nobody controls. Winning here starts long before the tender is published.' },
+    ],
+    csTitle: 'Case studies',
+    csEmptyTitle: 'Written case studies are being prepared',
+    csEmptyBody:
+      'Most of the work above sits under client confidentiality, and we will not publish a name or a number before we have written permission to use it. Anonymised case studies with real figures are in preparation. In the meantime, the fastest way to judge whether the experience is relevant to you is a thirty-minute call — ask for specifics and you will get them.',
+    testimonialsTitle: 'What clients say',
+    proofLabel: 'The numbers behind the work',
+  },
+  hr: {
+    metaTitle: 'Klijenti i iskustvo | Just Go',
+    metaDesc:
+      'Dvadeset pet godina u financijskim uslugama, maloprodaji i ugostiteljstvu, telekomunikacijama i komunalnim uslugama te javnom sektoru i prometu — uz desetljeće događaja izgrađenih ni iz čega.',
+    eyebrow: 'Iskustvo',
+    h1: 'Odakle iskustvo dolazi',
+    lede:
+      'Dvadeset pet godina korporativne prodaje u četiri industrije i deset godina izgradnje event biznisa koji je morao sam osvojiti svoje sponzore.',
+    sectorsTitle: 'Četiri industrije koje poznajemo duboko',
+    sectorsLede:
+      'Ovo su sektori u kojima su nam proces kupnje, stvarnost nabave i interna politika već poznati. Izvan njih ćemo to i reći.',
+    sectors: [
+      { t: 'Financijske usluge', b: 'Dugi ciklusi, mnogo dionika i compliance koji može zaustaviti posao u bilo kojoj fazi. Prodaja je ovdje uglavnom pitanje redoslijeda — tko kaže „da” i kojim redom.' },
+      { t: 'Maloprodaja i ugostiteljstvo', b: 'Tanke marže i brze odluke, gdje prezentacija mora preživjeti to da je netko drugi prepriča nekome nadređenom.' },
+      { t: 'Telekomunikacije i komunalne usluge', b: 'Veliki, strukturno konzervativni kupci s formalnom nabavom. Posao je obično u dovoljno ranoj kvalifikaciji da izbjegnete dvanaest mjeseci u krivoj prilici.' },
+      { t: 'Javni sektor i promet', b: 'Pravila javne nabave, objavljeni kriteriji i rokovi koje nitko ne kontrolira. Pobjeda ovdje počinje mnogo prije objave natječaja.' },
+    ],
+    csTitle: 'Studije slučaja',
+    csEmptyTitle: 'Pisane studije slučaja su u pripremi',
+    csEmptyBody:
+      'Većina navedenog rada pod ugovorom je o povjerljivosti i nećemo objaviti ime ni brojku prije nego dobijemo pisano dopuštenje. Anonimizirane studije slučaja sa stvarnim brojkama su u pripremi. Do tada, najbrži način da procijenite je li iskustvo relevantno za vas jest poziv od trideset minuta — pitajte za konkretno i dobit ćete.',
+    testimonialsTitle: 'Što kažu klijenti',
+    proofLabel: 'Brojke iza posla',
+  },
+}[locale];
+---
+
+<Base title={copy.metaTitle} description={copy.metaDesc} locale={locale} routeKey="clients">
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-16 pb-14 sm:pt-20 sm:pb-16">
+      <p class="eyebrow text-horizon mb-5">{copy.eyebrow}</p>
+      <h1 class="text-display-l text-snow max-w-[16ch]">{copy.h1}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[56ch]">{copy.lede}</p>
+    </div>
+  </section>
+
+  <!-- Logos where permission exists; the hard numbers until then. -->
+  <section class="bg-surface border-b border-rule" aria-label={copy.proofLabel}>
+    <div class="wrap">
+      <LogoWall locale={locale} tone="light" class="border-x border-rule" />
+    </div>
+  </section>
+
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="max-w-[40rem]">
+        <h2 class="text-h2 text-navy">{copy.sectorsTitle}</h2>
+        <p class="mt-5 text-body-l text-ink-soft max-w-[54ch]">{copy.sectorsLede}</p>
+      </div>
+      <dl class="mt-12 grid gap-px bg-rule border border-rule sm:grid-cols-2">
+        {
+          copy.sectors.map((sector) => (
+            <div class="bg-snow p-7 lg:p-8">
+              <dt class="font-display font-bold text-h3 text-navy">{sector.t}</dt>
+              <dd class="mt-3 text-body text-ink-soft leading-relaxed max-w-[46ch]">{sector.b}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Case studies: real ones when they exist, an honest note until then. -->
+  <section class="bg-surface border-y border-rule">
+    <div class="wrap section-y">
+      <h2 class="text-h2 text-navy">{copy.csTitle}</h2>
+      {
+        hasCaseStudies ? (
+          <div class="mt-12 grid gap-6 lg:grid-cols-3">
+            {caseStudies.map((cs) => (
+              <article class="border border-rule bg-snow p-7 flex flex-col">
+                <p class="font-mono text-label uppercase tracking-[0.12em] text-horizon-text">
+                  {cs.sector[locale]}
+                </p>
+                <h3 class="mt-4 font-display font-bold text-h3 text-navy text-balance">
+                  {cs.title[locale]}
+                </h3>
+                <dl class="mt-5 space-y-4 text-small text-ink-soft leading-relaxed">
+                  <div>
+                    <dt class="eyebrow text-mist mb-1">Situation</dt>
+                    <dd>{cs.situation[locale]}</dd>
+                  </div>
+                  <div>
+                    <dt class="eyebrow text-mist mb-1">What we did</dt>
+                    <dd>{cs.action[locale]}</dd>
+                  </div>
+                  <div>
+                    <dt class="eyebrow text-mist mb-1">Result</dt>
+                    <dd>{cs.result[locale]}</dd>
+                  </div>
+                </dl>
+                <p class="mt-auto pt-6 font-display font-bold text-[2rem] leading-none tracking-[-0.04em] text-horizon-text tabular-nums">
+                  {cs.metric}
+                  <span class="block mt-2 font-body font-normal text-small tracking-normal text-ink-soft">
+                    {cs.metricLabel[locale]}
+                  </span>
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="mt-8 max-w-[46rem] border-l-2 border-horizon pl-6 sm:pl-8">
+            <h3 class="font-display font-semibold text-h3 text-navy">{copy.csEmptyTitle}</h3>
+            <p class="mt-4 text-body-l text-ink-soft">{copy.csEmptyBody}</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    hasTestimonials && (
+      <section class="bg-snow">
+        <div class="wrap section-y">
+          <h2 class="text-h2 text-navy">{copy.testimonialsTitle}</h2>
+          <div class="mt-12 grid gap-10 md:grid-cols-2 lg:gap-14">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard testimonial={testimonial} locale={locale} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <RunCroatiaPanel locale={locale} />
+  <CtaBand locale={locale} from="var(--color-surface)" />
+</Base>

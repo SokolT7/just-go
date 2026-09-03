@@ -1,0 +1,54 @@
+---
+import Base from '@/layouts/Base.astro';
+import Button from '@/components/ui/Button.astro';
+import { path, type Locale } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  No-JavaScript fallback destination for the forms. With JS the success state
+  renders inline and this page is never reached (PLAN §8).
+*/
+const copy = {
+  en: {
+    title: 'Message sent — Just Go',
+    h1: 'Message sent.',
+    body: 'Berislav has it, and will reply personally — the same working day.',
+    meanwhile: 'While you wait',
+    back: 'Back to the homepage',
+  },
+  hr: {
+    title: 'Poruka poslana — Just Go',
+    h1: 'Poruka je poslana.',
+    body: 'Berislav ju je zaprimio i javit će se osobno — isti radni dan.',
+    meanwhile: 'Dok čekate',
+    back: 'Natrag na početnu',
+  },
+}[locale];
+---
+
+<Base
+  title={copy.title}
+  description={copy.body}
+  locale={locale}
+  canonicalPath={locale === 'hr' ? '/hr/hvala' : '/thanks'}
+  noindex={true}
+>
+  <section class="bg-navy text-snow">
+    <div class="wrap py-24 sm:py-32">
+      <div class="h-[2px] w-14 bg-horizon mb-8" aria-hidden="true"></div>
+      <h1 class="text-display-l text-snow max-w-[14ch]">{copy.h1}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[46ch]">{copy.body}</p>
+
+      <p class="mt-12 eyebrow text-horizon">{copy.meanwhile}</p>
+      <div class="mt-5 flex flex-wrap gap-4">
+        <Button href={path('insights', locale)} variant="onDark">{t('nav.insights')}</Button>
+        <Button href={path('about', locale)} variant="onDark">{t('nav.about')}</Button>
+        <Button href={path('home', locale)} variant="primary">{copy.back}</Button>
+      </div>
+    </div>
+  </section>
+</Base>

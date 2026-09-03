@@ -1,0 +1,53 @@
+# Just Go
+
+> Sales and business development consultancy based in Zagreb, Croatia, working
+> with clients worldwide in English and Croatian.
+
+Just Go is run by Berislav Sokač (Founder & CEO) and Odin Sokač (Co-Founder,
+Brand & Creative). Berislav spent eleven years at Oracle, ending as sales
+director for the Baltic countries and Central & Eastern Europe, then co-founded
+Run Croatia in 2015 — roughly 120 events in ten years, including Zagreb Advent
+Run, the largest race of its kind in Europe. Odin is a blues musician who
+represented Croatia at the 2024 International Blues Challenge in Memphis.
+
+The firm's thesis: most sales problems are not strategy problems, they are
+starting problems — the call nobody made, the price nobody raised, the
+partnership nobody asked for.
+
+## Services
+
+Three defined engagements:
+
+- **Sales Strategy & Go-to-Market Design** — for founders and CEOs whose growth
+  has stalled or who are entering a new market. Typically 8–14 weeks.
+- **Sales Team Enablement** — pipeline discipline, qualification and negotiation
+  for teams that are busy but not closing. Typically 6–16 weeks.
+- **Partnerships & Sponsorship Development** — packaging, pricing, outreach and
+  renewal for organisations that need corporate partners or sponsors.
+  Typically 3–9 months.
+
+Industries known deeply: financial services; retail and hospitality;
+telecommunications and utilities; government and transportation.
+
+## Working with Just Go
+
+- Fixed scope, fixed fee, agreed in writing before work starts. Not hourly.
+- Remote-first from Zagreb (Central European Time), worldwide, with travel for
+  kickoffs, negotiations and team sessions.
+- First call is 30 minutes, free, with no obligation.
+- Contact is by form or email; messages are answered the same working day.
+
+## Pages
+
+- Home: https://justgo.hr/
+- Services: https://justgo.hr/services
+- About: https://justgo.hr/about
+- Team: https://justgo.hr/team
+- Mission: https://justgo.hr/mission
+- Clients: https://justgo.hr/clients
+- Insights: https://justgo.hr/insights
+- Contact: https://justgo.hr/contact
+
+Croatian versions live under https://justgo.hr/hr/ with localized slugs
+(/hr/usluge, /hr/o-nama, /hr/tim, /hr/misija, /hr/klijenti, /hr/clanci,
+/hr/kontakt).

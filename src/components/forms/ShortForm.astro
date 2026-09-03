@@ -1,0 +1,96 @@
+---
+import { useTranslations } from '@/i18n/utils';
+import type { Locale } from '@/i18n/routes';
+import Button from '@/components/ui/Button.astro';
+
+interface Props { locale: Locale; class?: string; }
+const { locale, class: className = '' } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  Two fields, sitting inline in the closing band on every page, so a decided
+  visitor never has to navigate to Contact first (PLAN §8).
+*/
+const formName = `short-${locale}`;
+const thanksPath = locale === 'hr' ? '/hr/hvala' : '/thanks';
+const fieldCls =
+  'w-full bg-white/6 border border-white/20 px-4 py-3 text-body text-snow ' +
+  'placeholder:text-mist/60 focus:border-mist focus:outline-none ' +
+  'focus-visible:outline-2 focus-visible:outline-horizon focus-visible:outline-offset-1 transition-colors';
+const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-mist mb-2';
+---
+
+<div class={className} data-short-form>
+  <form
+    name={formName}
+    method="POST"
+    action={thanksPath}
+    data-netlify="true"
+    data-netlify-honeypot="bot-field-short"
+    class="grid gap-4 sm:grid-cols-[1fr_1.3fr] sm:items-end"
+  >
+    <input type="hidden" name="form-name" value={formName} />
+    <input type="hidden" name="locale" value={locale} />
+    <p class="hidden" aria-hidden="true">
+      <label>Do not fill this in: <input name="bot-field-short" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div>
+      <label class={labelCls} for={`sf-email-${locale}`}>{t('form.email')}</label>
+      <input class={fieldCls} type="email" id={`sf-email-${locale}`} name="email" required autocomplete="email" />
+    </div>
+    <div>
+      <label class={labelCls} for={`sf-message-${locale}`}>{t('form.message')}</label>
+      <input class={fieldCls} type="text" id={`sf-message-${locale}`} name="message" required />
+    </div>
+    <div class="sm:col-span-2 flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
+      <Button type="submit" variant="primary" size="lg" data-submit>{t('form.submit')}</Button>
+      <p class="text-small text-mist">{t('promise.sameDay')}</p>
+    </div>
+    <p class="sm:col-span-2 text-small text-mist/80 hidden" data-error role="alert">
+      {t('form.errorEmail')}
+    </p>
+  </form>
+
+  <div class="hidden border border-horizon/45 bg-white/5 p-7" data-success role="status" aria-live="polite" tabindex="-1">
+    <div class="h-[2px] w-8 bg-horizon mb-5" aria-hidden="true"></div>
+    <p class="font-display font-bold text-h3 text-snow">{t('form.successTitle')}</p>
+    <p class="mt-3 text-body text-mist max-w-[42ch]">{t('form.successBody')}</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-short-form]').forEach((root) => {
+    const form = root.querySelector('form');
+    const success = root.querySelector<HTMLElement>('[data-success]');
+    const error = root.querySelector<HTMLElement>('[data-error]');
+    const submit = root.querySelector<HTMLButtonElement>('[data-submit]');
+    if (!form || !success || !submit) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.querySelector<HTMLInputElement>('input[type="email"]');
+      const message = form.querySelector<HTMLInputElement>('input[name="message"]');
+      const invalid = !email?.checkValidity() || !message?.value.trim();
+      error?.classList.toggle('hidden', !invalid);
+      email?.setAttribute('aria-invalid', String(!email?.checkValidity()));
+      if (invalid) { email?.focus(); return; }
+
+      submit.disabled = true;
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        });
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+        success.focus();
+      } catch {
+        form.submit();
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  });
+</script>

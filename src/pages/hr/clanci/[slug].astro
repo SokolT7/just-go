@@ -1,0 +1,15 @@
+---
+import Article from "@/layouts/Article.astro";
+import { articleRoutes } from "@/lib/articleRoutes";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+  return articleRoutes("hr");
+}
+
+const { entry, locale, slugByLocale, readingMinutes } = Astro.props;
+const { Content } = await render(entry);
+---
+<Article entry={entry} locale={locale} slugByLocale={slugByLocale} readingMinutes={readingMinutes}>
+  <Content />
+</Article>

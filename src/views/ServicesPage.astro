@@ -1,0 +1,253 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import Faq, { type FaqItem } from '@/components/ui/Faq.astro';
+import Button from '@/components/ui/Button.astro';
+import { engagements } from '@/data/engagements';
+import { path, type Locale } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+
+const copy = {
+  en: {
+    metaTitle: 'Services — Sales Strategy, Team Enablement & Partnerships | Just Go',
+    metaDesc:
+      'Three defined engagements: sales strategy and go-to-market design, sales team enablement, and partnership and sponsorship development. Zagreb-based, working worldwide.',
+    eyebrow: 'What we do',
+    h1: 'Three engagements, not a menu of ten',
+    lede:
+      'Every engagement has a defined shape, a timeline, and a result you can hold us to. If what you need is not here, we will say so on the call rather than stretch to fit.',
+    jumpLabel: 'Jump to',
+    forWho: 'Who it is for',
+    whatWeFix: 'What we fix',
+    howItRuns: 'How it runs',
+    outcomes: 'What you walk away with',
+    proof: 'Where this comes from',
+    alsoTitle: 'Also engaged for',
+    alsoBody:
+      'Executive coaching, leadership development, team building, brand work and event delivery. Real capabilities, drawn on inside larger engagements — they are simply not what we lead with.',
+    processTitle: 'How an engagement starts',
+    processLede: 'Three steps. No procurement theatre, no discovery deck.',
+    steps: [
+      { n: '01', t: 'A 30-minute call', b: 'You describe the problem. We ask the questions that usually get skipped. No charge, and no pitch — if we are not the right fit we will tell you on that call.' },
+      { n: '02', t: 'A written proposal', b: 'Scope, price, timeline and what success looks like, on one page. You will know exactly what you are buying before anyone signs anything.' },
+      { n: '03', t: 'We start', b: 'Usually within two weeks. You work with Berislav directly — not an account manager, not a junior team.' },
+    ],
+    faqTitle: 'Questions people ask before the first call',
+    faqs: [
+      { q: 'How do you charge?', a: 'Engagements are priced as a fixed fee against a defined scope, agreed in writing before we start. Longer advisory relationships run on a monthly retainer. We do not bill by the hour, because it rewards the wrong thing.' },
+      { q: 'Do you work remotely?', a: 'Yes. Just Go is based in Zagreb and works with clients worldwide, remote-first, across time zones. We travel for the moments that genuinely need a room — kickoffs, negotiations, team sessions.' },
+      { q: 'How long does an engagement last?', a: 'Sales strategy work typically runs eight to fourteen weeks. Team enablement runs six to sixteen. Partnership and sponsorship development is usually three to nine months, because the sales cycle for a corporate partner is simply that long.' },
+      { q: 'Which industries do you know well?', a: 'Financial services, retail and hospitality, telecommunications and utilities, and government and transportation. That comes from eleven years selling into those sectors at Oracle, plus a decade of corporate sponsorship work through Run Croatia.' },
+      { q: 'What languages do you work in?', a: 'English and Croatian, both to a professional standard. Written deliverables can be produced in either.' },
+      { q: 'Who actually does the work?', a: 'Berislav Sokač, directly. Odin Sokač leads brand and creative where an engagement calls for it. For larger programmes we bring in specialists we have worked with before, and we tell you who they are up front.' },
+    ],
+  },
+  hr: {
+    metaTitle: 'Usluge — prodajna strategija, osnaživanje tima i partnerstva | Just Go',
+    metaDesc:
+      'Tri jasna angažmana: prodajna strategija i izlazak na tržište, osnaživanje prodajnog tima te razvoj partnerstava i sponzorstava. Iz Zagreba, za cijeli svijet.',
+    eyebrow: 'Čime se bavimo',
+    h1: 'Tri angažmana, a ne jelovnik od deset stavki',
+    lede:
+      'Svaki angažman ima jasan oblik, rok i rezultat za koji nas možete držati odgovornima. Ako ono što trebate nije ovdje, reći ćemo vam na pozivu umjesto da se rastežemo.',
+    jumpLabel: 'Skoči na',
+    forWho: 'Za koga je',
+    whatWeFix: 'Što rješavamo',
+    howItRuns: 'Kako teče',
+    outcomes: 'S čime odlazite',
+    proof: 'Odakle to dolazi',
+    alsoTitle: 'Radimo i na',
+    alsoBody:
+      'Executive coaching, razvoj vodstva, team building, brend i organizacija događaja. Stvarne kompetencije koje koristimo unutar većih angažmana — jednostavno nisu ono s čim krećemo.',
+    processTitle: 'Kako angažman počinje',
+    processLede: 'Tri koraka. Bez nabavne birokracije i bez uvodnih prezentacija.',
+    steps: [
+      { n: '01', t: 'Poziv od 30 minuta', b: 'Vi opišete problem. Mi postavimo pitanja koja se obično preskoče. Bez naplate i bez prodaje — ako nismo pravi izbor, reći ćemo vam na tom pozivu.' },
+      { n: '02', t: 'Pisana ponuda', b: 'Opseg, cijena, rokovi i kako izgleda uspjeh — na jednoj stranici. Znat ćete točno što kupujete prije nego itko išta potpiše.' },
+      { n: '03', t: 'Krećemo', b: 'Obično unutar dva tjedna. Radite izravno s Berislavom — ne s account managerom i ne s juniorskim timom.' },
+    ],
+    faqTitle: 'Pitanja koja ljudi postave prije prvog poziva',
+    faqs: [
+      { q: 'Kako naplaćujete?', a: 'Angažmani se naplaćuju kao fiksna naknada za definiran opseg, dogovorena pisano prije početka. Dulji savjetodavni odnosi idu na mjesečni retainer. Ne naplaćujemo po satu jer to nagrađuje krivu stvar.' },
+      { q: 'Radite li na daljinu?', a: 'Da. Just Go je iz Zagreba i radi s klijentima diljem svijeta, primarno na daljinu i kroz različite vremenske zone. Putujemo za trenutke kojima stvarno treba soba — početak projekta, pregovori, radionice s timom.' },
+      { q: 'Koliko traje angažman?', a: 'Rad na prodajnoj strategiji obično traje osam do četrnaest tjedana. Osnaživanje tima šest do šesnaest. Razvoj partnerstava i sponzorstava obično tri do devet mjeseci, jer prodajni ciklus za korporativnog partnera jednostavno toliko traje.' },
+      { q: 'Koje industrije dobro poznajete?', a: 'Financijske usluge, maloprodaju i ugostiteljstvo, telekomunikacije i komunalne usluge te javni sektor i promet. To dolazi iz jedanaest godina prodaje u te sektore u Oracleu i desetljeća rada na korporativnim sponzorstvima kroz Run Croatiu.' },
+      { q: 'Na kojim jezicima radite?', a: 'Engleski i hrvatski, oba na profesionalnoj razini. Pisani materijali mogu se izraditi na bilo kojem od njih.' },
+      { q: 'Tko zapravo radi posao?', a: 'Berislav Sokač, izravno. Odin Sokač vodi brend i kreativu kad angažman to traži. Za veće programe uključujemo specijaliste s kojima smo već radili i unaprijed vam kažemo tko su.' },
+    ],
+  },
+}[locale];
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  '@id': `${site}${path('services', locale)}#faq`,
+  inLanguage: locale === 'hr' ? 'hr-HR' : 'en',
+  mainEntity: copy.faqs.map((f: FaqItem) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const serviceSchema = engagements.map((eng) => ({
+  '@type': 'Service',
+  '@id': `${site}${path('services', locale)}#${eng.id}`,
+  name: eng.name[locale],
+  description: eng.whatWeFix[locale],
+  provider: { '@id': `${site}/#organization` },
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
+  inLanguage: locale === 'hr' ? 'hr-HR' : 'en',
+}));
+---
+
+<Base
+  title={copy.metaTitle}
+  description={copy.metaDesc}
+  locale={locale}
+  routeKey="services"
+  schema={[...serviceSchema, faqSchema]}
+>
+  <!-- Intro -->
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-16 pb-14 sm:pt-20 sm:pb-16">
+      <p class="eyebrow text-horizon mb-5">{copy.eyebrow}</p>
+      <h1 class="text-display-l text-snow max-w-[20ch]">{copy.h1}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[58ch]">{copy.lede}</p>
+
+      <nav class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2" aria-label={copy.jumpLabel}>
+        <span class="font-mono text-label uppercase tracking-[0.12em] text-mist/70 mr-1">
+          {copy.jumpLabel}
+        </span>
+        {
+          engagements.map((eng) => (
+            <a
+              href={`#${eng.id}`}
+              class="font-display text-[0.9rem] font-medium text-snow border border-white/25 px-3 py-1.5 hover:border-horizon hover:text-horizon transition-colors"
+            >
+              {eng.name[locale]}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+
+  <!-- Engagement blocks -->
+  {
+    engagements.map((eng, i) => (
+      <section
+        id={eng.id}
+        class:list={['scroll-mt-24', i % 2 === 0 ? 'bg-snow' : 'bg-surface border-y border-rule']}
+      >
+        <div class="wrap section-y">
+          <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <div>
+              <p class="font-mono text-label uppercase tracking-[0.12em] text-horizon-text">
+                {String(eng.order).padStart(2, '0')} — {eng.name[locale]}
+              </p>
+              <h2 class="mt-4 text-h2 text-navy text-balance">{eng.headline[locale]}</h2>
+              <p class="mt-6 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                {eng.timeline[locale]}
+              </p>
+              <div class="mt-6 border-l-2 border-horizon pl-5">
+                <p class="text-small text-ink-soft leading-relaxed max-w-[42ch]">
+                  {eng.proofNote[locale]}
+                </p>
+              </div>
+              <Button href={path('contact', locale)} variant="onLight" class="mt-8">
+                {t('cta.primary')}
+              </Button>
+            </div>
+
+            <div class="space-y-8">
+              <div>
+                <h3 class="eyebrow text-ink-soft mb-3">{copy.forWho}</h3>
+                <p class="text-body text-navy/85 max-w-[58ch]">{eng.forWho[locale]}</p>
+              </div>
+              <div>
+                <h3 class="eyebrow text-ink-soft mb-3">{copy.whatWeFix}</h3>
+                <p class="text-body text-navy/85 max-w-[58ch]">{eng.whatWeFix[locale]}</p>
+              </div>
+              <div>
+                <h3 class="eyebrow text-ink-soft mb-3">{copy.howItRuns}</h3>
+                <ol class="border-t border-rule">
+                  {eng.howItRuns.map((phase, pi) => (
+                    <li class="flex items-baseline justify-between gap-6 py-3 border-b border-rule">
+                      <span class="text-body text-navy/85">
+                        <span class="font-mono text-label text-ink-soft mr-3 tabular-nums">
+                          {String(pi + 1).padStart(2, '0')}
+                        </span>
+                        {phase.phase[locale]}
+                      </span>
+                      <span class="shrink-0 font-mono text-label uppercase tracking-[0.08em] text-ink-soft">
+                        {phase.duration[locale]}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div>
+                <h3 class="eyebrow text-ink-soft mb-3">{copy.outcomes}</h3>
+                <ul class="space-y-2.5">
+                  {eng.outcomes[locale].map((outcome) => (
+                    <li class="flex gap-3 text-body text-navy/85 max-w-[56ch]">
+                      <span class="mt-[0.65em] h-[5px] w-[5px] shrink-0 bg-horizon" aria-hidden="true" />
+                      {outcome}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- Also engaged for -->
+  <section class="bg-snow">
+    <div class="wrap section-y-sm">
+      <div class="border border-rule bg-surface p-7 lg:p-9 max-w-[62rem]">
+        <h2 class="eyebrow text-horizon-text mb-3">{copy.alsoTitle}</h2>
+        <p class="text-body text-ink-soft max-w-[68ch]">{copy.alsoBody}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How an engagement starts -->
+  <section class="bg-surface border-y border-rule">
+    <div class="wrap section-y">
+      <div class="max-w-[40rem]">
+        <h2 class="text-h2 text-navy">{copy.processTitle}</h2>
+        <p class="mt-4 text-body-l text-ink-soft">{copy.processLede}</p>
+      </div>
+      <ol class="mt-12 grid gap-6 md:grid-cols-3">
+        {
+          copy.steps.map((step) => (
+            <li class="border-t-2 border-navy pt-5">
+              <span class="font-mono text-label text-horizon-text tabular-nums">{step.n}</span>
+              <h3 class="mt-3 font-display font-semibold text-h3 text-navy">{step.t}</h3>
+              <p class="mt-3 text-small text-ink-soft leading-relaxed">{step.b}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="max-w-[52rem]">
+        <Faq items={copy.faqs} locale={locale} title={copy.faqTitle} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

@@ -1,0 +1,160 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import { articlePath, path, type Locale, LOCALES } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'insights'>;
+  locale: Locale;
+  /** slug of the same piece in each locale, for hreflang + the switcher */
+  slugByLocale: Record<Locale, string | undefined>;
+  readingMinutes: number;
+}
+const { entry, locale, slugByLocale, readingMinutes } = Astro.props;
+const t = useTranslations(locale);
+const { title, description, publishDate, author, tags, answer } = entry.data;
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+
+const altPaths = LOCALES.filter((l) => slugByLocale[l]).map((l) => ({
+  locale: l,
+  path: articlePath(slugByLocale[l]!, l),
+}));
+const here = articlePath(slugByLocale[locale]!, locale);
+
+const dateFmt = new Intl.DateTimeFormat(locale === 'hr' ? 'hr-HR' : 'en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric',
+}).format(publishDate);
+
+const articleSchema = {
+  '@type': 'Article',
+  '@id': `${site}${here}#article`,
+  headline: title,
+  description,
+  datePublished: publishDate.toISOString(),
+  inLanguage: locale === 'hr' ? 'hr-HR' : 'en',
+  author: { '@id': `${site}/#berislav`, name: author },
+  publisher: { '@id': `${site}/#organization` },
+  mainEntityOfPage: `${site}${here}`,
+  keywords: tags.join(', '),
+};
+
+const breadcrumb = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Just Go', item: `${site}${path('home', locale)}` },
+    { '@type': 'ListItem', position: 2, name: t('nav.insights'), item: `${site}${path('insights', locale)}` },
+    { '@type': 'ListItem', position: 3, name: title },
+  ],
+};
+---
+
+<Base
+  title={`${title} | Just Go`}
+  description={description}
+  locale={locale}
+  canonicalPath={here}
+  altPaths={altPaths}
+  ogType="article"
+  schema={[articleSchema, breadcrumb]}
+>
+  <article>
+    <header class="bg-navy text-snow">
+      <div class="wrap pt-14 pb-12 sm:pt-16 sm:pb-14">
+        <nav aria-label="Breadcrumb" class="mb-7">
+          <a
+            href={path('insights', locale)}
+            class="font-mono text-label uppercase tracking-[0.12em] text-mist hover:text-snow transition-colors inline-flex items-center gap-2"
+          >
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {t('cta.allInsights')}
+          </a>
+        </nav>
+        <h1 class="text-display-l text-snow max-w-[20ch]">{title}</h1>
+        <p class="mt-6 text-body-l text-mist max-w-[56ch]">{description}</p>
+        <p class="mt-8 font-mono text-label uppercase tracking-[0.12em] text-mist/75">
+          {author} · <time datetime={publishDate.toISOString()}>{dateFmt}</time> · {readingMinutes}
+          {' '}{t('meta.readingTime')}
+        </p>
+      </div>
+    </header>
+
+    <div class="bg-snow">
+      <div class="wrap-narrow section-y">
+        {
+          answer && (
+            <p class="mb-10 border-l-2 border-horizon pl-6 text-body-l text-navy/90 font-medium">
+              {answer}
+            </p>
+          )
+        }
+        <div class="article-body">
+          <slot />
+        </div>
+
+        {
+          tags.length > 0 && (
+            <ul class="mt-14 pt-6 border-t border-rule flex flex-wrap gap-2">
+              {tags.map((tag: string) => (
+                <li class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft border border-rule px-2.5 py-1">
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+  </article>
+
+  <CtaBand locale={locale} />
+</Base>
+
+<style is:global>
+  /* Long-form article typography. Scoped to the article body so it cannot leak
+     into the rest of the site's component styles. */
+  .article-body {
+    max-width: 68ch;
+  }
+  .article-body > * + * { margin-block-start: 1.15rem; }
+  .article-body p {
+    font-size: var(--text-body-l);
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-navy) 88%, transparent);
+  }
+  .article-body h2 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-navy);
+    margin-block-start: 2.75rem;
+  }
+  .article-body h3 {
+    font-size: 1.15rem;
+    color: var(--color-navy);
+    margin-block-start: 2rem;
+  }
+  .article-body ul { padding-inline-start: 1.15rem; }
+  .article-body li {
+    font-size: var(--text-body-l);
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-navy) 88%, transparent);
+    margin-block-start: 0.5rem;
+  }
+  .article-body li::marker { color: var(--color-mist); }
+  .article-body strong { font-weight: 600; color: var(--color-navy); }
+  .article-body em { font-style: italic; }
+  .article-body a {
+    color: var(--color-horizon-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-body blockquote {
+    border-inline-start: 2px solid var(--color-horizon);
+    padding-inline-start: 1.5rem;
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import Strata from '@/components/ui/Strata.astro';
+import { Image } from 'astro:assets';
+import heroImage from '@/assets/images/hero-mountains.avif';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const copy = {
+  en: {
+    metaTitle: 'Mission — Most Sales Problems Are Starting Problems | Just Go',
+    metaDesc:
+      'What Just Go believes, and the four principles behind how we work. Start before you are ready, think two steps ahead, consistency beats intensity, build things rather than only advising on them.',
+    eyebrow: 'Why we do it',
+    h1: 'Most sales problems are not strategy problems. They are starting problems.',
+    lede:
+      'The plan is usually fine. The market is usually fine. What is missing is the first move — and the discipline to keep making it after the novelty wears off.',
+    principlesTitle: 'Four principles',
+    principlesLede: 'Not values on a wall. These are the things we actually argue for in client meetings, each with the evidence behind it.',
+    principles: [
+      {
+        t: 'Start before you are ready',
+        b: 'Readiness is a feeling, not a threshold. The plan gets better by contact with a real buyer, not by another week of refinement.',
+        proof: 'Berislav could not run 3 km in early 2010. He finished the New York City Marathon that November.',
+      },
+      {
+        t: 'Think one or two steps ahead',
+        b: 'Not five. Five is fantasy. Two is the distance at which you can still see the ground and still change direction.',
+        proof: 'Eleven years selling enterprise software into markets where the second meeting was never guaranteed.',
+      },
+      {
+        t: 'Consistency beats intensity',
+        b: 'A sales quarter is not won by a heroic week. It is won by a cadence nobody skips — the review that always happens, the follow-up that always goes out.',
+        proof: 'Roughly 120 events across ten years, in a category where most organisers do not reach year three.',
+      },
+      {
+        t: 'Build things, do not only advise on them',
+        b: 'It is easy to recommend a strategy you will never have to live with. We prefer advice from people who have carried the risk themselves.',
+        proof: 'Run Croatia was built with our own money, on our own risk, and every sponsor started as a cold conversation.',
+      },
+    ],
+    noTitle: 'What we say no to',
+    noLede: 'Declining work is the clearest signal a consultancy can send. These are genuine, and we will tell you on the first call.',
+    noItems: [
+      'Engagements where nobody internally owns the outcome. If there is no decision-maker in the room, the work does not survive contact with the organisation.',
+      'Turnaround requests with a two-week horizon. Sales cycles do not compress because a board meeting is coming.',
+      'Work we are not the right people for. Pure marketing execution, product strategy, or anything needing a large delivery team rather than a senior operator.',
+      'Anything where we would have to pretend to expertise we do not have. There are four industries we know deeply; outside them we will say so.',
+    ],
+    beyondTitle: 'The mission is not marketing copy',
+    beyond: [
+      'Run Croatia exists to get people outdoors and moving — roughly 120 events in ten years, and a December race that takes over the centre of Zagreb. It is not a case study we bought. It is the thing we built while learning what we now sell.',
+      'Odin’s music is the other half of the same argument. An international performing career, built from a standing start at twelve years old, with no shortcut available and no version of it that did not begin with picking something up.',
+      'Both are here for the same reason: we would rather show you the evidence than describe our values.',
+    ],
+  },
+  hr: {
+    metaTitle: 'Misija — većina prodajnih problema su problemi početka | Just Go',
+    metaDesc:
+      'U što Just Go vjeruje i četiri načela iza načina na koji radimo. Kreni prije nego što si spreman, misli dva koraka unaprijed, dosljednost pobjeđuje intenzitet, gradi umjesto da samo savjetuješ.',
+    eyebrow: 'Zašto to radimo',
+    h1: 'Većina prodajnih problema nisu problemi strategije. To su problemi početka.',
+    lede:
+      'Plan je najčešće u redu. Tržište je najčešće u redu. Nedostaje prvi potez — i disciplina da se ponavlja i nakon što prođe novost.',
+    principlesTitle: 'Četiri načela',
+    principlesLede: 'Nisu vrijednosti na zidu. Za ovo se stvarno zalažemo na sastancima s klijentima, svako s dokazom iza sebe.',
+    principles: [
+      {
+        t: 'Kreni prije nego što si spreman',
+        b: 'Spremnost je osjećaj, a ne prag. Plan postaje bolji kontaktom sa stvarnim kupcem, a ne još jednim tjednom dorade.',
+        proof: 'Berislav početkom 2010. nije mogao istrčati 3 km. Tog studenog završio je njujorški maraton.',
+      },
+      {
+        t: 'Misli jedan do dva koraka unaprijed',
+        b: 'Ne pet. Pet je mašta. Dva su udaljenost s koje još vidite tlo i još možete promijeniti smjer.',
+        proof: 'Jedanaest godina prodaje poslovnog softvera na tržištima gdje drugi sastanak nikad nije bio zajamčen.',
+      },
+      {
+        t: 'Dosljednost pobjeđuje intenzitet',
+        b: 'Prodajno tromjesečje ne dobiva se herojskim tjednom. Dobiva se ritmom koji nitko ne preskače — pregledom koji se uvijek održi, porukom koja uvijek ode.',
+        proof: 'Oko 120 događaja kroz deset godina, u kategoriji u kojoj većina organizatora ne dočeka treću godinu.',
+      },
+      {
+        t: 'Gradi, a ne samo savjetuj',
+        b: 'Lako je preporučiti strategiju s kojom nikad nećete morati živjeti. Više volimo savjet ljudi koji su sami nosili rizik.',
+        proof: 'Run Croatia je izgrađena vlastitim novcem i na vlastiti rizik, a svaki sponzor počeo je kao hladan kontakt.',
+      },
+    ],
+    noTitle: 'Na što kažemo ne',
+    noLede: 'Odbijanje posla najjasniji je signal koji konzalting može poslati. Ovo je iskreno i reći ćemo vam na prvom pozivu.',
+    noItems: [
+      'Angažmane u kojima interno nitko ne preuzima odgovornost za ishod. Ako u prostoriji nema donositelja odluke, posao ne preživi susret s organizacijom.',
+      'Zahtjeve za preokret u roku od dva tjedna. Prodajni ciklusi se ne skraćuju zato što se bliži sjednica uprave.',
+      'Posao za koji nismo prave osobe. Čistu marketinšku izvedbu, strategiju proizvoda ili bilo što čemu treba veliki izvedbeni tim umjesto iskusnog operativca.',
+      'Sve gdje bismo morali glumiti stručnost koju nemamo. Četiri industrije poznajemo duboko; izvan njih ćemo to i reći.',
+    ],
+    beyondTitle: 'Misija nije marketinški tekst',
+    beyond: [
+      'Run Croatia postoji da izvede ljude van i pokrene ih — oko 120 događaja u deset godina i prosinačka utrka koja preuzme centar Zagreba. To nije studija slučaja koju smo kupili. To je ono što smo izgradili dok smo učili ono što danas prodajemo.',
+      'Odinova glazba druga je polovica istog argumenta. Međunarodna izvođačka karijera, izgrađena iz mjesta sa dvanaest godina, bez ijedne prečice i bez verzije koja nije počela time da se nešto uzme u ruke.',
+      'Oboje je ovdje iz istog razloga: radije ćemo vam pokazati dokaz nego opisivati svoje vrijednosti.',
+    ],
+  },
+}[locale];
+---
+
+<Base title={copy.metaTitle} description={copy.metaDesc} locale={locale} routeKey="mission">
+  <!-- Thesis, over the photograph -->
+  <section class="relative bg-navy text-snow overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src={heroImage}
+        alt=""
+        widths={[640, 1024, 1600]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        format="avif"
+        quality={70}
+        class="h-full w-full object-cover object-[45%_65%]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-navy/88 via-navy/55 to-navy/92" aria-hidden="true"></div>
+    </div>
+    <div class="relative wrap pt-20 pb-18 sm:pt-24 sm:pb-20">
+      <p class="eyebrow text-horizon mb-6">{copy.eyebrow}</p>
+      <h1 class="text-display-l text-snow max-w-[22ch]">{copy.h1}</h1>
+      <div class="mt-7 h-[2px] w-14 bg-horizon" aria-hidden="true"></div>
+      <p class="mt-7 text-body-l text-mist-light max-w-[54ch]">{copy.lede}</p>
+    </div>
+  </section>
+
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="max-w-[40rem]">
+        <h2 class="text-h2 text-navy">{copy.principlesTitle}</h2>
+        <p class="mt-4 text-body-l text-ink-soft max-w-[52ch]">{copy.principlesLede}</p>
+      </div>
+
+      <ol class="mt-12 grid gap-px bg-rule border border-rule sm:grid-cols-2">
+        {
+          copy.principles.map((p, i) => (
+            <li class="bg-snow p-7 lg:p-9">
+              <span class="font-mono text-label text-horizon-text tabular-nums">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-3 font-display font-bold text-[1.3rem] leading-[1.24] tracking-[-0.02em] text-navy text-balance">
+                {p.t}
+              </h3>
+              <p class="mt-3 text-body text-ink-soft leading-relaxed max-w-[44ch]">{p.b}</p>
+              <p class="mt-5 pt-4 border-t border-rule text-small text-navy/75 leading-relaxed max-w-[46ch]">
+                {p.proof}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-surface border-y border-rule">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <h2 class="text-h2 text-navy">{copy.noTitle}</h2>
+          <p class="mt-5 text-body text-ink-soft max-w-[40ch]">{copy.noLede}</p>
+        </div>
+        <ul class="border-t border-rule">
+          {
+            copy.noItems.map((item) => (
+              <li class="flex gap-4 py-5 border-b border-rule">
+                <span class="shrink-0 mt-1 text-mist" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <p class="text-body text-navy/85 max-w-[60ch]">{item}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Strata from="var(--color-surface)" to="var(--color-navy)" />
+  <section class="bg-navy text-snow">
+    <div class="wrap section-y">
+      <div class="max-w-[46rem]">
+        <h2 class="text-h2 text-snow">{copy.beyondTitle}</h2>
+        <div class="mt-6 prose-jg">
+          {copy.beyond.map((para) => <p class="text-body-l text-mist">{para}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} from="var(--color-navy)" />
+</Base>

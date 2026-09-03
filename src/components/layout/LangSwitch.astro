@@ -1,0 +1,49 @@
+---
+import { LOCALES, alternates, type Locale, type RouteKey } from '@/i18n/routes';
+import { htmlLang, localeLabel, localeName, useTranslations } from '@/i18n/utils';
+
+interface Props {
+  locale: Locale;
+  routeKey?: RouteKey;
+  /** Explicit alternates for pages outside the ROUTES map (articles). */
+  altPaths?: Array<{ locale: Locale; path: string }>;
+  class?: string;
+}
+const { locale, routeKey, altPaths, class: className = '' } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  The switcher goes to the EQUIVALENT page, never the homepage. This is wrong on
+  most bilingual sites and is a hard requirement here (PLAN §5).
+*/
+const links = altPaths ?? (routeKey ? alternates(routeKey) : LOCALES.map((l) => ({ locale: l, path: l === 'en' ? '/' : '/hr' })));
+---
+
+<div class={`flex items-center ${className}`} role="group" aria-label={t('nav.langLabel')}>
+  {
+    links.map((link, i) => (
+      <>
+        {i > 0 && <span aria-hidden="true" class="mx-1.5 text-mist/40 select-none">/</span>}
+        {link.locale === locale ? (
+          <span
+            class="font-mono text-label uppercase tracking-[0.12em] text-snow font-medium"
+            aria-current="true"
+          >
+            <span class="sr-only">{localeName[link.locale]} — </span>
+            {localeLabel[link.locale]}
+          </span>
+        ) : (
+          <a
+            href={link.path}
+            hreflang={htmlLang[link.locale]}
+            lang={htmlLang[link.locale]}
+            class="font-mono text-label uppercase tracking-[0.12em] text-mist hover:text-snow transition-colors"
+          >
+            <span class="sr-only">{localeName[link.locale]}</span>
+            <span aria-hidden="true">{localeLabel[link.locale]}</span>
+          </a>
+        )}
+      </>
+    ))
+  }
+</div>

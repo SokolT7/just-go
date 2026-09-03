@@ -1,0 +1,37 @@
+---
+import { stats } from '@/data/proof';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; tone?: 'light' | 'dark'; class?: string; }
+const { locale, tone = 'light', class: className = '' } = Astro.props;
+
+/*
+  Dividers are drawn by the grid gap showing the container colour through, rather
+  than by per-cell border utilities — the cells reflow from 2 to 4 columns, and
+  per-cell borders cannot express "last in row" correctly at both counts.
+*/
+const valueCls = tone === 'dark' ? 'text-snow' : 'text-navy';
+const labelCls = tone === 'dark' ? 'text-mist' : 'text-ink-soft';
+const gridBg = tone === 'dark' ? 'bg-white/12' : 'bg-rule';
+const cellBg = tone === 'dark' ? 'bg-navy' : 'bg-surface';
+---
+
+<dl class={`grid grid-cols-2 lg:grid-cols-4 gap-px ${gridBg} ${className}`}>
+  {
+    stats.map((stat) => (
+      <div class={`${cellBg} px-5 py-6 sm:px-6 sm:py-7`}>
+        <dt class="sr-only">{stat.label[locale]}</dt>
+        <dd>
+          <span
+            class={`block font-display font-bold text-[2rem] sm:text-[2.4rem] leading-none tracking-[-0.04em] tabular-nums ${valueCls}`}
+          >
+            {stat.value}
+          </span>
+          <span class={`mt-2.5 block text-small leading-snug ${labelCls}`}>
+            {stat.label[locale]}
+          </span>
+        </dd>
+      </div>
+    ))
+  }
+</dl>

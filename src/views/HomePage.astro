@@ -1,0 +1,60 @@
+---
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/sections/Hero.astro';
+import ProofBar from '@/components/sections/ProofBar.astro';
+import ProblemNamed from '@/components/sections/ProblemNamed.astro';
+import EngagementCards from '@/components/sections/EngagementCards.astro';
+import FoundersSplit from '@/components/sections/FoundersSplit.astro';
+import DayInTheLife from '@/components/sections/DayInTheLife.astro';
+import RunCroatiaPanel from '@/components/sections/RunCroatiaPanel.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import { engagements } from '@/data/engagements';
+import { path, type Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const meta = {
+  en: {
+    title: 'Just Go — Sales & Business Development Consultancy | Zagreb, Worldwide',
+    description:
+      'We help founders and sales teams fix what is actually stopping the deal. Twenty-five years across financial services, telco, retail and the public sector. Zagreb-based, working worldwide.',
+  },
+  hr: {
+    title: 'Just Go — konzalting za prodaju i razvoj poslovanja | Zagreb',
+    description:
+      'Pomažemo osnivačima i prodajnim timovima riješiti ono što zaista koči posao. Dvadeset pet godina u financijama, telekomima, maloprodaji i javnom sektoru. Iz Zagreba, za cijeli svijet.',
+  },
+}[locale];
+
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+
+/* Each engagement is emitted as its own Service node so it can surface
+   independently in search and AI answers. */
+const serviceSchema = engagements.map((eng) => ({
+  '@type': 'Service',
+  '@id': `${site}${path('services', locale)}#${eng.id}`,
+  name: eng.name[locale],
+  description: eng.whatWeFix[locale],
+  provider: { '@id': `${site}/#organization` },
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
+  inLanguage: locale === 'hr' ? 'hr-HR' : 'en',
+}));
+---
+
+<Base
+  title={meta.title}
+  description={meta.description}
+  locale={locale}
+  routeKey="home"
+  schema={serviceSchema}
+>
+  <Hero locale={locale} />
+  <ProofBar locale={locale} />
+  <ProblemNamed locale={locale} />
+  <EngagementCards locale={locale} />
+  <FoundersSplit locale={locale} />
+  <DayInTheLife locale={locale} />
+  <RunCroatiaPanel locale={locale} />
+  <CtaBand locale={locale} from="var(--color-surface)" />
+</Base>

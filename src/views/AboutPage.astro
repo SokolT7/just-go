@@ -1,0 +1,289 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import Button from '@/components/ui/Button.astro';
+import { engagements } from '@/data/engagements';
+import { path, type Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+/*
+  This page describes the FIRM: what it does, how it came about as a business,
+  where it works and how an engagement runs. The founders' personal lives live
+  on the Team page, under "beyond the business".
+*/
+const copy = {
+  en: {
+    metaTitle: 'About Just Go — Sales & Business Development Consultancy, Zagreb',
+    metaDesc:
+      'Just Go is a two-person sales and business development consultancy in Zagreb, working worldwide. Twenty-five years of enterprise sales, and ten years running an events business that had to win its own sponsors.',
+    eyebrow: 'About',
+    h1: 'A small consultancy that does the work itself',
+    lede:
+      'Just Go helps founders and sales teams fix what is actually stopping the deal. No account managers, no junior delivery team, no framework you have seen before under a different logo.',
+
+    whatTitle: 'What the firm does',
+    whatBody: [
+      'We work on three things: the sales strategy itself, the team executing it, and the partnerships that open doors neither can reach alone. Every engagement is scoped in writing before it starts, priced as a fixed fee, and run by the person who sold it.',
+      'Most clients arrive with one of three problems — growth that has flattened, a team that is busy but not closing, or a partnership programme that produces goodwill instead of revenue. The work is usually less about inventing a new plan than about finding which parts of the existing one were never actually executed.',
+    ],
+    whoTitle: 'Who we work with',
+    who: [
+      { t: 'Company size', b: 'Typically €1M–€50M in revenue. Large enough that sales is a system rather than a founder with a phone; small enough that one senior operator can change how it works.' },
+      { t: 'Who we talk to', b: 'Founders, CEOs, commercial directors and heads of sales — people who own the number and can decide to change how it gets hit.' },
+      { t: 'Where they are', b: 'Croatia and the wider CEE region, Western Europe, and further afield. Roughly half of engagements run entirely remotely.' },
+    ],
+
+    historyTitle: 'How the firm came about',
+    history: [
+      'Berislav Sokač spent twenty-five years in sales and business development, eleven of them at Oracle, ending as director of sales for the Baltic countries and Central & Eastern Europe. That is where the enterprise side of the practice comes from: long cycles, formal procurement, and buyers who did not want to take the meeting.',
+      'In 2015 he left to co-found Run Croatia. Over ten years it has delivered roughly 120 events, including Zagreb Advent Run, now the largest race of its kind in Europe. Running that business meant selling corporate sponsorship for events nobody had heard of yet — packaging an offer, pricing it honestly, reporting on it properly, and renewing it year after year.',
+      'Just Go is the second half of that experience turned into a service. The partnership and sponsorship practice in particular is not theory borrowed from a book; it is the same engine, run on somebody else’s behalf. Odin Sokač joined as co-founder to own brand, story and the creative side of client work.',
+    ],
+
+    sectorsTitle: 'Industries we know deeply',
+    sectorsLede: 'Four sectors where the buying process, the procurement reality and the internal politics are already familiar. Outside them, we will say so on the first call.',
+    sectors: [
+      'Financial services',
+      'Retail & hospitality',
+      'Telecommunications & utilities',
+      'Government & transportation',
+    ],
+
+    workTitle: 'How we work',
+    work: [
+      { t: 'Fixed scope, fixed fee', b: 'Agreed in writing before anything starts. Longer advisory relationships run on a monthly retainer. We do not bill by the hour, because hourly billing rewards taking longer.' },
+      { t: 'You work with Berislav', b: 'Directly, for the whole engagement. Not an account manager, not a junior team. Where a programme needs more hands, we bring in specialists we have worked with before and name them before the proposal is signed.' },
+      { t: 'Remote-first, from Zagreb', b: 'Most work runs remotely across time zones. We travel for kickoffs, negotiations and team sessions — the moments where being in the room genuinely changes the outcome.' },
+      { t: 'English and Croatian', b: 'Both to a professional standard. Written deliverables can be produced in either language.' },
+      { t: 'It starts with a call', b: 'Thirty minutes, no charge, no pitch. You describe the situation and we ask the questions that usually get skipped. If we are not the right fit, we will say so on that call.' },
+      { t: 'We say no to some work', b: 'Engagements with no internal owner, two-week turnaround requests, and anything requiring expertise we do not have. Declining is cheaper for both sides than discovering it in month three.' },
+    ],
+
+    factsTitle: 'At a glance',
+    facts: [
+      { k: 'Founded', v: '2026' },
+      { k: 'Based', v: 'Zagreb, Croatia' },
+      { k: 'Works with clients', v: 'Worldwide, remote-first' },
+      { k: 'Team', v: 'Two founders, plus named specialists' },
+      { k: 'Languages', v: 'English, Croatian' },
+      { k: 'Engagement model', v: 'Fixed scope, fixed fee, or monthly retainer' },
+      { k: 'Typical engagement', v: '6 weeks to 9 months' },
+      { k: 'Sectors', v: 'Financial services, retail & hospitality, telco & utilities, government & transport' },
+    ],
+
+    nameTitle: 'And the name',
+    nameBody:
+      'Just Go is named after the thing both founders think is actually scarce in business. Not strategy, and not effort — the first move. The call nobody made, the price nobody raised, the partnership nobody asked for. Both of them have built something from a standing start, and neither felt ready at the time. That story is on the team page.',
+    nameCta: 'Meet the team',
+    servicesCta: 'See the three engagements',
+  },
+
+  hr: {
+    metaTitle: 'O nama — Just Go, konzalting za prodaju i razvoj poslovanja, Zagreb',
+    metaDesc:
+      'Just Go je konzalting za prodaju i razvoj poslovanja iz Zagreba koji radi sa svijetom. Dvadeset pet godina korporativne prodaje i deset godina vođenja event biznisa koji je morao sam osvojiti sponzore.',
+    eyebrow: 'O nama',
+    h1: 'Mali konzalting koji sam radi posao',
+    lede:
+      'Just Go pomaže osnivačima i prodajnim timovima riješiti ono što zaista koči posao. Bez account managera, bez juniorskog tima i bez okvira koji ste već vidjeli pod drugim logom.',
+
+    whatTitle: 'Čime se tvrtka bavi',
+    whatBody: [
+      'Radimo na tri stvari: samoj prodajnoj strategiji, timu koji je provodi i partnerstvima koja otvaraju vrata do kojih ni jedno ni drugo ne dopire samo. Svaki angažman ima pisano definiran opseg prije početka, fiksnu cijenu i vodi ga osoba koja ga je i ugovorila.',
+      'Većina klijenata dolazi s jednim od tri problema — rastom koji se izravnao, timom koji je zauzet ali ne zatvara ili partnerskim programom koji donosi dobru volju umjesto prihoda. Posao je obično manje u izmišljanju novog plana, a više u pronalaženju dijelova postojećeg koji nikad nisu provedeni.',
+    ],
+    whoTitle: 'S kim radimo',
+    who: [
+      { t: 'Veličina tvrtke', b: 'Obično 1–50 milijuna eura prihoda. Dovoljno velike da je prodaja sustav, a ne osnivač s telefonom; dovoljno male da jedan iskusan operativac može promijeniti kako taj sustav radi.' },
+      { t: 'S kim razgovaramo', b: 'Osnivači, direktori, komercijalni direktori i voditelji prodaje — ljudi koji odgovaraju za broj i mogu odlučiti promijeniti način na koji se do njega dolazi.' },
+      { t: 'Gdje su', b: 'Hrvatska i šira CEE regija, zapadna Europa i dalje. Otprilike polovica angažmana odvija se u potpunosti na daljinu.' },
+    ],
+
+    historyTitle: 'Kako je tvrtka nastala',
+    history: [
+      'Berislav Sokač proveo je dvadeset pet godina u prodaji i razvoju poslovanja, od toga jedanaest u Oracleu, na kraju kao direktor prodaje za baltičke zemlje te srednju i istočnu Europu. Odatle dolazi korporativna strana prakse: dugi ciklusi, formalna nabava i kupci koji nisu htjeli ni sastanak.',
+      'Godine 2015. odlazi i suosniva Run Croatiu. Kroz deset godina iza nje je oko 120 događaja, uključujući Zagreb Advent Run, danas najveću utrku te vrste u Europi. Voditi taj posao značilo je prodavati korporativna sponzorstva za događaje za koje još nitko nije čuo — složiti ponudu, pošteno je odrediti, uredno izvijestiti i obnavljati je iz godine u godinu.',
+      'Just Go je druga polovica tog iskustva pretvorena u uslugu. Praksa partnerstava i sponzorstava posebno nije teorija posuđena iz knjige; to je isti motor, vođen za tuđi račun. Odin Sokač pridružio se kao suosnivač i vodi brend, priču i kreativnu stranu rada s klijentima.',
+    ],
+
+    sectorsTitle: 'Industrije koje poznajemo duboko',
+    sectorsLede: 'Četiri sektora u kojima su nam proces kupnje, stvarnost nabave i interna politika već poznati. Izvan njih ćemo to reći na prvom pozivu.',
+    sectors: [
+      'Financijske usluge',
+      'Maloprodaja i ugostiteljstvo',
+      'Telekomunikacije i komunalne usluge',
+      'Javni sektor i promet',
+    ],
+
+    workTitle: 'Kako radimo',
+    work: [
+      { t: 'Fiksan opseg, fiksna cijena', b: 'Dogovoreno pisano prije nego išta počne. Dulji savjetodavni odnosi idu na mjesečni retainer. Ne naplaćujemo po satu jer naplata po satu nagrađuje sporost.' },
+      { t: 'Radite s Berislavom', b: 'Izravno, kroz cijeli angažman. Ne s account managerom i ne s juniorskim timom. Kad programu treba više ruku, uključujemo specijaliste s kojima smo već radili i imenujemo ih prije potpisivanja ponude.' },
+      { t: 'Na daljinu, iz Zagreba', b: 'Većina posla odvija se na daljinu kroz različite vremenske zone. Putujemo za početke projekata, pregovore i radionice — trenutke u kojima prisutnost u prostoriji stvarno mijenja ishod.' },
+      { t: 'Engleski i hrvatski', b: 'Oba na profesionalnoj razini. Pisani materijali mogu se izraditi na bilo kojem jeziku.' },
+      { t: 'Počinje pozivom', b: 'Trideset minuta, bez naplate i bez prodaje. Vi opišete situaciju, mi postavimo pitanja koja se obično preskoče. Ako nismo pravi izbor, reći ćemo vam na tom pozivu.' },
+      { t: 'Na neke poslove kažemo ne', b: 'Angažmani bez internog vlasnika, zahtjevi za preokret u dva tjedna i sve što traži stručnost koju nemamo. Odbiti je jeftinije za obje strane nego to otkriti u trećem mjesecu.' },
+    ],
+
+    factsTitle: 'Ukratko',
+    facts: [
+      { k: 'Osnovano', v: '2026.' },
+      { k: 'Sjedište', v: 'Zagreb, Hrvatska' },
+      { k: 'Radimo s klijentima', v: 'Diljem svijeta, primarno na daljinu' },
+      { k: 'Tim', v: 'Dvoje osnivača, uz imenovane specijaliste' },
+      { k: 'Jezici', v: 'Engleski, hrvatski' },
+      { k: 'Model angažmana', v: 'Fiksan opseg i cijena ili mjesečni retainer' },
+      { k: 'Tipičan angažman', v: 'Od 6 tjedana do 9 mjeseci' },
+      { k: 'Sektori', v: 'Financije, maloprodaja i ugostiteljstvo, telekomi i komunalne usluge, javni sektor i promet' },
+    ],
+
+    nameTitle: 'I ime',
+    nameBody:
+      'Just Go nosi ime po onome što oba osnivača smatraju stvarno rijetkim u poslu. Ne strategija i ne trud — prvi potez. Poziv koji nitko nije obavio, cijena koju nitko nije podigao, partnerstvo koje nitko nije zatražio. Oboje su izgradili nešto iz mjesta i nijedno se tada nije osjećalo spremnim. Ta priča je na stranici tima.',
+    nameCta: 'Upoznajte tim',
+    servicesCta: 'Pogledajte tri angažmana',
+  },
+}[locale];
+---
+
+<Base title={copy.metaTitle} description={copy.metaDesc} locale={locale} routeKey="about">
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-16 pb-14 sm:pt-20 sm:pb-16">
+      <p class="eyebrow text-horizon mb-5">{copy.eyebrow}</p>
+      <h1 class="text-display-l text-snow max-w-[18ch]">{copy.h1}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[56ch]">{copy.lede}</p>
+    </div>
+  </section>
+
+  <!-- What the firm does -->
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+        <h2 class="text-h2 text-navy">{copy.whatTitle}</h2>
+        <div>
+          <div class="prose-jg">
+            {copy.whatBody.map((para) => <p class="text-body-l text-navy/85">{para}</p>)}
+          </div>
+          <div class="mt-8 flex flex-wrap gap-3">
+            {
+              engagements.map((eng) => (
+                <a
+                  href={`${path('services', locale)}#${eng.id}`}
+                  class="font-display text-[0.9rem] font-medium text-navy border border-rule px-3.5 py-2 hover:border-navy hover:bg-surface transition-colors"
+                >
+                  {eng.name[locale]}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who we work with -->
+  <section class="bg-surface border-y border-rule">
+    <div class="wrap section-y">
+      <h2 class="text-h2 text-navy">{copy.whoTitle}</h2>
+      <dl class="mt-10 grid gap-px bg-rule border border-rule md:grid-cols-3">
+        {
+          copy.who.map((item) => (
+            <div class="bg-surface p-7">
+              <dt class="eyebrow text-horizon-text mb-3">{item.t}</dt>
+              <dd class="text-body text-navy/85 leading-relaxed">{item.b}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- How the firm came about — business history, not biography -->
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+        <h2 class="text-h2 text-navy">{copy.historyTitle}</h2>
+        <div class="prose-jg">
+          {copy.history.map((para) => <p class="text-body-l text-navy/85">{para}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries -->
+  <section class="bg-navy text-snow">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:items-center">
+        <div>
+          <h2 class="text-h2 text-snow">{copy.sectorsTitle}</h2>
+          <p class="mt-5 text-body text-mist max-w-[42ch]">{copy.sectorsLede}</p>
+        </div>
+        <ul class="grid gap-px bg-white/12 border border-white/12 sm:grid-cols-2">
+          {
+            copy.sectors.map((sector) => (
+              <li class="bg-navy px-6 py-7 font-display font-semibold text-[1.05rem] text-snow">
+                {sector}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we work -->
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <h2 class="text-h2 text-navy">{copy.workTitle}</h2>
+      <dl class="mt-10 grid gap-px bg-rule border border-rule sm:grid-cols-2 lg:grid-cols-3">
+        {
+          copy.work.map((item) => (
+            <div class="bg-snow p-7">
+              <dt class="font-display font-semibold text-h3 text-navy text-balance">{item.t}</dt>
+              <dd class="mt-3 text-small text-ink-soft leading-relaxed">{item.b}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Facts -->
+  <section class="bg-surface border-y border-rule">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-[0.6fr_1.4fr] lg:gap-16">
+        <h2 class="text-h2 text-navy">{copy.factsTitle}</h2>
+        <dl class="border-t border-rule">
+          {
+            copy.facts.map((fact) => (
+              <div class="grid gap-1 sm:grid-cols-[13rem_1fr] sm:gap-8 py-4 border-b border-rule">
+                <dt class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft sm:pt-1">
+                  {fact.k}
+                </dt>
+                <dd class="text-body text-navy/85">{fact.v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- The name — pointer to the people, not the biography itself -->
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="max-w-[46rem] border-l-2 border-horizon pl-6 sm:pl-8">
+        <h2 class="text-h2 text-navy">{copy.nameTitle}</h2>
+        <p class="mt-5 text-body-l text-navy/85">{copy.nameBody}</p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <Button href={path('team', locale)} variant="onLight">{copy.nameCta}</Button>
+          <Button href={path('services', locale)} variant="onLight">{copy.servicesCta}</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

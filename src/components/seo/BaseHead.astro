@@ -1,0 +1,80 @@
+---
+import { alternates, type RouteKey, type Locale, DEFAULT_LOCALE } from '@/i18n/routes';
+import { htmlLang } from '@/i18n/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  routeKey?: RouteKey;
+  /** Explicit canonical path, for pages not in the ROUTES map (e.g. articles). */
+  canonicalPath?: string;
+  /** Explicit alternates, for articles. */
+  altPaths?: Array<{ locale: Locale; path: string }>;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  locale,
+  routeKey,
+  canonicalPath,
+  altPaths,
+  ogImage = '/og/default.png',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://justgo.hr');
+const here = canonicalPath ?? (routeKey ? alternates(routeKey).find((a) => a.locale === locale)!.path : Astro.url.pathname);
+const canonical = new URL(here, site).href;
+const links = altPaths ?? (routeKey ? alternates(routeKey) : []);
+const ogImageUrl = new URL(ogImage, site).href;
+const ogLocale = locale === 'hr' ? 'hr_HR' : 'en_US';
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+{/* Reciprocal hreflang plus x-default → English. */}
+{
+  links.map((alt) => (
+    <link
+      rel="alternate"
+      hreflang={htmlLang[alt.locale]}
+      href={new URL(alt.path, site).href}
+    />
+  ))
+}
+{
+  links.length > 0 && (
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(links.find((a) => a.locale === DEFAULT_LOCALE)!.path, site).href}
+    />
+  )
+}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:site_name" content="Just Go" />
+<meta property="og:locale" content={ogLocale} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<meta name="generator" content={Astro.generator} />

@@ -1,0 +1,35 @@
+---
+import { logos, hasLogos } from '@/data/proof';
+import StatRow from './StatRow.astro';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; tone?: 'light' | 'dark'; class?: string; }
+const { locale, tone = 'light', class: className = '' } = Astro.props;
+
+/*
+  Fallback-aware by design (PLAN §7). While `logos` is empty this renders the
+  hard numbers instead — never an empty shell. Adding real logos later is a
+  data edit in src/data/proof.ts and nothing else.
+*/
+---
+
+{
+  hasLogos ? (
+    <ul class={`flex flex-wrap items-center justify-center gap-x-10 gap-y-7 ${className}`}>
+      {logos.map((logo) => (
+        <li>
+          <img
+            src={logo.src}
+            alt={logo.alt}
+            loading="lazy"
+            decoding="async"
+            height="32"
+            class="h-7 sm:h-8 w-auto opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0"
+          />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <StatRow locale={locale} tone={tone} class={className} />
+  )
+}

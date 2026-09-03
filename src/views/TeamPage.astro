@@ -1,0 +1,444 @@
+---
+import Base from '@/layouts/Base.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import Milestones from '@/components/sections/Milestones.astro';
+import PullQuote from '@/components/ui/PullQuote.astro';
+import Button from '@/components/ui/Button.astro';
+import { Image } from 'astro:assets';
+import Portrait from '@/components/ui/Portrait.astro';
+import { path, type Locale } from '@/i18n/routes';
+import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
+import odinPhoto from '@/assets/images/people/odin-portrait.jpg';
+import odinOnStage from '@/assets/images/people/odin.jpg';
+import bothPhoto from '@/assets/images/people/berislav-odin.jpg';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+
+/*
+  Each person gets two blocks: what they do at Just Go (role, remit, fit,
+  professional credentials), then what they do away from it. The firm itself is
+  described on the About page — this page is about the two people.
+*/
+const copy = {
+  en: {
+    metaTitle: 'Team — Who You Actually Work With | Just Go',
+    metaDesc:
+      'Two people, and you will always know which one you are talking to. Berislav Sokač leads client work; Odin Sokač leads brand and creative. What each does at Just Go, and what each does away from it.',
+    eyebrow: 'Who you work with',
+    h1: 'Two people. No account managers.',
+    lede:
+      'On a consultancy this size you should know exactly who picks up the work. Here is what each of us is the right person for, what we are not, and what we do when the laptop is shut.',
+    rightPersonFor: 'The right person for',
+    notFor: 'Not the person for',
+    credentials: 'On the record',
+    beyond: 'Away from the business',
+    pairAlt: 'Berislav and Odin Sokač together at the International Sound & Film Music Festival',
+    pairCaption: 'Berislav and Odin — International Sound & Film Music Festival',
+
+    people: [
+      {
+        initials: 'BS',
+        name: 'Berislav Sokač',
+        role: 'Founder & CEO',
+        tone: 'bg-navy',
+        linkedin: 'https://www.linkedin.com/in/berislavsokac/',
+        remit:
+          'Leads every client engagement directly, start to finish. Sales strategy, team enablement, negotiation and partnership work.',
+        rightFor: [
+          'A sales function that needs rebuilding rather than motivating',
+          'Entering a market where you have no relationships yet',
+          'A partnership or sponsorship programme that has to produce revenue, not goodwill',
+          'A founder who wants a straight answer about whether the plan is the problem',
+        ],
+        notFor: [
+          'Pure marketing or demand-generation execution',
+          'Anything that needs a large delivery team rather than a senior operator',
+        ],
+        credentials: [
+          '25+ years in sales and business development',
+          '11 years at Oracle, ending as sales director for the Baltics and CEE',
+          'Quota Club achiever',
+          'Co-founder and CEO, Run Croatia (2015–)',
+          'Roughly 120 events delivered, including ten editions of Zagreb Advent Run',
+        ],
+        beyondLead: 'He runs. Most mornings, early, usually up Sljeme.',
+        beyondBody: [
+          'In early 2010 he could not cover three kilometres. That November he finished the New York City Marathon, and within two and a half years he had completed all six World Marathon Majors — Boston, London, Berlin, Chicago, Tokyo and New York — the thirteenth person in the world to do it.',
+          'The discipline is not performative. After fracturing both shoulders he was back to light jogging in twenty-eight days. He describes running as scheduling rather than a hobby, and it is where the firm’s view about starting before you feel ready actually comes from.',
+        ],
+        beyondQuote: 'Running is part of my daily hygiene — like eating, or brushing your teeth.',
+        beyondFacts: [
+          { k: 'First marathon', v: 'New York, 2010' },
+          { k: 'World Marathon Majors', v: '6 of 6 — 13th person worldwide' },
+          { k: 'Most mornings', v: 'Sljeme, above Zagreb' },
+          { k: 'Every December', v: 'On the Advent Run start line' },
+        ],
+      },
+      {
+        initials: 'OS',
+        name: 'Odin Sokač',
+        role: 'Co-Founder, Brand & Creative',
+        tone: 'bg-ridge',
+        linkedin: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
+        remit:
+          'Owns brand, story and the creative side of client work — how an offer looks, how it reads, and whether it earns a second meeting.',
+        rightFor: [
+          'A proposition that is sound but sounds like everybody else’s',
+          'Sponsorship and partnership materials that have to earn a meeting',
+          'Brand and narrative work inside a larger sales engagement',
+        ],
+        notFor: [
+          'Standalone graphic design production',
+          'Engagements with no strategy or sales component',
+        ],
+        credentials: [
+          'Leads brand, narrative and creative direction at Just Go',
+          'Built an international performing career from a standing start at twelve',
+          'Writes and produces original work — 30+ songs to date',
+        ],
+        beyondLead: 'He plays the blues, and has done since he was twelve.',
+        beyondBody: [
+          'Odin picked up a guitar in 2020 and has written more than thirty original songs since. European Blues Union scholarships took him to Little Steven’s Blues School in Notodden, Norway, and to the Pinetop Perkins Foundation workshop in Clarksdale, Mississippi — the Delta, where the music started.',
+          'In 2024 he represented Croatia at the International Blues Challenge in Memphis. He has since played Zagreb, Nashville, Clarksdale, Jackson, Franklin, Palo Alto, Notodden, Vienna, Barcelona, Maribor and Lago di Garda. His 2026 single “Bottom of the Circle” was produced by Fabrizio Grossi.',
+        ],
+        beyondQuote: 'I didn’t discover the Blues — it discovered me.',
+        beyondFacts: [
+          { k: 'Picked up a guitar', v: '2020, aged twelve' },
+          { k: 'Original songs', v: '30+' },
+          { k: 'Represented Croatia', v: 'International Blues Challenge, Memphis, 2024' },
+          { k: 'Played', v: '12 cities, three continents' },
+          { k: 'Latest single', v: '“Bottom of the Circle” (2026)' },
+        ],
+        beyondPhotoAlt: 'Odin Sokač performing, singing into a vintage microphone with an electric guitar',
+        beyondPhotoCaption: 'On stage — the other half of what he does',
+        beyondLink: { label: 'Hear his work at odins.show', href: 'https://odin-s.vercel.app/' },
+      },
+    ],
+
+    benchTitle: 'For larger programmes',
+    benchBody:
+      'Where an engagement needs more hands than two, we bring in specialists we have worked with before — and we tell you who they are, and what they cost, before the proposal is signed. You will never be handed to someone you have not met.',
+    benchFlag: 'To be confirmed with Berislav before launch.',
+    contactTitle: 'Talk to us directly',
+    contactBody:
+      'No form gatekeeping. Berislav reads every message and replies personally, the same working day.',
+    aboutCta: 'What the firm does',
+  },
+
+  hr: {
+    metaTitle: 'Tim — s kim zapravo radite | Just Go',
+    metaDesc:
+      'Dvoje ljudi i uvijek ćete znati s kim razgovarate. Berislav Sokač vodi rad s klijentima; Odin Sokač vodi brend i kreativu. Što svatko radi u Just Go i što radi izvan njega.',
+    eyebrow: 'S kim radite',
+    h1: 'Dvoje ljudi. Bez account managera.',
+    lede:
+      'U konzaltingu ove veličine trebate točno znati tko preuzima posao. Evo za što je svatko od nas prava osoba, za što nije i čime se bavi kad zatvori laptop.',
+    rightPersonFor: 'Prava osoba za',
+    notFor: 'Nije osoba za',
+    credentials: 'Za zapisnik',
+    beyond: 'Izvan posla',
+    pairAlt: 'Berislav i Odin Sokač na Međunarodnom festivalu filmske glazbe',
+    pairCaption: 'Berislav i Odin — International Sound & Film Music Festival',
+
+    people: [
+      {
+        initials: 'BS',
+        name: 'Berislav Sokač',
+        role: 'Osnivač i direktor',
+        tone: 'bg-navy',
+        linkedin: 'https://www.linkedin.com/in/berislavsokac/',
+        remit:
+          'Vodi svaki klijentski angažman izravno, od početka do kraja. Prodajna strategija, osnaživanje tima, pregovaranje i partnerstva.',
+        rightFor: [
+          'Prodajnu funkciju koju treba iznova izgraditi, a ne motivirati',
+          'Ulazak na tržište na kojem još nemate odnose',
+          'Program partnerstava ili sponzorstava koji mora donijeti prihod, a ne dobru volju',
+          'Osnivača koji želi izravan odgovor je li plan taj koji je problem',
+        ],
+        notFor: [
+          'Čistu marketinšku izvedbu ili generiranje potražnje',
+          'Poslove kojima treba veliki izvedbeni tim, a ne iskusan operativac',
+        ],
+        credentials: [
+          '25+ godina u prodaji i razvoju poslovanja',
+          '11 godina u Oracleu, na kraju direktor prodaje za Baltik i CEE',
+          'Quota Club rezultati',
+          'Suosnivač i direktor, Run Croatia (2015–)',
+          'Oko 120 održanih događaja, uključujući deset izdanja Zagreb Advent Runa',
+        ],
+        beyondLead: 'Trči. Gotovo svako jutro, rano, najčešće na Sljeme.',
+        beyondBody: [
+          'Početkom 2010. nije mogao istrčati ni tri kilometra. Tog studenog završio je njujorški maraton, a u dvije i pol godine istrčao je svih šest World Marathon Majors utrka — Boston, London, Berlin, Chicago, Tokio i New York — kao trinaesta osoba na svijetu.',
+          'Disciplina nije predstava. Nakon prijeloma oba ramena vratio se laganom trčanju u dvadeset osam dana. Trčanje opisuje kao raspored, a ne hobi, i upravo odatle dolazi stav tvrtke o kretanju prije nego što se osjećate spremnima.',
+        ],
+        beyondQuote: 'Trčanje je dio moje dnevne higijene — kao jelo ili pranje zubi.',
+        beyondFacts: [
+          { k: 'Prvi maraton', v: 'New York, 2010.' },
+          { k: 'World Marathon Majors', v: '6 od 6 — 13. osoba na svijetu' },
+          { k: 'Većinu jutara', v: 'Sljeme, iznad Zagreba' },
+          { k: 'Svakog prosinca', v: 'Na startu Advent Runa' },
+        ],
+      },
+      {
+        initials: 'OS',
+        name: 'Odin Sokač',
+        role: 'Suosnivač, brend i kreativa',
+        tone: 'bg-ridge',
+        linkedin: 'https://www.linkedin.com/in/odin-sokac-00353a411/',
+        remit:
+          'Vodi brend, priču i kreativnu stranu rada s klijentima — kako ponuda izgleda, kako se čita i hoće li zaraditi drugi sastanak.',
+        rightFor: [
+          'Ponudu koja je dobra, ali zvuči kao i svaka druga',
+          'Sponzorske i partnerske materijale koji moraju zaraditi sastanak',
+          'Rad na brendu i narativu unutar većeg prodajnog angažmana',
+        ],
+        notFor: [
+          'Samostalnu grafičku produkciju',
+          'Angažmane bez strateške ili prodajne komponente',
+        ],
+        credentials: [
+          'Vodi brend, narativ i kreativni smjer u Just Go',
+          'Izgradio međunarodnu izvođačku karijeru iz mjesta, s dvanaest godina',
+          'Piše i producira autorski materijal — više od 30 pjesama',
+        ],
+        beyondLead: 'Svira blues, i to otkad ima dvanaest godina.',
+        beyondBody: [
+          'Odin je gitaru uzeo 2020. i od tada napisao više od trideset autorskih pjesama. Stipendije European Blues Uniona odvele su ga u Blues School Little Stevena u Notoddenu u Norveškoj i na radionicu Zaklade Pinetop Perkins u Clarksdaleu u Mississippiju — u Deltu, gdje je glazba i počela.',
+          'Godine 2024. predstavljao je Hrvatsku na International Blues Challengeu u Memphisu. Od tada je svirao u Zagrebu, Nashvilleu, Clarksdaleu, Jacksonu, Franklinu, Palo Altu, Notoddenu, Beču, Barceloni, Mariboru i na Lago di Garda. Njegov singl „Bottom of the Circle” iz 2026. producirao je Fabrizio Grossi.',
+        ],
+        beyondQuote: 'Nisam ja otkrio blues — on je otkrio mene.',
+        beyondFacts: [
+          { k: 'Uzeo gitaru', v: '2020., s dvanaest godina' },
+          { k: 'Autorskih pjesama', v: '30+' },
+          { k: 'Predstavljao Hrvatsku', v: 'International Blues Challenge, Memphis, 2024.' },
+          { k: 'Svirao', v: '12 gradova, tri kontinenta' },
+          { k: 'Zadnji singl', v: '„Bottom of the Circle” (2026.)' },
+        ],
+        beyondPhotoAlt: 'Odin Sokač na nastupu, pjeva u vintage mikrofon s električnom gitarom',
+        beyondPhotoCaption: 'Na pozornici — druga polovica onoga čime se bavi',
+        beyondLink: { label: 'Poslušajte na odins.show', href: 'https://odin-s.vercel.app/' },
+      },
+    ],
+
+    benchTitle: 'Za veće programe',
+    benchBody:
+      'Kad angažmanu treba više ruku od dvoje, uključujemo specijaliste s kojima smo već radili — i kažemo vam tko su i koliko koštaju prije potpisivanja ponude. Nikad vas nećemo predati nekome koga niste upoznali.',
+    benchFlag: 'Za potvrdu s Berislavom prije lansiranja.',
+    contactTitle: 'Javite nam se izravno',
+    contactBody:
+      'Bez filtriranja kroz obrasce. Berislav čita svaku poruku i odgovara osobno, isti radni dan.',
+    aboutCta: 'Čime se tvrtka bavi',
+  },
+}[locale];
+
+const photos = { BS: berislavPhoto, OS: odinPhoto } as const;
+/* The stage photograph belongs with the music at full size, not cropped down to
+   an avatar. Berislav has no running photograph yet — see PLAN §16. */
+const beyondPhoto = { OS: odinOnStage } as const;
+
+const personSchema = copy.people.map((p, i) => ({
+  '@type': 'Person',
+  '@id': `${site}/#${i === 0 ? 'berislav' : 'odin'}`,
+  name: p.name,
+  jobTitle: p.role,
+  description: p.remit,
+  worksFor: { '@id': `${site}/#organization` },
+  knowsAbout: p.rightFor,
+  image: `${site}${(photos[p.initials as keyof typeof photos]).src}`,
+  sameAs: [p.linkedin],
+}));
+---
+
+<Base
+  title={copy.metaTitle}
+  description={copy.metaDesc}
+  locale={locale}
+  routeKey="team"
+  schema={personSchema}
+>
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-16 pb-14 sm:pt-20 sm:pb-16">
+      <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:items-center">
+        <div>
+          <p class="eyebrow text-horizon mb-5">{copy.eyebrow}</p>
+          <h1 class="text-display-l text-snow max-w-[16ch]">{copy.h1}</h1>
+          <p class="mt-6 text-body-l text-mist max-w-[54ch]">{copy.lede}</p>
+        </div>
+        <figure class="lg:justify-self-end w-full max-w-[26rem]">
+          <Image
+            src={bothPhoto}
+            alt={copy.pairAlt}
+            widths={[420, 640, 900]}
+            sizes="(min-width: 1024px) 26rem, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            format="avif"
+            quality={76}
+            width={900}
+            height={1200}
+            class="w-full h-auto border border-white/15"
+          />
+          <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-mist/70">
+            {copy.pairCaption}
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {
+    copy.people.map((person, i) => (
+      <>
+        {/* What they do at Just Go */}
+        <section class={i % 2 === 0 ? 'bg-snow' : 'bg-snow border-t border-rule'}>
+          <div class="wrap section-y">
+            <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+              <div>
+                <Portrait
+                  image={photos[person.initials as keyof typeof photos]}
+                  alt={person.name}
+                  initials={person.initials}
+                  size={112}
+                  tone={person.tone}
+                  class="h-28 w-28"
+                />
+                <h2 class="mt-6 text-h2 text-navy">{person.name}</h2>
+                <p class="mt-2 font-mono text-label uppercase tracking-[0.1em] text-horizon-text">
+                  {person.role}
+                </p>
+                <p class="mt-5 text-body text-ink-soft max-w-[38ch]">{person.remit}</p>
+                <Button href={person.linkedin} variant="onLight" class="mt-6" rel="noopener">
+                  LinkedIn
+                </Button>
+              </div>
+
+              <div class="grid gap-8 sm:grid-cols-2">
+                <div>
+                  <h3 class="eyebrow text-horizon-text mb-4">{copy.rightPersonFor}</h3>
+                  <ul class="space-y-3">
+                    {person.rightFor.map((item) => (
+                      <li class="flex gap-3 text-body text-navy/85">
+                        <span class="mt-[0.65em] h-[5px] w-[5px] shrink-0 bg-horizon" aria-hidden="true" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <h3 class="eyebrow text-ink-soft mb-4 mt-8">{copy.notFor}</h3>
+                  <ul class="space-y-3">
+                    {person.notFor.map((item) => (
+                      <li class="flex gap-3 text-body text-ink-soft">
+                        <span class="mt-[0.65em] h-[5px] w-[5px] shrink-0 bg-mist" aria-hidden="true" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 class="eyebrow text-ink-soft mb-4">{copy.credentials}</h3>
+                  <ul class="border-t border-rule">
+                    {person.credentials.map((item) => (
+                      <li class="py-3 border-b border-rule text-small text-navy/85 leading-relaxed">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What they do away from it */}
+        <section class="bg-surface border-y border-rule">
+          <div class="wrap section-y">
+            <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+              <div>
+                <p class="eyebrow text-horizon-text mb-4">
+                  {copy.beyond} — {person.name.split(' ')[0]}
+                </p>
+                <h3 class="text-h2 text-navy max-w-[20ch]">{person.beyondLead}</h3>
+                <div class="mt-6 prose-jg">
+                  {person.beyondBody.map((para) => (
+                    <p class="text-body-l text-navy/85">{para}</p>
+                  ))}
+                </div>
+                <PullQuote quote={person.beyondQuote} attribution={person.name} />
+                {beyondPhoto[person.initials as keyof typeof beyondPhoto] && (
+                  <figure class="mt-2 mb-8">
+                    <Image
+                      src={beyondPhoto[person.initials as keyof typeof beyondPhoto]!}
+                      alt={person.beyondPhotoAlt ?? ''}
+                      widths={[480, 720, 800]}
+                      sizes="(min-width: 1024px) 34rem, 100vw"
+                      loading="lazy"
+                      decoding="async"
+                      format="avif"
+                      quality={80}
+                      class="w-full h-auto max-w-[34rem] border border-rule"
+                    />
+                    {person.beyondPhotoCaption && (
+                      <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                        {person.beyondPhotoCaption}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
+                {person.beyondLink && (
+                  <a
+                    href={person.beyondLink.href}
+                    rel="noopener"
+                    class="inline-flex items-center gap-2 font-display text-[0.95rem] font-semibold text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2"
+                  >
+                    {person.beyondLink.label}
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+
+              <dl class="border border-rule divide-y divide-rule self-start">
+                {person.beyondFacts.map((fact) => (
+                  <div class="p-5">
+                    <dt class="font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                      {fact.k}
+                    </dt>
+                    <dd class="mt-1.5 text-body text-navy/85 leading-snug">{fact.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </section>
+      </>
+    ))
+  }
+
+  <Milestones locale={locale} />
+
+  <section class="bg-surface border-t border-rule">
+    <div class="wrap section-y">
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <h2 class="text-h2 text-navy">{copy.benchTitle}</h2>
+          <p class="mt-5 text-body-l text-ink-soft max-w-[52ch]">{copy.benchBody}</p>
+          <p class="mt-5 font-mono text-label uppercase tracking-[0.1em] text-horizon-text border border-horizon/35 bg-horizon-wash inline-block px-3 py-1.5">
+            {copy.benchFlag}
+          </p>
+        </div>
+        <div class="border border-rule bg-snow p-7 lg:p-9">
+          <h2 class="text-h3 font-display font-bold text-navy">{copy.contactTitle}</h2>
+          <p class="mt-4 text-body text-ink-soft max-w-[40ch]">{copy.contactBody}</p>
+          <div class="mt-6 flex flex-wrap gap-4">
+            <Button href={path('contact', locale)} variant="primary">{copy.contactTitle}</Button>
+            <Button href={path('about', locale)} variant="onLight">{copy.aboutCta}</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} from="var(--color-surface)" />
+</Base>

@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   Just Go — design tokens
+   Every colour is sampled from Hero-background.avif. No invented brand colour.
+   This is a committed light design with dark bands; there is no theme toggle,
+   so every surface paints its own background and text colour explicitly.
+   ========================================================================= */
+
+@theme {
+  /* --- Palette ------------------------------------------------------- */
+  --color-navy:         #0E1C26;  /* sky at top of frame */
+  --color-navy-deep:    #08131A;  /* pressed / deepest ground */
+  --color-navy-soft:    #16293A;  /* raised surface on dark bands */
+  --color-ridge:        #2E4657;  /* mid-ground ridgelines */
+  --color-ridge-light:  #47606F;
+  --color-mist:         #93AEC0;  /* valley haze */
+  --color-mist-light:   #C3D2DC;
+  --color-horizon:      #C87F35;  /* THE accent — CTAs only */
+  --color-horizon-text: #8F5A21;  /* AA-safe accent text on light grounds */
+  --color-horizon-wash: #F6EADC;
+  --color-snow:         #F2F5F7;  /* page ground */
+  --color-surface:      #FFFFFF;
+  --color-rule:         #CFDBE2;
+  --color-rule-soft:    #E1E9ED;
+  --color-ink-soft:     #5A7080;
+
+  /* --- Type ---------------------------------------------------------- */
+  --font-display: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-body:    "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --text-display-xl: clamp(2.4rem, 6.6vw, 4.5rem);
+  --text-display-xl--line-height: 0.98;
+  --text-display-xl--letter-spacing: -0.03em;
+
+  --text-display-l: clamp(2rem, 4.6vw, 3rem);
+  --text-display-l--line-height: 1.05;
+  --text-display-l--letter-spacing: -0.025em;
+
+  --text-h2: clamp(1.6rem, 3.4vw, 2.25rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+
+  --text-body-l: 1.1875rem;
+  --text-body-l--line-height: 1.65;
+
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7;
+
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.6;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.14em;
+
+  /* --- Layout -------------------------------------------------------- */
+  --spacing-measure: 68ch;
+  --breakpoint-xs: 30rem;
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    /* Offset for the sticky header when jumping to an anchor. */
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--color-snow);
+    color: var(--color-navy);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    font-weight: 700;
+  }
+
+  p, li { text-wrap: pretty; }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-horizon);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background: var(--color-horizon);
+    color: var(--color-navy);
+  }
+
+  img, svg, video { display: block; max-width: 100%; }
+}
+
+/* =========================================================================
+   Composition utilities
+   ========================================================================= */
+
+@layer components {
+  /* Page gutter. Single source of truth for horizontal rhythm. */
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .wrap { padding-inline: 2.5rem; }
+  }
+
+  .wrap-narrow {
+    width: 100%;
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .wrap-narrow { padding-inline: 2.5rem; }
+  }
+
+  /* Vertical section rhythm — fluid, so short viewports don't feel cavernous. */
+  .section-y { padding-block: clamp(3.5rem, 8vw, 7rem); }
+  .section-y-sm { padding-block: clamp(2.5rem, 5vw, 4rem); }
+
+  /* Uppercase mono eyebrow used to label sections. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Running prose block. */
+  .prose-jg { max-width: var(--spacing-measure); }
+  .prose-jg > * + * { margin-block-start: 1rem; }
+  .prose-jg h3 { margin-block-start: 2.25rem; }
+
+  /* Skip link — visible only on keyboard focus. */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100%;
+    z-index: 100;
+    background: var(--color-navy);
+    color: var(--color-snow);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus { top: 1rem; }
+}

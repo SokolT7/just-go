@@ -1,0 +1,18 @@
+---
+import LogoWall from '@/components/proof/LogoWall.astro';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const label = {
+  en: 'Twenty-five years, four industries, and a decade of events built from nothing',
+  hr: 'Dvadeset pet godina, četiri industrije i desetljeće događaja izgrađenih ni iz čega',
+}[locale];
+---
+
+<section class="bg-surface border-b border-rule" aria-label={label}>
+  <div class="wrap">
+    <LogoWall locale={locale} tone="light" class="border-x border-rule" />
+  </div>
+</section>

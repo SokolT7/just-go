@@ -1,0 +1,110 @@
+---
+import Base from '@/layouts/Base.astro';
+import type { Locale, RouteKey } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  kind: 'privacy' | 'terms';
+}
+const { locale, kind } = Astro.props;
+
+/*
+  ⚠️  These are working drafts written to cover the site as built (a contact
+  form and cookieless analytics). They have NOT been reviewed by a lawyer.
+  Croatia is in the EU, so GDPR applies — have these checked before launch,
+  and fill in the company's registered details where marked.
+*/
+const content = {
+  privacy: {
+    en: {
+      title: 'Privacy Policy — Just Go',
+      h1: 'Privacy policy',
+      updated: 'Last updated 3 September 2026',
+      sections: [
+        { h: 'Who we are', p: ['Just Go is a sales and business development consultancy based in Zagreb, Croatia. For any question about this policy or the data we hold, write to bero.sokac@gmail.com.', 'Registered company details to be added before launch.'] },
+        { h: 'What we collect', p: ['If you send us a message through the contact form, we receive the name, email address, company name and message you choose to give us, plus the language version of the site you used. That is all. We do not ask for anything else and we do not buy data about you from anyone.'] },
+        { h: 'Why we collect it', p: ['Solely to reply to you and, if it goes further, to carry out work you have asked us to do. We do not use your details for marketing, we do not add you to a mailing list, and we do not sell or share them with third parties for their own purposes.'] },
+        { h: 'Analytics and cookies', p: ['This site uses privacy-first, cookieless analytics. We can see that a page was viewed and roughly where in the world the visit came from. We cannot see who you are, and no cookie is set on your device for analytics. That is why there is no cookie banner — there is nothing to consent to.'] },
+        { h: 'Who processes your message', p: ['Form submissions are handled by Netlify, our hosting provider, and delivered to us by email. Netlify processes the data on our instructions as a data processor.'] },
+        { h: 'How long we keep it', p: ['Enquiries that do not lead to work are deleted within twelve months. Where an enquiry becomes a client relationship, records are kept for as long as Croatian law requires for business and tax records.'] },
+        { h: 'Your rights', p: ['Under the GDPR you can ask us for a copy of the data we hold about you, ask us to correct it, or ask us to delete it. Write to bero.sokac@gmail.com and we will act within thirty days. You also have the right to complain to the Croatian Personal Data Protection Agency (AZOP).'] },
+      ],
+    },
+    hr: {
+      title: 'Pravila privatnosti — Just Go',
+      h1: 'Pravila privatnosti',
+      updated: 'Zadnje ažuriranje 3. rujna 2026.',
+      sections: [
+        { h: 'Tko smo mi', p: ['Just Go je konzalting za prodaju i razvoj poslovanja sa sjedištem u Zagrebu. Za svako pitanje o ovim pravilima ili podacima koje čuvamo pišite na bero.sokac@gmail.com.', 'Podatke o registraciji tvrtke potrebno je dodati prije lansiranja.'] },
+        { h: 'Što prikupljamo', p: ['Ako nam pošaljete poruku putem obrasca, primamo ime, email adresu, naziv tvrtke i poruku koju odlučite napisati, uz jezičnu verziju stranice koju ste koristili. To je sve. Ne tražimo ništa drugo i ne kupujemo podatke o vama ni od koga.'] },
+        { h: 'Zašto to prikupljamo', p: ['Isključivo kako bismo vam odgovorili i, ako se nastavi, obavili posao koji ste zatražili. Vaše podatke ne koristimo za marketing, ne dodajemo vas na mailing liste i ne prodajemo ih niti dijelimo trećim stranama za njihove svrhe.'] },
+        { h: 'Analitika i kolačići', p: ['Stranica koristi analitiku bez kolačića, usmjerenu na privatnost. Vidimo da je stranica posjećena i otprilike iz kojeg dijela svijeta. Ne vidimo tko ste i za analitiku se na vaš uređaj ne postavlja nijedan kolačić. Zato nema obavijesti o kolačićima — nema na što pristati.'] },
+        { h: 'Tko obrađuje vašu poruku', p: ['Poruke iz obrasca obrađuje Netlify, naš pružatelj usluge hostinga, i dostavlja ih nama emailom. Netlify podatke obrađuje po našim uputama kao izvršitelj obrade.'] },
+        { h: 'Koliko dugo ih čuvamo', p: ['Upiti koji ne dovedu do suradnje brišu se unutar dvanaest mjeseci. Ako upit preraste u klijentski odnos, dokumentacija se čuva onoliko dugo koliko hrvatski propisi traže za poslovnu i poreznu evidenciju.'] },
+        { h: 'Vaša prava', p: ['Prema Općoj uredbi o zaštiti podataka možete zatražiti kopiju podataka koje o vama čuvamo, njihov ispravak ili brisanje. Pišite na bero.sokac@gmail.com i postupit ćemo u roku od trideset dana. Imate i pravo podnijeti pritužbu Agenciji za zaštitu osobnih podataka (AZOP).'] },
+      ],
+    },
+  },
+  terms: {
+    en: {
+      title: 'Terms of Use — Just Go',
+      h1: 'Terms of use',
+      updated: 'Last updated 3 September 2026',
+      sections: [
+        { h: 'About these terms', p: ['These terms cover your use of this website. They do not govern any consulting engagement — that is covered by a separate written agreement signed by both parties before work begins.'] },
+        { h: 'The content here', p: ['Everything on this site is published for general information. It is not advice for your specific situation, and it should not be relied on as such. Nothing here creates a client relationship. If you want advice about your business, the first call is free and that is the right place to start.'] },
+        { h: 'Accuracy', p: ['We keep this site accurate and current to the best of our ability, but we do not warrant that every statement is complete or error-free. Figures describing past work are given in good faith and describe past results, which are not a promise of future ones.'] },
+        { h: 'Intellectual property', p: ['The text, design and images on this site belong to Just Go or are used with permission. You are welcome to quote or link to anything here with attribution. Republishing substantial extracts without permission is not permitted.'] },
+        { h: 'Links to other sites', p: ['Where we link to other websites, we do so because we think they are useful. We are not responsible for their content or their privacy practices.'] },
+        { h: 'Governing law', p: ['These terms are governed by Croatian law, and the courts of Zagreb have jurisdiction over any dispute arising from them.'] },
+      ],
+    },
+    hr: {
+      title: 'Uvjeti korištenja — Just Go',
+      h1: 'Uvjeti korištenja',
+      updated: 'Zadnje ažuriranje 3. rujna 2026.',
+      sections: [
+        { h: 'O ovim uvjetima', p: ['Ovi uvjeti pokrivaju korištenje ove internetske stranice. Ne uređuju konzultantske angažmane — njih pokriva zaseban pisani ugovor koji obje strane potpisuju prije početka rada.'] },
+        { h: 'Sadržaj na stranici', p: ['Sve objavljeno na ovoj stranici služi za opću informaciju. Nije savjet za vašu konkretnu situaciju i ne treba se tako koristiti. Ništa ovdje ne uspostavlja klijentski odnos. Ako želite savjet o svom poslovanju, prvi poziv je besplatan i to je pravo mjesto za početak.'] },
+        { h: 'Točnost', p: ['Trudimo se držati stranicu točnom i ažurnom, ali ne jamčimo da je svaka tvrdnja potpuna ili bez pogreške. Brojke koje opisuju dosadašnji rad navedene su u dobroj vjeri i opisuju prošle rezultate, što nije obećanje budućih.'] },
+        { h: 'Intelektualno vlasništvo', p: ['Tekst, dizajn i slike na ovoj stranici pripadaju Just Go ili se koriste uz dopuštenje. Slobodno citirajte ili povezujte na sadržaj uz navođenje izvora. Ponovno objavljivanje većih dijelova bez dopuštenja nije dopušteno.'] },
+        { h: 'Poveznice na druge stranice', p: ['Kad povezujemo na druge stranice, činimo to jer smatramo da su korisne. Nismo odgovorni za njihov sadržaj ni za njihove prakse zaštite privatnosti.'] },
+        { h: 'Mjerodavno pravo', p: ['Ovi uvjeti podliježu hrvatskom pravu, a za sporove koji iz njih proizlaze nadležni su sudovi u Zagrebu.'] },
+      ],
+    },
+  },
+}[kind][locale];
+
+const routeKey: RouteKey = kind;
+---
+
+<Base
+  title={content.title}
+  description={content.sections[0].p[0]}
+  locale={locale}
+  routeKey={routeKey}
+>
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-14 pb-12 sm:pt-16 sm:pb-14">
+      <h1 class="text-display-l text-snow">{content.h1}</h1>
+      <p class="mt-5 font-mono text-label uppercase tracking-[0.12em] text-mist/75">
+        {content.updated}
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-snow">
+    <div class="wrap-narrow section-y">
+      {
+        content.sections.map((section) => (
+          <div class="mb-10 last:mb-0">
+            <h2 class="font-display font-bold text-h3 text-navy">{section.h}</h2>
+            {section.p.map((para) => (
+              <p class="mt-3 text-body text-navy/85 max-w-[64ch]">{para}</p>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Base>

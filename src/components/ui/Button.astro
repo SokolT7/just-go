@@ -1,0 +1,54 @@
+---
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'onDark' | 'onLight' | 'quiet';
+  size?: 'md' | 'lg';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+/*
+  Contrast rule (IMPLEMENTATION_PLAN.md §4): the horizon accent with white text
+  is 3.4:1 and fails WCAG AA. Primary buttons are therefore amber ground with
+  navy text — 5.0:1. Never white-on-amber.
+*/
+const base =
+  'inline-flex items-center justify-center gap-2 font-display font-semibold ' +
+  'tracking-[-0.01em] transition-colors duration-150 text-center ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-3';
+
+const sizes = {
+  md: 'px-5 py-3 text-[0.95rem]',
+  lg: 'px-7 py-4 text-[1.0625rem]',
+};
+
+const variants = {
+  primary:
+    'bg-horizon text-navy hover:bg-[#B26F2C] focus-visible:outline-navy',
+  onDark:
+    'border border-mist/45 text-snow hover:border-mist hover:bg-white/5 focus-visible:outline-horizon',
+  onLight:
+    'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-snow focus-visible:outline-horizon',
+  quiet:
+    'text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2 px-0 py-1',
+};
+
+const cls = [base, variant === 'quiet' ? '' : sizes[size], variants[variant], className]
+  .filter(Boolean)
+  .join(' ');
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag class={cls} {...(href ? { href } : { type })} {...rest}>
+  <slot />
+</Tag>

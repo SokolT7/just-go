@@ -1,0 +1,82 @@
+---
+import '@fontsource-variable/archivo/wght.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '@fontsource/ibm-plex-mono/latin-ext-400.css';
+import '@fontsource/ibm-plex-mono/latin-ext-500.css';
+import '@/styles/global.css';
+
+/*
+  Preload the two faces that paint the first screen. Fontsource's @font-face
+  rules are only discovered after the stylesheet parses, which delays the LCP
+  text by a round trip. `?url` gives us the hashed build URL.
+  Latin-ext (Croatian diacritics) is deliberately NOT preloaded — it is needed
+  on /hr but is not on the critical path for first paint in either locale.
+*/
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import newsreaderLatin from '@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2?url';
+
+import BaseHead from '@/components/seo/BaseHead.astro';
+import Schema from '@/components/seo/Schema.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import { htmlLang, useTranslations } from '@/i18n/utils';
+import type { Locale, RouteKey } from '@/i18n/routes';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  routeKey?: RouteKey;
+  canonicalPath?: string;
+  altPaths?: Array<{ locale: Locale; path: string }>;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  locale,
+  routeKey,
+  canonicalPath,
+  altPaths,
+  ogImage,
+  ogType,
+  noindex,
+  schema = [],
+} = Astro.props;
+
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
+    <BaseHead
+      title={title}
+      description={description}
+      locale={locale}
+      routeKey={routeKey}
+      canonicalPath={canonicalPath}
+      altPaths={altPaths}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+    />
+    <Schema locale={locale} extra={schema} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{t('nav.skip')}</a>
+    <Header locale={locale} routeKey={routeKey} altPaths={altPaths} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

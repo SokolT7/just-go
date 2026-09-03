@@ -1,0 +1,47 @@
+---
+/*
+  The recurring structural motif: layered ridgelines echoing the hero
+  photograph. Used as a divider between a light section and a dark band.
+  Purely decorative — hidden from assistive technology.
+*/
+interface Props {
+  /** Colour the ridges sit against (the section above). */
+  from?: string;
+  /** Colour the ridges resolve into (the band below). */
+  to?: string;
+  class?: string;
+  height?: number;
+}
+const {
+  from = 'var(--color-snow)',
+  to = 'var(--color-navy)',
+  class: className = '',
+  height = 90,
+} = Astro.props;
+---
+
+<div
+  class={`w-full overflow-hidden leading-none ${className}`}
+  style={`background:${from};height:${height}px`}
+  aria-hidden="true"
+>
+  <svg
+    viewBox="0 0 1440 90"
+    preserveAspectRatio="none"
+    class="h-full w-full"
+    role="presentation"
+    focusable="false"
+  >
+    <path
+      d="M0 52 L120 38 L246 56 L368 30 L492 50 L618 26 L742 46 L870 24 L992 44 L1116 30 L1240 50 L1360 36 L1440 48 L1440 90 L0 90 Z"
+      fill={to}
+      opacity="0.35"></path>
+    <path
+      d="M0 68 L104 56 L216 72 L332 48 L448 66 L560 42 L672 62 L790 40 L900 60 L1010 48 L1128 68 L1240 50 L1350 68 L1440 56 L1440 90 L0 90 Z"
+      fill={to}
+      opacity="0.6"></path>
+    <path
+      d="M0 82 L120 74 L246 84 L368 70 L492 80 L618 68 L742 78 L870 66 L992 78 L1116 70 L1240 82 L1360 74 L1440 80 L1440 90 L0 90 Z"
+      fill={to}></path>
+  </svg>
+</div>

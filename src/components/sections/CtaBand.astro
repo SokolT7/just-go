@@ -1,0 +1,43 @@
+---
+import { useTranslations } from '@/i18n/utils';
+import type { Locale } from '@/i18n/routes';
+import ShortForm from '@/components/forms/ShortForm.astro';
+import WhatHappensNext from '@/components/forms/WhatHappensNext.astro';
+import Strata from '@/components/ui/Strata.astro';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  lede?: string;
+  /** Colour of the section above, so the ridge divider blends. */
+  from?: string;
+}
+const { locale, title, lede, from = 'var(--color-snow)' } = Astro.props;
+const t = useTranslations(locale);
+
+const heading =
+  title ??
+  (locale === 'hr'
+    ? 'Recite nam na čemu radite.'
+    : 'Tell us what you’re working on.');
+const sub =
+  lede ??
+  (locale === 'hr'
+    ? 'Jedna rečenica je dovoljna za početak. Berislav odgovara osobno, isti radni dan.'
+    : 'One sentence is enough to start. Berislav replies personally, the same working day.');
+---
+
+<Strata from={from} to="var(--color-navy)" />
+<section class="bg-navy text-snow">
+  <div class="wrap section-y">
+    <div class="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
+      <div>
+        <p class="eyebrow text-horizon mb-4">{t('label.contact')}</p>
+        <h2 class="text-h2 text-snow max-w-[18ch]">{heading}</h2>
+        <p class="mt-4 text-body-l text-mist max-w-[48ch]">{sub}</p>
+        <ShortForm locale={locale} class="mt-9" />
+      </div>
+      <WhatHappensNext locale={locale} tone="dark" class="lg:pt-2" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+---
+import type { Testimonial } from '@/data/proof';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { testimonial: Testimonial; locale: Locale; tone?: 'light' | 'dark'; }
+const { testimonial, locale, tone = 'light' } = Astro.props;
+
+const quoteCls = tone === 'dark' ? 'text-snow' : 'text-navy';
+const metaCls = tone === 'dark' ? 'text-mist' : 'text-ink-soft';
+---
+
+<figure class="max-w-[46ch]">
+  <div class="h-[2px] w-8 bg-horizon mb-5" aria-hidden="true"></div>
+  <blockquote class={`font-body text-body-l leading-relaxed ${quoteCls}`}>
+    <p>“{testimonial.quote[locale]}”</p>
+  </blockquote>
+  <figcaption class={`mt-5 flex items-center gap-3 ${metaCls}`}>
+    {
+      testimonial.photo && (
+        <img src={testimonial.photo} alt="" width="40" height="40" loading="lazy" class="h-10 w-10 rounded-full object-cover" />
+      )
+    }
+    <span class="font-mono text-label uppercase tracking-[0.1em] leading-relaxed">
+      <span class={tone === 'dark' ? 'text-snow' : 'text-navy'}>{testimonial.name}</span><br />
+      {testimonial.role[locale]}, {testimonial.company}
+    </span>
+  </figcaption>
+</figure>

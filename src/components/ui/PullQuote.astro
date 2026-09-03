@@ -1,0 +1,21 @@
+---
+interface Props { quote: string; attribution?: string; tone?: 'light' | 'dark'; class?: string; }
+const { quote, attribution, tone = 'light', class: className = '' } = Astro.props;
+const quoteCls = tone === 'dark' ? 'text-snow' : 'text-navy';
+const attrCls = tone === 'dark' ? 'text-mist' : 'text-ink-soft';
+---
+
+<figure class={`my-10 border-l-2 border-horizon pl-6 sm:pl-8 ${className}`}>
+  <blockquote>
+    <p class={`font-display font-semibold text-[1.35rem] sm:text-[1.55rem] leading-[1.32] tracking-[-0.02em] text-balance ${quoteCls}`}>
+      “{quote}”
+    </p>
+  </blockquote>
+  {
+    attribution && (
+      <figcaption class={`mt-4 font-mono text-label uppercase tracking-[0.12em] ${attrCls}`}>
+        {attribution}
+      </figcaption>
+    )
+  }
+</figure>

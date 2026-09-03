@@ -1,0 +1,147 @@
+---
+import { NAV_KEYS, path, type Locale, type RouteKey } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+import LangSwitch from './LangSwitch.astro';
+import Button from '@/components/ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+  routeKey?: RouteKey;
+  altPaths?: Array<{ locale: Locale; path: string }>;
+}
+const { locale, routeKey, altPaths } = Astro.props;
+const t = useTranslations(locale);
+
+const navLabel: Record<string, string> = {
+  services: t('nav.services'),
+  about: t('nav.about'),
+  team: t('nav.team'),
+  mission: t('nav.mission'),
+  clients: t('nav.clients'),
+  insights: t('nav.insights'),
+};
+
+/*
+  The header is always dark navy on every page. A single treatment means no
+  scroll-state JavaScript, no transparent-over-light failure mode, and it reads
+  as part of the site's dark-band design language.
+*/
+---
+
+<header class="sticky top-0 z-50 bg-navy text-snow border-b border-white/8">
+  <div class="wrap flex items-center gap-4 h-16 md:h-20">
+    <!-- Wordmark -->
+    <a
+      href={path('home', locale)}
+      class="group flex items-baseline gap-2 shrink-0 focus-visible:outline-horizon"
+    >
+      <span class="font-display font-bold text-[1.15rem] md:text-[1.3rem] tracking-[-0.03em] text-snow">
+        Just&nbsp;Go
+      </span>
+      <span
+        class="hidden sm:block h-[2px] w-6 bg-horizon transition-all duration-200 group-hover:w-9"
+        aria-hidden="true"></span>
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav aria-label={t('nav.primary')} class="hidden lg:flex items-center gap-7 ml-6">
+      {
+        NAV_KEYS.map((key: RouteKey) => (
+          <a
+            href={path(key, locale)}
+            aria-current={key === routeKey ? 'page' : undefined}
+            class:list={[
+              'font-display text-[0.9rem] font-medium tracking-[-0.005em] transition-colors',
+              key === routeKey ? 'text-horizon' : 'text-mist hover:text-snow',
+            ]}
+          >
+            {navLabel[key]}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="ml-auto flex items-center gap-4 md:gap-5">
+      <LangSwitch locale={locale} routeKey={routeKey} altPaths={altPaths} class="hidden sm:flex" />
+      <Button href={path('contact', locale)} variant="primary" class="hidden md:inline-flex !py-2.5 !px-4 text-[0.875rem]">
+        {t('nav.contact')}
+      </Button>
+
+      <!-- Mobile trigger -->
+      <button
+        type="button"
+        id="nav-toggle"
+        class="lg:hidden -mr-1 p-2 text-snow focus-visible:outline-horizon"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="sr-only">{t('nav.menu')}</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path id="nav-icon-open" d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+          <path id="nav-icon-close" class="hidden" d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile navigation panel -->
+  <div
+    id="mobile-nav"
+    hidden
+    class="lg:hidden border-t border-white/8 bg-navy-deep"
+  >
+    <nav aria-label={t('nav.menu')} class="wrap py-5 flex flex-col">
+      {
+        NAV_KEYS.map((key: RouteKey) => (
+          <a
+            href={path(key, locale)}
+            aria-current={key === routeKey ? 'page' : undefined}
+            class:list={[
+              'font-display text-[1.05rem] font-medium py-3 border-b border-white/6',
+              key === routeKey ? 'text-horizon' : 'text-snow',
+            ]}
+          >
+            {navLabel[key]}
+          </a>
+        ))
+      }
+      <div class="flex items-center justify-between gap-4 pt-5">
+        <LangSwitch locale={locale} routeKey={routeKey} altPaths={altPaths} />
+        <Button href={path('contact', locale)} variant="primary" class="flex-1 max-w-[15rem]">
+          {t('nav.contact')}
+        </Button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  const iconOpen = document.getElementById('nav-icon-open');
+  const iconClose = document.getElementById('nav-icon-close');
+
+  if (toggle && panel && iconOpen && iconClose) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      iconOpen.classList.toggle('hidden', open);
+      iconClose.classList.toggle('hidden', !open);
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Close when the viewport grows past the mobile breakpoint.
+    const mq = window.matchMedia('(min-width: 1024px)');
+    mq.addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>

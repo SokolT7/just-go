@@ -1,0 +1,170 @@
+---
+import Base from '@/layouts/Base.astro';
+import ContactForm from '@/components/forms/ContactForm.astro';
+import WhatHappensNext from '@/components/forms/WhatHappensNext.astro';
+import LogoWall from '@/components/proof/LogoWall.astro';
+import TestimonialCard from '@/components/proof/TestimonialCard.astro';
+import Faq, { type FaqItem } from '@/components/ui/Faq.astro';
+import { testimonials, hasTestimonials } from '@/data/proof';
+import { path, type Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const site = (Astro.site ?? new URL('https://justgo.hr')).origin;
+
+const copy = {
+  en: {
+    metaTitle: 'Contact — Just Go | Sales & Business Development Consultancy',
+    metaDesc:
+      'Tell us what you are working on. Berislav Sokač replies personally, the same working day. Based in Zagreb, working with clients worldwide.',
+    eyebrow: 'Get in touch',
+    h1: 'Tell us what you’re working on',
+    lede:
+      'One sentence about what is not working is enough to start. Berislav reads every message and replies personally — not an assistant, not an autoresponder.',
+    directTitle: 'Or reach us directly',
+    emailLabel: 'Email',
+    linkedinLabel: 'LinkedIn',
+    whereLabel: 'Where we are',
+    where: 'Zagreb, Croatia · Central European Time · Working with clients worldwide, remote-first',
+    faqTitle: 'Before you write',
+    faqs: [
+      { q: 'What happens on the first call?', a: 'Thirty minutes. You describe the situation, we ask the questions that usually get skipped, and by the end you will know whether we can help. If we cannot, we will say so and point you somewhere better.' },
+      { q: 'Is the first call free?', a: 'Yes. There is no charge for the first call and no obligation afterwards. We do not send a proposal unless you ask for one.' },
+      { q: 'Do you work outside Europe?', a: 'Yes. Just Go is based in Zagreb and works with clients worldwide. Most work is remote; we travel for kickoffs, negotiations and team sessions where being in the room genuinely changes the outcome.' },
+    ],
+  },
+  hr: {
+    metaTitle: 'Kontakt — Just Go | Konzalting za prodaju i razvoj poslovanja',
+    metaDesc:
+      'Recite nam na čemu radite. Berislav Sokač odgovara osobno, isti radni dan. Iz Zagreba, s klijentima diljem svijeta.',
+    eyebrow: 'Javite nam se',
+    h1: 'Recite nam na čemu radite',
+    lede:
+      'Dovoljna je jedna rečenica o tome što ne funkcionira. Berislav čita svaku poruku i odgovara osobno — ne asistent i ne automatski odgovor.',
+    directTitle: 'Ili nam se javite izravno',
+    emailLabel: 'Email',
+    linkedinLabel: 'LinkedIn',
+    whereLabel: 'Gdje smo',
+    where: 'Zagreb, Hrvatska · Srednjoeuropsko vrijeme · Radimo s klijentima diljem svijeta, primarno na daljinu',
+    faqTitle: 'Prije nego napišete',
+    faqs: [
+      { q: 'Što se događa na prvom pozivu?', a: 'Trideset minuta. Vi opišete situaciju, mi postavimo pitanja koja se obično preskoče i na kraju ćete znati možemo li pomoći. Ako ne možemo, reći ćemo vam i uputiti vas na bolje mjesto.' },
+      { q: 'Je li prvi poziv besplatan?', a: 'Da. Prvi poziv se ne naplaćuje i nakon njega nemate nikakvu obvezu. Ponudu ne šaljemo osim ako je ne zatražite.' },
+      { q: 'Radite li izvan Europe?', a: 'Da. Just Go je iz Zagreba i radi s klijentima diljem svijeta. Većina posla je na daljinu; putujemo za početke projekata, pregovore i radionice gdje prisutnost u prostoriji stvarno mijenja ishod.' },
+    ],
+  },
+}[locale];
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  '@id': `${site}${path('contact', locale)}#faq`,
+  inLanguage: locale === 'hr' ? 'hr-HR' : 'en',
+  mainEntity: copy.faqs.map((f: FaqItem) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base
+  title={copy.metaTitle}
+  description={copy.metaDesc}
+  locale={locale}
+  routeKey="contact"
+  schema={[faqSchema]}
+>
+  <section class="bg-navy text-snow">
+    <div class="wrap pt-16 pb-14 sm:pt-20 sm:pb-16">
+      <p class="eyebrow text-horizon mb-5">{copy.eyebrow}</p>
+      <h1 class="text-display-l text-snow max-w-[18ch]">{copy.h1}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[56ch]">{copy.lede}</p>
+    </div>
+  </section>
+
+  <!--
+    Proof sits directly above the form. This placement is the documented
+    3% → 5% capture lift (PLAN §8) — it is a mechanism, not decoration.
+  -->
+  <section class="bg-surface border-b border-rule">
+    <div class="wrap">
+      <LogoWall locale={locale} tone="light" class="border-x border-rule" />
+    </div>
+  </section>
+
+  {
+    hasTestimonials && (
+      <section class="bg-surface border-b border-rule">
+        <div class="wrap py-10">
+          <TestimonialCard testimonial={testimonials[0]} locale={locale} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="bg-snow">
+    <div class="wrap section-y">
+      <div class="grid gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
+        <ContactForm locale={locale} />
+
+        <div class="space-y-10">
+          <WhatHappensNext locale={locale} />
+
+          <div class="border-t border-rule pt-8">
+            <h2 class="eyebrow text-horizon-text mb-5">{copy.directTitle}</h2>
+            <dl class="space-y-5">
+              <div>
+                <dt class="font-mono text-label uppercase tracking-[0.12em] text-ink-soft mb-1.5">
+                  {copy.emailLabel}
+                </dt>
+                <dd>
+                  <a
+                    href="mailto:bero.sokac@gmail.com"
+                    class="text-body text-navy underline underline-offset-4 decoration-rule hover:decoration-navy break-all"
+                  >
+                    bero.sokac@gmail.com
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt class="font-mono text-label uppercase tracking-[0.12em] text-ink-soft mb-1.5">
+                  {copy.linkedinLabel}
+                </dt>
+                <dd class="space-y-1.5">
+                  <a
+                    href="https://www.linkedin.com/in/berislavsokac/"
+                    rel="noopener"
+                    class="block text-body text-navy underline underline-offset-4 decoration-rule hover:decoration-navy"
+                  >
+                    Berislav Sokač
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/odin-sokac-00353a411/"
+                    rel="noopener"
+                    class="block text-body text-navy underline underline-offset-4 decoration-rule hover:decoration-navy"
+                  >
+                    Odin Sokač
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt class="font-mono text-label uppercase tracking-[0.12em] text-ink-soft mb-1.5">
+                  {copy.whereLabel}
+                </dt>
+                <dd class="text-small text-ink-soft leading-relaxed max-w-[34ch]">{copy.where}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface border-t border-rule">
+    <div class="wrap section-y">
+      <div class="max-w-[52rem]">
+        <Faq items={copy.faqs} locale={locale} title={copy.faqTitle} />
+      </div>
+    </div>
+  </section>
+</Base>

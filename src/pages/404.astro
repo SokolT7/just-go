@@ -1,0 +1,47 @@
+---
+import Base from '@/layouts/Base.astro';
+import Button from '@/components/ui/Button.astro';
+import { NAV_KEYS, path, type RouteKey } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/utils';
+
+const locale = 'en' as const;
+const t = useTranslations(locale);
+const labels: Record<string, string> = {
+  services: t('nav.services'), about: t('nav.about'), team: t('nav.team'),
+  mission: t('nav.mission'), clients: t('nav.clients'), insights: t('nav.insights'),
+};
+---
+
+<Base
+  title="Page not found — Just Go"
+  description="That page is not here."
+  locale={locale}
+  canonicalPath="/404"
+  noindex={true}
+>
+  <section class="bg-navy text-snow">
+    <div class="wrap py-24 sm:py-32">
+      <p class="font-mono text-label uppercase tracking-[0.16em] text-horizon mb-6">404</p>
+      <h1 class="text-display-l text-snow max-w-[14ch]">{t('error.404Title')}</h1>
+      <p class="mt-6 text-body-l text-mist max-w-[46ch]">{t('error.404Body')}</p>
+
+      <nav class="mt-10 flex flex-wrap gap-x-3 gap-y-2" aria-label={t('nav.primary')}>
+        {
+          NAV_KEYS.map((key: RouteKey) => (
+            <a
+              href={path(key, locale)}
+              class="font-display text-[0.9rem] font-medium text-snow border border-white/25 px-3 py-1.5 hover:border-horizon hover:text-horizon transition-colors"
+            >
+              {labels[key]}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/" variant="primary" size="lg">{t('error.404Cta')}</Button>
+        <Button href="/hr" variant="onDark" size="lg" lang="hr" hreflang="hr">Hrvatska verzija</Button>
+      </div>
+    </div>
+  </section>
+</Base>

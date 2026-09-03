@@ -1,0 +1,49 @@
+---
+import { useTranslations } from '@/i18n/utils';
+import type { Locale } from '@/i18n/routes';
+
+interface Props { locale: Locale; tone?: 'light' | 'dark'; class?: string; }
+const { locale, tone = 'light', class: className = '' } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  With no calendar on the site (PLAN §8), this block does the reassuring: it
+  tells the visitor exactly what they are triggering before they trigger it.
+  The steps are a real sequence, so the numbering carries information.
+*/
+const steps = [
+  { n: '1', title: t('next.step1Title'), body: t('next.step1Body') },
+  { n: '2', title: t('next.step2Title'), body: t('next.step2Body') },
+  { n: '3', title: t('next.step3Title'), body: t('next.step3Body') },
+];
+
+const titleCls = tone === 'dark' ? 'text-snow' : 'text-navy';
+const bodyCls = tone === 'dark' ? 'text-mist' : 'text-ink-soft';
+const ruleCls = tone === 'dark' ? 'border-white/12' : 'border-rule';
+// The accent needs its AA-safe variant on light grounds (PLAN §4).
+const numCls = tone === 'dark' ? 'text-horizon' : 'text-horizon-text';
+---
+
+<div class={className}>
+  <h2 class={`eyebrow ${tone === 'dark' ? 'text-horizon' : 'text-horizon-text'} mb-5`}>
+    {t('next.title')}
+  </h2>
+  <ol class="space-y-0">
+    {
+      steps.map((step, i) => (
+        <li class:list={['flex gap-4 py-4', i > 0 ? `border-t ${ruleCls}` : '']}>
+          <span
+            class:list={['shrink-0 font-mono text-label pt-1 tabular-nums', numCls]}
+            aria-hidden="true"
+          >
+            0{step.n}
+          </span>
+          <div>
+            <p class={`font-display font-semibold text-[0.98rem] ${titleCls}`}>{step.title}</p>
+            <p class={`mt-1 text-small ${bodyCls}`}>{step.body}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
