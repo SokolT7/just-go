@@ -15,16 +15,16 @@ const copy = {
 
 <section class="bg-surface border-y border-rule">
   <div class="wrap section-y">
-    <div class="max-w-[40rem]">
+    <div class="max-w-[40rem] reveal">
       <p class="eyebrow text-horizon-text mb-4">{t('label.services')}</p>
       <h2 class="text-h2 text-navy">{copy.title}</h2>
       <p class="mt-5 text-body-l text-ink-soft max-w-[52ch]">{copy.lede}</p>
     </div>
 
-    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+    <div class="mt-14 grid gap-6 lg:grid-cols-3 reveal-children">
       {
         engagements.map((eng) => (
-          <article class="group flex flex-col border border-rule bg-snow p-7 lg:p-8 transition-colors hover:border-navy/35">
+          <article class="lift group flex flex-col border border-rule bg-snow p-7 lg:p-8 hover:border-navy/35">
             <p class="font-mono text-label uppercase tracking-[0.12em] text-horizon-text">
               {eng.name[locale]}
             </p>

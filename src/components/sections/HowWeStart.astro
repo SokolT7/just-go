@@ -81,7 +81,7 @@ const copy = {
 <section class="bg-navy text-snow">
   <div class="wrap section-y">
     <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-      <div class="lg:self-start">
+      <div class="lg:self-start reveal">
         <p class="eyebrow text-horizon mb-4">{copy.eyebrow}</p>
         <h2 class="text-h2 text-snow max-w-[16ch]">{copy.title}</h2>
         <p class="mt-5 text-body-l text-mist max-w-[44ch]">{copy.lede}</p>
@@ -90,7 +90,7 @@ const copy = {
         </Button>
         <p class="mt-6 text-small text-mist/80 max-w-[38ch]">{copy.note}</p>
 
-        <figure class="mt-10 hidden lg:block">
+        <figure class="mt-10 hidden lg:block zoom-frame">
           <Image
             src={beroFloor}
             alt={copy.photoAlt}
@@ -108,7 +108,7 @@ const copy = {
         </figure>
       </div>
 
-      <ol class="relative">
+      <ol class="relative reveal-children">
         <!-- The spine connecting the three steps. -->
         <div
           class="absolute left-[1.15rem] top-3 bottom-3 w-px bg-white/15 hidden sm:block"

@@ -52,6 +52,7 @@ const navLabel: Record<string, string> = {
             aria-current={key === routeKey ? 'page' : undefined}
             class:list={[
               'font-display text-[0.9rem] font-medium tracking-[-0.005em] transition-colors',
+              'nav-link',
               key === routeKey ? 'text-horizon' : 'text-mist hover:text-snow',
             ]}
           >
@@ -83,6 +84,9 @@ const navLabel: Record<string, string> = {
       </button>
     </div>
   </div>
+
+  <!-- Reading progress. Decorative: the same information is in the scrollbar. -->
+  <div class="scroll-progress bg-horizon" aria-hidden="true"></div>
 
   <!-- Mobile navigation panel -->
   <div

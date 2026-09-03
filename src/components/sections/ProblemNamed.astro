@@ -52,13 +52,13 @@ const copy = {
 
 <section class="bg-snow">
   <div class="wrap section-y">
-    <div class="max-w-[40rem]">
+    <div class="max-w-[40rem] reveal">
       <p class="eyebrow text-horizon-text mb-4">{copy.eyebrow}</p>
       <h2 class="text-h2 text-navy">{copy.title}</h2>
       <p class="mt-5 text-body-l text-ink-soft max-w-[54ch]">{copy.lede}</p>
     </div>
 
-    <ul class="mt-14 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3 border border-rule">
+    <ul class="mt-14 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3 border border-rule reveal-children">
       {
         copy.items.map((item) => (
           <li class="bg-snow p-7 lg:p-8">

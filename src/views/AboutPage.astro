@@ -197,7 +197,7 @@ const copy = {
   <section class="bg-surface border-y border-rule">
     <div class="wrap section-y">
       <h2 class="text-h2 text-navy">{copy.whoTitle}</h2>
-      <dl class="mt-10 grid gap-px bg-rule border border-rule md:grid-cols-3">
+      <dl class="mt-10 grid gap-px bg-rule border border-rule md:grid-cols-3 reveal-children">
         {
           copy.who.map((item) => (
             <div class="bg-surface p-7">
@@ -230,7 +230,7 @@ const copy = {
           <h2 class="text-h2 text-snow">{copy.sectorsTitle}</h2>
           <p class="mt-5 text-body text-mist max-w-[42ch]">{copy.sectorsLede}</p>
         </div>
-        <ul class="grid gap-px bg-white/12 border border-white/12 sm:grid-cols-2">
+        <ul class="grid gap-px bg-white/12 border border-white/12 sm:grid-cols-2 reveal-children">
           {
             copy.sectors.map((sector) => (
               <li class="bg-navy px-6 py-7 font-display font-semibold text-[1.05rem] text-snow">
@@ -247,7 +247,7 @@ const copy = {
   <section class="bg-snow">
     <div class="wrap section-y">
       <h2 class="text-h2 text-navy">{copy.workTitle}</h2>
-      <dl class="mt-10 grid gap-px bg-rule border border-rule sm:grid-cols-2 lg:grid-cols-3">
+      <dl class="mt-10 grid gap-px bg-rule border border-rule sm:grid-cols-2 lg:grid-cols-3 reveal-children">
         {
           copy.work.map((item) => (
             <div class="bg-snow p-7">
@@ -293,7 +293,7 @@ const copy = {
   <!-- The name — pointer to the people, not the biography itself -->
   <section class="bg-snow">
     <div class="wrap section-y">
-      <div class="max-w-[46rem] border-l-2 border-horizon pl-6 sm:pl-8">
+      <div class="max-w-[46rem] border-l-2 border-horizon pl-6 sm:pl-8 reveal">
         <h2 class="text-h2 text-navy">{copy.nameTitle}</h2>
         <p class="mt-5 text-body-l text-navy/85">{copy.nameBody}</p>
         <div class="mt-8 flex flex-wrap gap-4">

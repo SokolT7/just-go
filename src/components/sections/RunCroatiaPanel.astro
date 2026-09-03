@@ -43,7 +43,7 @@ const copy = {
 <section class="bg-surface border-y border-rule">
   <div class="wrap section-y">
     <div class="grid gap-12 lg:grid-cols-[1fr_0.85fr] lg:gap-20 lg:items-start">
-      <div class="max-w-[46rem]">
+      <div class="max-w-[46rem] reveal">
         <p class="eyebrow text-horizon-text mb-4">{t('label.proof')}</p>
         <h2 class="text-h2 text-navy">{copy.title}</h2>
         {copy.body.map((para) => <p class="mt-5 text-body-l text-ink-soft max-w-[56ch]">{para}</p>)}
@@ -59,7 +59,7 @@ const copy = {
         </a>
       </div>
 
-      <dl class="border border-rule divide-y divide-rule">
+      <dl class="border border-rule divide-y divide-rule reveal">
         {
           copy.figures.map((fig) => (
             <div class="flex items-baseline gap-5 p-6">

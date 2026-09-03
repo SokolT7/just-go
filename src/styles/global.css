@@ -260,3 +260,166 @@
   .hero-full .hero-cue-wrap { display: none; }
 }
 }
+
+/* =========================================================================
+   Motion
+
+   Two rules govern everything below.
+
+   1. Nothing is ever parked invisible waiting to be triggered. Scroll reveals
+      use CSS scroll-driven timelines with an `entry` range, so an element that
+      is already in the viewport when the page loads sits at 100% progress —
+      fully visible. There is no observer to miss, no JavaScript to fail, and
+      the first painted frame is always complete. The whole block is additionally
+      gated behind @supports, so a browser without scroll timelines simply gets
+      the static page rather than a blank one.
+
+   2. All of it collapses under prefers-reduced-motion.
+
+   This is deliberately restrained. Motion is here to make the page feel
+   responsive to the reader, not to perform.
+   ========================================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---- Hero load sequence -------------------------------------------------
+     MOVEMENT ONLY. The hero deliberately does not fade.
+
+     Both a keyframe animation with fill-mode: both and a @starting-style
+     opacity transition were tried, and both left the headline stuck at
+     opacity 0 whenever the transition did not advance — which happens on a
+     hidden or backgrounded tab, and was reproduced on the live page, not just
+     in a test harness. Parking the LCP element of the most important page
+     behind an animation completing is not a trade worth making for a fade.
+
+     Animating only `translate` removes the failure mode entirely: if the
+     transition never runs, the content sits 14px lower than its final
+     position, which nobody will ever notice. The page is readable in every
+     case, and still feels like it arrives.
+
+     The photograph's settle is safe for the same reason — a stuck state is
+     merely a 4.5% zoom. */
+
+  .hero-body > div > * {
+    translate: none;
+    transition: translate 0.62s cubic-bezier(0.22, 0.68, 0.24, 1);
+  }
+  @starting-style {
+    .hero-body > div > * { translate: 0 0.9rem; }
+  }
+  .hero-body > div > *:nth-child(1) { transition-delay: 0.04s; }
+  .hero-body > div > *:nth-child(2) { transition-delay: 0.10s; }
+  .hero-body > div > *:nth-child(3) { transition-delay: 0.16s; }
+  .hero-body > div > *:nth-child(4) { transition-delay: 0.20s; }
+  .hero-body > div > *:nth-child(5) { transition-delay: 0.26s; }
+  .hero-body > div > *:nth-child(6) { transition-delay: 0.30s; }
+
+  .hero-full img {
+    scale: 1;
+    transition: scale 1.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  @starting-style {
+    .hero-full img { scale: 1.045; }
+  }
+
+  /* ---- Scroll-driven reveals --------------------------------------------- */
+
+  @supports (animation-timeline: view()) {
+    @keyframes jg-reveal {
+      from { opacity: 0; transform: translate3d(0, 1.1rem, 0); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .reveal,
+    .reveal-children > * {
+      animation: jg-reveal linear both;
+      animation-timeline: view();
+      /* Complete well before the element is centred, so it is readable the
+         moment it matters. Each child carries its own timeline, which is what
+         produces the stagger — no per-item delays to keep in sync. */
+      animation-range: entry 2% entry 46%;
+    }
+
+    /* A long list would otherwise animate every row; past the first few the
+       effect stops reading as intentional and starts reading as noise. */
+    .reveal-children > *:nth-child(n + 9) { animation: none; }
+  }
+
+  /* ---- Micro-interactions ------------------------------------------------- */
+
+  /* Photographs lift slightly under the cursor, clipped by their frame. */
+  .zoom-frame { overflow: hidden; }
+  .zoom-frame img {
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+    will-change: transform;
+  }
+  .zoom-frame:hover img,
+  .zoom-frame:focus-within img { transform: scale(1.035); }
+
+  /* Cards rise a little and firm up their edge. */
+  .lift {
+    transition:
+      transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1),
+      border-color 0.22s ease,
+      box-shadow 0.28s ease;
+  }
+  .lift:hover,
+  .lift:focus-within {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -18px rgba(14, 28, 38, 0.4);
+  }
+
+  /* Navigation links grow a rule from the left rather than switching one on. */
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35rem;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.26s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+
+  /* Buttons acknowledge the press. */
+  .press { transition: transform 0.12s ease; }
+  .press:active { transform: translateY(1px); }
+}
+
+/* ---- Reading progress ---------------------------------------------------
+   A hairline under the sticky header tracking document scroll. Zero JS, runs
+   on the compositor, and hidden entirely where scroll timelines are missing
+   so it can never sit at a misleading fixed width. */
+
+.scroll-progress { display: none; }
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes jg-progress {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    .scroll-progress {
+      display: block;
+      height: 2px;
+      transform-origin: left;
+      animation: jg-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+/* ---- Disclosure ---------------------------------------------------------
+   Animating a <details> open needs interpolate-size; without it the block is
+   simply instant, which is fine. */
+
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    :root { interpolate-size: allow-keywords; }
+  }
+}

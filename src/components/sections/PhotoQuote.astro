@@ -30,7 +30,7 @@ const frameCls = dark ? 'border border-white/15' : 'border border-rule';
 <section class={sectionCls}>
   <div class="wrap section-y">
     <div class="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
-      <figure class={side === 'right' ? 'lg:order-2' : ''}>
+      <figure class={`zoom-frame reveal ${side === 'right' ? 'lg:order-2' : ''}`}>
         <Image
           src={image}
           alt={alt}
@@ -45,7 +45,7 @@ const frameCls = dark ? 'border border-white/15' : 'border border-rule';
         {caption && <figcaption class={`mt-3 font-mono text-label uppercase tracking-[0.1em] ${capCls}`}>{caption}</figcaption>}
       </figure>
 
-      <figure class={side === 'right' ? 'lg:order-1' : ''}>
+      <figure class={`reveal ${side === 'right' ? 'lg:order-1' : ''}`}>
         <div class="h-[2px] w-10 bg-horizon mb-6" aria-hidden="true"></div>
         <blockquote>
           <p class={`font-display font-bold text-[1.35rem] sm:text-[1.7rem] leading-[1.28] tracking-[-0.02em] text-balance ${quoteCls}`}>

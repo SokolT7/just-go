@@ -155,7 +155,7 @@ const serviceSchema = engagements.map((eng) => ({
         class:list={['scroll-mt-24', i % 2 === 0 ? 'bg-snow' : 'bg-surface border-y border-rule']}
       >
         <div class="wrap section-y">
-          <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 reveal-children">
             <div>
               <p class="font-mono text-label uppercase tracking-[0.12em] text-horizon-text">
                 {String(eng.order).padStart(2, '0')} — {eng.name[locale]}
@@ -245,7 +245,7 @@ const serviceSchema = engagements.map((eng) => ({
         <h2 class="text-h2 text-navy">{copy.processTitle}</h2>
         <p class="mt-4 text-body-l text-ink-soft">{copy.processLede}</p>
       </div>
-      <ol class="mt-12 grid gap-6 md:grid-cols-3">
+      <ol class="mt-12 grid gap-6 md:grid-cols-3 reveal-children">
         {
           copy.steps.map((step) => (
             <li class="border-t-2 border-navy pt-5">
@@ -262,7 +262,7 @@ const serviceSchema = engagements.map((eng) => ({
   <!-- FAQ -->
   <section class="bg-snow">
     <div class="wrap section-y">
-      <div class="max-w-[52rem]">
+      <div class="max-w-[52rem] reveal">
         <Faq items={copy.faqs} locale={locale} title={copy.faqTitle} />
       </div>
     </div>

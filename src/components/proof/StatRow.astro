@@ -16,7 +16,7 @@ const gridBg = tone === 'dark' ? 'bg-white/12' : 'bg-rule';
 const cellBg = tone === 'dark' ? 'bg-navy' : 'bg-surface';
 ---
 
-<dl class={`grid grid-cols-2 lg:grid-cols-4 gap-px ${gridBg} ${className}`}>
+<dl class={`grid grid-cols-2 lg:grid-cols-4 gap-px reveal-children ${gridBg} ${className}`}>
   {
     stats.map((stat) => (
       <div class={`${cellBg} px-5 py-6 sm:px-6 sm:py-7`}>

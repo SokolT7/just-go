@@ -139,7 +139,7 @@ const copy = {
         <p class="mt-4 text-body-l text-ink-soft max-w-[52ch]">{copy.principlesLede}</p>
       </div>
 
-      <ol class="mt-12 grid gap-px bg-rule border border-rule sm:grid-cols-2">
+      <ol class="mt-12 grid gap-px bg-rule border border-rule sm:grid-cols-2 reveal-children">
         {
           copy.principles.map((p, i) => (
             <li class="bg-snow p-7 lg:p-9">
@@ -167,7 +167,7 @@ const copy = {
           <h2 class="text-h2 text-navy">{copy.noTitle}</h2>
           <p class="mt-5 text-body text-ink-soft max-w-[40ch]">{copy.noLede}</p>
         </div>
-        <ul class="border-t border-rule">
+        <ul class="border-t border-rule reveal-children">
           {
             copy.noItems.map((item) => (
               <li class="flex gap-4 py-5 border-b border-rule">
@@ -188,7 +188,7 @@ const copy = {
   <Strata from="var(--color-surface)" to="var(--color-navy)" />
   <section class="bg-navy text-snow">
     <div class="wrap section-y">
-      <div class="max-w-[46rem]">
+      <div class="max-w-[46rem] reveal">
         <h2 class="text-h2 text-snow">{copy.beyondTitle}</h2>
         <div class="mt-6 prose-jg">
           {copy.beyond.map((para) => <p class="text-body-l text-mist">{para}</p>)}

@@ -69,13 +69,13 @@ const copy = {
 
 <section class="bg-snow">
   <div class="wrap section-y">
-    <div class="max-w-[40rem]">
+    <div class="max-w-[40rem] reveal">
       <p class="eyebrow text-horizon-text mb-4">{t('label.people')}</p>
       <h2 class="text-h2 text-navy">{copy.title}</h2>
     </div>
 
     <div class="mt-12 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:items-start">
-      <figure class="lg:sticky lg:top-28">
+      <figure class="lg:sticky lg:top-28 reveal zoom-frame">
         <Image
           src={bothPhoto}
           alt={copy.pairAlt}
@@ -94,7 +94,7 @@ const copy = {
         </figcaption>
       </figure>
 
-      <div class="grid gap-10 sm:gap-12">
+      <div class="grid gap-10 sm:gap-12 reveal-children">
         {
           people.map((person) => (
             <article class="grid gap-5 sm:grid-cols-[7rem_1fr] sm:gap-7">

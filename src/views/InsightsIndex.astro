@@ -51,7 +51,7 @@ const dateFmt = new Intl.DateTimeFormat(locale === 'hr' ? 'hr-HR' : 'en-GB', {
 
   <section class="bg-snow">
     <div class="wrap section-y">
-      <ul class="border-t border-rule max-w-[62rem]">
+      <ul class="border-t border-rule max-w-[62rem] reveal-children">
         {
           posts.map((post) => {
             const slug = post.id.replace(`${locale}/`, '');
