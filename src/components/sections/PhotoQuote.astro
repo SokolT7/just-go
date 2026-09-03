@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  quote: string;
+  attribution: string;
+  caption?: string;
+  /** Which side the photograph sits on, so repeat uses alternate. */
+  side?: 'left' | 'right';
+  tone?: 'dark' | 'light';
+}
+const { image, alt, quote, attribution, caption, side = 'left', tone = 'dark' } = Astro.props;
+
+/*
+  A real photograph of the work, carrying a real quote. Distinct from QuoteBand,
+  which uses the landscape as atmosphere — this one is evidence, so it shows the
+  photo whole rather than washing it out behind text.
+*/
+const dark = tone === 'dark';
+const sectionCls = dark ? 'bg-navy text-snow' : 'bg-surface border-y border-rule';
+const quoteCls = dark ? 'text-snow' : 'text-navy';
+const attrCls = dark ? 'text-mist' : 'text-ink-soft';
+const capCls = dark ? 'text-mist/80' : 'text-ink-soft';
+const frameCls = dark ? 'border border-white/15' : 'border border-rule';
+---
+
+<section class={sectionCls}>
+  <div class="wrap section-y">
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
+      <figure class={side === 'right' ? 'lg:order-2' : ''}>
+        <Image
+          src={image}
+          alt={alt}
+          widths={[480, 720, 1024]}
+          sizes="(min-width: 1024px) 34rem, 100vw"
+          loading="lazy"
+          decoding="async"
+          format="avif"
+          quality={78}
+          class={`w-full h-auto ${frameCls}`}
+        />
+        {caption && <figcaption class={`mt-3 font-mono text-label uppercase tracking-[0.1em] ${capCls}`}>{caption}</figcaption>}
+      </figure>
+
+      <figure class={side === 'right' ? 'lg:order-1' : ''}>
+        <div class="h-[2px] w-10 bg-horizon mb-6" aria-hidden="true"></div>
+        <blockquote>
+          <p class={`font-display font-bold text-[1.35rem] sm:text-[1.7rem] leading-[1.28] tracking-[-0.02em] text-balance ${quoteCls}`}>
+            “{quote}”
+          </p>
+        </blockquote>
+        <figcaption class={`mt-5 font-mono text-label uppercase tracking-[0.12em] ${attrCls}`}>
+          {attribution}
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

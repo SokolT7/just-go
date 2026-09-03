@@ -11,6 +11,7 @@ import berislavPhoto from '@/assets/images/people/berislav-portrait.jpg';
 import odinPhoto from '@/assets/images/people/odin-portrait.jpg';
 import odinOnStage from '@/assets/images/people/odin.jpg';
 import bothPhoto from '@/assets/images/people/berislav-odin.jpg';
+import beroFloor from '@/assets/images/people/berislav-floor.jpg';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
@@ -63,6 +64,8 @@ const copy = {
           'Co-founder and CEO, Run Croatia (2015–)',
           'Roughly 120 events delivered, including ten editions of Zagreb Advent Run',
         ],
+        atWorkAlt: 'Berislav Sokač in conversation with two people on a conference floor',
+        atWorkCaption: 'On a conference floor, doing the actual job',
         beyondLead: 'He runs. Most mornings, early, usually up Sljeme.',
         beyondBody: [
           'In early 2010 he could not cover three kilometres. That November he finished the New York City Marathon, and within two and a half years he had completed all six World Marathon Majors — Boston, London, Berlin, Chicago, Tokyo and New York — the thirteenth person in the world to do it.',
@@ -168,6 +171,8 @@ const copy = {
           'Suosnivač i direktor, Run Croatia (2015–)',
           'Oko 120 održanih događaja, uključujući deset izdanja Zagreb Advent Runa',
         ],
+        atWorkAlt: 'Berislav Sokač u razgovoru s dvoje ljudi na konferenciji',
+        atWorkCaption: 'Na konferenciji, usred posla',
         beyondLead: 'Trči. Gotovo svako jutro, rano, najčešće na Sljeme.',
         beyondBody: [
           'Početkom 2010. nije mogao istrčati ni tri kilometra. Tog studenog završio je njujorški maraton, a u dvije i pol godine istrčao je svih šest World Marathon Majors utrka — Boston, London, Berlin, Chicago, Tokio i New York — kao trinaesta osoba na svijetu.',
@@ -237,6 +242,9 @@ const photos = { BS: berislavPhoto, OS: odinPhoto } as const;
 /* The stage photograph belongs with the music at full size, not cropped down to
    an avatar. Berislav has no running photograph yet — see PLAN §16. */
 const beyondPhoto = { OS: odinOnStage } as const;
+/* A working photograph for the professional block, so each person carries one
+   large image on this page rather than Odin alone. */
+const atWorkPhoto = { BS: beroFloor } as const;
 
 const personSchema = copy.people.map((p, i) => ({
   '@type': 'Person',
@@ -312,6 +320,26 @@ const personSchema = copy.people.map((p, i) => ({
                 <Button href={person.linkedin} variant="onLight" class="mt-6" rel="noopener">
                   LinkedIn
                 </Button>
+                {atWorkPhoto[person.initials as keyof typeof atWorkPhoto] && (
+                  <figure class="mt-8">
+                    <Image
+                      src={atWorkPhoto[person.initials as keyof typeof atWorkPhoto]!}
+                      alt={person.atWorkAlt ?? ''}
+                      widths={[320, 480, 640]}
+                      sizes="(min-width: 1024px) 20rem, 100vw"
+                      loading="lazy"
+                      decoding="async"
+                      format="avif"
+                      quality={78}
+                      class="w-full max-w-[20rem] h-auto border border-rule"
+                    />
+                    {person.atWorkCaption && (
+                      <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">
+                        {person.atWorkCaption}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
               </div>
 
               <div class="grid gap-8 sm:grid-cols-2">
@@ -371,12 +399,12 @@ const personSchema = copy.people.map((p, i) => ({
                       src={beyondPhoto[person.initials as keyof typeof beyondPhoto]!}
                       alt={person.beyondPhotoAlt ?? ''}
                       widths={[480, 720, 800]}
-                      sizes="(min-width: 1024px) 34rem, 100vw"
+                      sizes="(min-width: 1024px) 25rem, 100vw"
                       loading="lazy"
                       decoding="async"
                       format="avif"
                       quality={80}
-                      class="w-full h-auto max-w-[34rem] border border-rule"
+                      class="w-full h-auto max-w-[25rem] border border-rule"
                     />
                     {person.beyondPhotoCaption && (
                       <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-ink-soft">

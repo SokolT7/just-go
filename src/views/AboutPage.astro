@@ -2,7 +2,8 @@
 import Base from '@/layouts/Base.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import Button from '@/components/ui/Button.astro';
-import QuoteBand from '@/components/sections/QuoteBand.astro';
+import PhotoQuote from '@/components/sections/PhotoQuote.astro';
+import beroPresenting from '@/assets/images/people/berislav-presenting.jpg';
 import { engagements } from '@/data/engagements';
 import { path, type Locale } from '@/i18n/routes';
 
@@ -45,6 +46,8 @@ const copy = {
 
     bandQuote: 'Every sponsor on those start lines was a cold conversation once. That is not a metaphor for the consulting work — it is the same work, done on our own budget.',
     bandBy: 'Berislav Sokač, Founder',
+    bandAlt: 'Berislav Sokač presenting to a room beside a slide on business integration',
+    bandCaption: 'Zagreb',
     sectorsTitle: 'Industries we know deeply',
     sectorsLede: 'Four sectors where the buying process, the procurement reality and the internal politics are already familiar. Outside them, we will say so on the first call.',
     sectors: [
@@ -113,6 +116,8 @@ const copy = {
 
     bandQuote: 'Svaki sponzor na tim startnim linijama jednom je bio hladan kontakt. To nije metafora za konzalting — to je isti posao, na vlastiti budžet.',
     bandBy: 'Berislav Sokač, osnivač',
+    bandAlt: 'Berislav Sokač izlaže pred publikom pokraj slajda o poslovnoj integraciji',
+    bandCaption: 'Zagreb',
     sectorsTitle: 'Industrije koje poznajemo duboko',
     sectorsLede: 'Četiri sektora u kojima su nam proces kupnje, stvarnost nabave i interna politika već poznati. Izvan njih ćemo to reći na prvom pozivu.',
     sectors: [
@@ -255,7 +260,14 @@ const copy = {
     </div>
   </section>
 
-  <QuoteBand quote={copy.bandQuote} attribution={copy.bandBy} position="38% 55%" />
+  <PhotoQuote
+    image={beroPresenting}
+    alt={copy.bandAlt}
+    caption={copy.bandCaption}
+    quote={copy.bandQuote}
+    attribution={copy.bandBy}
+    side="right"
+  />
 
   <!-- Facts -->
   <section class="bg-surface border-y border-rule">

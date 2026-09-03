@@ -1,6 +1,8 @@
 ---
 import { path, type Locale } from '@/i18n/routes';
 import Button from '@/components/ui/Button.astro';
+import { Image } from 'astro:assets';
+import beroFloor from '@/assets/images/people/berislav-floor.jpg';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
@@ -40,6 +42,8 @@ const copy = {
       },
     ],
     cta: 'Start with the call',
+    photoAlt: 'Berislav Sokač in conversation with two people on a conference floor',
+    photoCaption: 'Where most engagements actually begin',
     note: 'Most engagements run 6 weeks to 9 months. We will tell you which on the first call.',
   },
   hr: {
@@ -67,6 +71,8 @@ const copy = {
       },
     ],
     cta: 'Počnite pozivom',
+    photoAlt: 'Berislav Sokač u razgovoru s dvoje ljudi na konferenciji',
+    photoCaption: 'Ovdje većina angažmana zapravo počinje',
     note: 'Većina angažmana traje od 6 tjedana do 9 mjeseci. Na prvom pozivu reći ćemo vam koliko.',
   },
 }[locale];
@@ -75,7 +81,7 @@ const copy = {
 <section class="bg-navy text-snow">
   <div class="wrap section-y">
     <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-      <div class="lg:sticky lg:top-28 lg:self-start">
+      <div class="lg:self-start">
         <p class="eyebrow text-horizon mb-4">{copy.eyebrow}</p>
         <h2 class="text-h2 text-snow max-w-[16ch]">{copy.title}</h2>
         <p class="mt-5 text-body-l text-mist max-w-[44ch]">{copy.lede}</p>
@@ -83,6 +89,23 @@ const copy = {
           {copy.cta}
         </Button>
         <p class="mt-6 text-small text-mist/80 max-w-[38ch]">{copy.note}</p>
+
+        <figure class="mt-10 hidden lg:block">
+          <Image
+            src={beroFloor}
+            alt={copy.photoAlt}
+            widths={[360, 540, 720]}
+            sizes="22rem"
+            loading="lazy"
+            decoding="async"
+            format="avif"
+            quality={78}
+            class="w-full max-w-[22rem] h-auto border border-white/15"
+          />
+          <figcaption class="mt-3 font-mono text-label uppercase tracking-[0.1em] text-mist/80">
+            {copy.photoCaption}
+          </figcaption>
+        </figure>
       </div>
 
       <ol class="relative">

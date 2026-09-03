@@ -3,7 +3,8 @@ import Base from '@/layouts/Base.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import Faq, { type FaqItem } from '@/components/ui/Faq.astro';
 import Button from '@/components/ui/Button.astro';
-import QuoteBand from '@/components/sections/QuoteBand.astro';
+import PhotoQuote from '@/components/sections/PhotoQuote.astro';
+import beroPresenting from '@/assets/images/people/berislav-presenting.jpg';
 import { engagements } from '@/data/engagements';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
@@ -30,6 +31,8 @@ const copy = {
     proof: 'Where this comes from',
     bandQuote: 'Always think one or two steps ahead. Not five — five is fantasy. Two is the distance at which you can still see the ground.',
     bandBy: 'Berislav Sokač, Founder',
+    bandAlt: 'Berislav Sokač presenting to a room, standing beside a slide on business integration',
+    bandCaption: 'Presenting at a client event, Zagreb',
     alsoTitle: 'Also engaged for',
     alsoBody:
       'Executive coaching, leadership development, team building, brand work and event delivery. Real capabilities, drawn on inside larger engagements — they are simply not what we lead with.',
@@ -66,6 +69,8 @@ const copy = {
     proof: 'Odakle to dolazi',
     bandQuote: 'Uvijek razmišljajte jedan do dva koraka unaprijed. Ne pet — pet je mašta. Dva su udaljenost s koje još vidite tlo.',
     bandBy: 'Berislav Sokač, osnivač',
+    bandAlt: 'Berislav Sokač izlaže pred publikom, pokraj slajda o poslovnoj integraciji',
+    bandCaption: 'Izlaganje na klijentskom događaju, Zagreb',
     alsoTitle: 'Radimo i na',
     alsoBody:
       'Executive coaching, razvoj vodstva, team building, brend i organizacija događaja. Stvarne kompetencije koje koristimo unutar većih angažmana — jednostavno nisu ono s čim krećemo.',
@@ -214,7 +219,14 @@ const serviceSchema = engagements.map((eng) => ({
     ))
   }
 
-  <QuoteBand quote={copy.bandQuote} attribution={copy.bandBy} position="62% 40%" />
+  <PhotoQuote
+    image={beroPresenting}
+    alt={copy.bandAlt}
+    caption={copy.bandCaption}
+    quote={copy.bandQuote}
+    attribution={copy.bandBy}
+    side="left"
+  />
 
   <!-- Also engaged for -->
   <section class="bg-snow">
