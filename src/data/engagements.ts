@@ -59,8 +59,8 @@ export const engagements: Engagement[] = [
     },
     timeline: { en: 'Typically 8–14 weeks', hr: 'Obično 8–14 tjedana' },
     proofNote: {
-      en: 'Built on eleven years running sales for Oracle across the Baltics and Central & Eastern Europe.',
-      hr: 'Temeljeno na jedanaest godina vođenja prodaje u Oracleu za Baltik te srednju i istočnu Europu.',
+      en: 'Built on eleven years at Oracle as Sales Director for 17 European countries.',
+      hr: 'Temeljeno na jedanaest godina u Oracleu na poziciji direktora prodaje za 17 europskih zemalja.',
     },
   },
   {
@@ -141,8 +141,8 @@ export const engagements: Engagement[] = [
     },
     timeline: { en: 'Typically 3–9 months', hr: 'Obično 3–9 mjeseci' },
     proofNote: {
-      en: 'This is the Run Croatia engine, productised — ten years of securing premium sponsors for events nobody had heard of yet.',
-      hr: 'Ovo je Run Croatia motor, pretvoren u uslugu — deset godina osiguravanja vrhunskih sponzora za događaje za koje još nitko nije čuo.',
+      en: 'This is the Run Croatia engine, productised — ten years and 130+ events of securing premium sponsors for races nobody had heard of yet.',
+      hr: 'Ovo je Run Croatia motor, pretvoren u uslugu — deset godina i 130+ događaja osiguravanja vrhunskih sponzora za utrke za koje još nitko nije čuo.',
     },
   },
 ];

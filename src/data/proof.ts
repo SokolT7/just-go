@@ -39,13 +39,17 @@ export const stats: Stat[] = [
     label: { en: 'clients advised', hr: 'klijenata savjetovano' },
   },
   {
-    // CONFIRM: is "120 events in 10 years" current? (PLAN §15.3)
-    value: '120',
+    value: '130+',
     label: { en: 'events delivered with Run Croatia', hr: 'događaja s Run Croatia' },
   },
   {
-    value: '6/6',
-    label: { en: 'World Marathon Majors completed', hr: 'World Marathon Majors utrka' },
+    // Not '7★': U+2605 is outside every loaded font subset, so it would fall
+    // back to a system face mid-number (or render as a colour emoji).
+    value: '7/7',
+    label: {
+      en: 'World Marathon Majors — a Seven Star finisher',
+      hr: 'World Marathon Majors — Seven Star finisher',
+    },
   },
 ];
 

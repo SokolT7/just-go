@@ -19,8 +19,8 @@ export const milestones: Milestone[] = [
     who: 'berislav',
     title: { en: 'Oracle', hr: 'Oracle' },
     body: {
-      en: 'Joins Oracle. Over eleven years he becomes sales director for the Baltic countries and Central & Eastern Europe.',
-      hr: 'Dolazi u Oracle. Kroz jedanaest godina postaje direktor prodaje za baltičke zemlje te srednju i istočnu Europu.',
+      en: 'Joins Oracle after selling data warehouse systems at BusinessObjects. Over eleven years he becomes Sales Director for 17 European countries.',
+      hr: 'Dolazi u Oracle nakon prodaje sustava skladištenja podataka u BusinessObjectsu. Kroz jedanaest godina postaje direktor prodaje za 17 europskih zemalja.',
     },
   },
   {
@@ -35,10 +35,10 @@ export const milestones: Milestone[] = [
   {
     year: '2013',
     who: 'berislav',
-    title: { en: 'All six Majors', hr: 'Svih šest Majorsa' },
+    title: { en: 'The Majors', hr: 'Majorsi' },
     body: {
-      en: 'Boston, London, Berlin, Chicago, Tokyo, New York — all six World Marathon Majors inside two and a half years. The 13th person worldwide to do it.',
-      hr: 'Boston, London, Berlin, Chicago, Tokio, New York — svih šest World Marathon Majors utrka u dvije i pol godine. Trinaesta osoba na svijetu koja je to postigla.',
+      en: 'Boston, London, Berlin, Chicago, Tokyo and New York inside two and a half years. He goes on to complete every World Marathon Major — a Seven Star finisher.',
+      hr: 'Boston, London, Berlin, Chicago, Tokio i New York u dvije i pol godine. Kasnije istrčava svaku World Marathon Majors utrku — Seven Star finisher.'
     },
   },
   {
@@ -91,8 +91,8 @@ export const milestones: Milestone[] = [
     who: 'berislav',
     title: { en: 'Ten years of Advent Run', hr: 'Deset godina Advent Runa' },
     body: {
-      en: 'The tenth edition. Roughly 120 events delivered across a decade.',
-      hr: 'Deseto izdanje. Oko 120 događaja kroz desetljeće.',
+      en: 'The tenth edition. More than 130 events delivered across a decade.',
+      hr: 'Deseto izdanje. Više od 130 događaja kroz desetljeće.',
     },
   },
   {
