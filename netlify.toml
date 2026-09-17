@@ -2,6 +2,19 @@
   command = "npm run build"
   publish = "dist"
 
+# Pinned deliberately. Netlify's default Node version moves over time, and a
+# build that works today can fail on a deploy months later with no commit in
+# between. Astro 5 needs 18.20.8, ^20.3.0 or >=22; this matches local.
+[build.environment]
+  NODE_VERSION = "22"
+
+# astro.config.mjs sets `trailingSlash: 'never'`, so internal links and the
+# canonical tags are all slashless. Netlify's pretty-URL processing redirects
+# /contact to /contact/ anyway, which means every internal navigation costs a
+# 301 and the address bar never matches the canonical the page just declared.
+[build.processing.html]
+  pretty_urls = false
+
 [[headers]]
   for = "/*"
   [headers.values]

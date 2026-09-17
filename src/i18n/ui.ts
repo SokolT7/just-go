@@ -45,13 +45,15 @@ const en = {
   'form.company': 'Company',
   'form.message': 'What are you trying to fix?',
   'form.messagePlaceholder':
-    'A sentence or two is plenty. What is not working right now?',
+    'A sentence or two is plenty. Let’s discuss your new boost.',
   'form.submit': 'Send',
   'form.sending': 'Sending…',
   'form.required': 'Required',
   'form.errorName': 'Please tell us your name.',
   'form.errorEmail': 'Please enter a valid email address.',
   'form.errorMessage': 'Please tell us briefly what you need.',
+  'form.errorSend':
+    'That did not send — nothing has been lost. Try again, or copy your message to bero.sokac@gmail.com.',
   'form.successTitle': 'Message sent.',
   'form.successBody':
     'Thank you — Berislav has it. You will hear back the same working day.',
@@ -129,13 +131,15 @@ const hr: Record<UIKey, string> = {
   'form.company': 'Tvrtka',
   'form.message': 'Što želite riješiti?',
   'form.messagePlaceholder':
-    'Dovoljna je rečenica ili dvije. Što trenutačno ne funkcionira?',
+    'Dovoljna je rečenica ili dvije. Razgovarajmo o vašem novom zaletu.',
   'form.submit': 'Pošalji',
   'form.sending': 'Šaljem…',
   'form.required': 'Obavezno',
   'form.errorName': 'Molimo upišite svoje ime.',
   'form.errorEmail': 'Molimo upišite ispravnu email adresu.',
   'form.errorMessage': 'Molimo ukratko opišite što trebate.',
+  'form.errorSend':
+    'Slanje nije uspjelo — ništa nije izgubljeno. Pokušajte ponovno ili poruku pošaljite na bero.sokac@gmail.com.',
   'form.successTitle': 'Poruka je poslana.',
   'form.successBody':
     'Hvala — Berislav je zaprimio poruku. Javljamo se isti radni dan.',

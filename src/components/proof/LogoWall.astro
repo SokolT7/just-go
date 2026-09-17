@@ -1,35 +1,119 @@
 ---
 import { logos, hasLogos } from '@/data/proof';
-import StatRow from './StatRow.astro';
 import type { Locale } from '@/i18n/routes';
 
 interface Props { locale: Locale; tone?: 'light' | 'dark'; class?: string; }
 const { locale, tone = 'light', class: className = '' } = Astro.props;
 
 /*
-  Fallback-aware by design (PLAN §7). While `logos` is empty this renders the
-  hard numbers instead — never an empty shell. Adding real logos later is a
-  data edit in src/data/proof.ts and nothing else.
+  A single line of firms, marks only — no names, no dates, no links.
+
+  Two things make a row of borrowed artwork read as one design rather than as
+  twelve pasted files:
+
+  1. ONE INK. `brightness(0)` collapses every pixel to black while leaving alpha
+     alone, so it works the same on an SVG or a PNG, and — the reason it is here
+     rather than `grayscale()` — it rescues the marks that ship only in a
+     reversed cut. Several of these firms publish a white-on-transparent lockup
+     for a dark header; under `grayscale()` those stay white and vanish on this
+     page. Flattened, they come back. Opacity then sets the row's weight, which
+     is quiet by default because this band sits under the numbers and should not
+     outrank them. A mark whose design depends on a knockout opts out via
+     `flatten: false` and supplies its own dark file.
+
+  2. ONE OPTICAL SIZE. Marks are normalised to a height rather than a width —
+     otherwise they will not share a baseline — and each carries a `scale` that
+     corrects for how big it actually reads at that height. See src/data/proof.ts.
+
+  The layout is a grid and not a wrapping flex row. Left to wrap, twelve marks
+  of twelve different widths break 10-and-2 at desktop and 5-5-2 at tablet, and
+  a short last line reads as a mistake. The column counts below all divide the
+  current twelve exactly — 6×2, 4×3, 3×4, 2×6 — so every row is full at every
+  width. Adding or removing a firm means re-checking that; the counts are the
+  one thing here that is tied to how many there are.
+
+  An entry with no artwork falls back to a wordmark in our own display face, so
+  a firm can be added before its logo turns up without leaving a hole.
 */
+const label = {
+  en: 'Where the experience was earned',
+  hr: 'Gdje je iskustvo stečeno',
+}[locale];
+
+const dark = tone === 'dark';
+const labelCls = dark ? 'text-mist' : 'text-ink-soft';
+const markCls = dark ? 'text-mist-light' : 'text-navy';
+/* On navy the flattening has to go the other way — to white, not to black. */
+const flatFilter = dark ? 'brightness(0) invert(1)' : 'brightness(0)';
+const BASE_H = 1.75; /* rem, the wordmark baseline height */
 ---
 
 {
-  hasLogos ? (
-    <ul class={`flex flex-wrap items-center justify-center gap-x-10 gap-y-7 ${className}`}>
-      {logos.map((logo) => (
-        <li>
-          <img
-            src={logo.src}
-            alt={logo.alt}
-            loading="lazy"
-            decoding="async"
-            height="32"
-            class="h-7 sm:h-8 w-auto opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0"
-          />
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <StatRow locale={locale} tone={tone} class={className} />
+  hasLogos && (
+    <div class={className}>
+      <p class={`eyebrow text-center ${labelCls}`}>{label}</p>
+
+      <ul
+        class="logo-row mt-8 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-8 sm:gap-x-8 sm:gap-y-9 place-items-center"
+      >
+        {logos.map((logo) =>
+          logo.src ? (
+            <li class="flex items-center justify-center w-full">
+              <img
+                src={logo.src}
+                alt={logo.alt ?? logo.name}
+                loading="lazy"
+                decoding="async"
+                class="logo-mark w-auto max-w-full"
+                style={`height:${(BASE_H * (logo.scale ?? 1)).toFixed(3)}rem;${
+                  logo.flatten === false ? '' : `filter:${flatFilter}`
+                }`}
+              />
+            </li>
+          ) : (
+            <li class="flex items-center justify-center w-full">
+              <span
+                class={`logo-mark font-display font-semibold text-[0.95rem] sm:text-[1.05rem] leading-none tracking-[-0.015em] ${markCls}`}
+              >
+                {logo.name}
+              </span>
+            </li>
+          ),
+        )}
+      </ul>
+    </div>
   )
 }
+
+<style>
+  /* Opacity lives here rather than in a utility because it is the one value
+     tuned against the band as a whole, and because the hover and the
+     reduced-motion opt-out both need to reach it. */
+  .logo-mark {
+    opacity: 0.58;
+    transition: opacity 200ms ease;
+  }
+
+  .logo-row:hover .logo-mark {
+    opacity: 0.4;
+  }
+
+  .logo-row .logo-mark:hover {
+    opacity: 1;
+  }
+
+  /* Pointer-only: on touch there is no hover, and dimming the row on first
+     contact would read as a fault rather than as emphasis. */
+  @media (hover: none) {
+    .logo-row:hover .logo-mark,
+    .logo-row .logo-mark:hover {
+      opacity: 0.58;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-mark {
+      transition: none;
+    }
+  }
+</style>

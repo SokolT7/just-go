@@ -50,6 +50,13 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-mi
     <p class="sm:col-span-2 text-small text-mist/80 hidden" data-error role="alert">
       {t('form.errorEmail')}
     </p>
+    <p
+      class="sm:col-span-2 hidden border-l-2 border-horizon pl-4 text-small text-mist"
+      data-send-error
+      role="alert"
+    >
+      {t('form.errorSend')}
+    </p>
   </form>
 
   <div class="hidden border border-horizon/45 bg-white/5 p-7" data-success role="status" aria-live="polite" tabindex="-1">
@@ -64,6 +71,7 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-mi
     const form = root.querySelector('form');
     const success = root.querySelector<HTMLElement>('[data-success]');
     const error = root.querySelector<HTMLElement>('[data-error]');
+    const sendError = root.querySelector<HTMLElement>('[data-send-error]');
     const submit = root.querySelector<HTMLButtonElement>('[data-submit]');
     if (!form || !success || !submit) return;
 
@@ -77,17 +85,22 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-mi
       if (invalid) { email?.focus(); return; }
 
       submit.disabled = true;
+      sendError?.classList.add('hidden');
       try {
-        await fetch('/', {
+        /* A 404 or 500 resolves rather than rejects, so it has to be checked
+           explicitly — otherwise a dropped message reports itself as sent. */
+        const res = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
         });
+        if (!res.ok) throw new Error(String(res.status));
+
         form.classList.add('hidden');
         success.classList.remove('hidden');
         success.focus();
       } catch {
-        form.submit();
+        sendError?.classList.remove('hidden');
       } finally {
         submit.disabled = false;
       }

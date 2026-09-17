@@ -28,9 +28,16 @@ npx astro check  # type check
 - **`src/i18n/ui.ts`** — interface strings. **The Croatian is a first draft and
   is not approved** — see the note at the top of the file.
 - **`src/data/proof.ts`** — every proof surface on the site reads from here.
-  The arrays are empty, and each consuming component renders a considered
-  fallback rather than an empty shell. Adding a real testimonial or logo is a
-  data edit in this one file and nothing else.
+  Each consuming component renders a considered fallback rather than an empty
+  shell. Adding a real testimonial or logo is a data edit in this one file and
+  nothing else.
+- **`public/logos/`** — artwork for the firm row under the home-page numbers,
+  taken from each firm's own site. The row flattens every mark to one ink, both
+  so twelve brand palettes do not fight and because several of these firms
+  publish only a reversed, white-on-transparent lockup that would otherwise
+  disappear. Adding a firm means a file here plus a line in `proof.ts` — and
+  re-checking the grid's column counts, which are chosen to divide the number
+  of firms exactly. See the comments in `LogoWall.astro`.
 - **`src/styles/global.css`** — design tokens, all sampled from
   `Hero-background.avif`. No invented brand colours.
 
@@ -44,18 +51,74 @@ npx astro check  # type check
 surface, give it a fallback. Populating `src/data/proof.ts` should require zero
 layout work — that is the acceptance test.
 
+## One thing to confirm
+
+The firm logos in `public/logos/` are third-party trademarks, used to show where
+the experience was earned. That is ordinary practice, but these are former
+employers rather than clients of Just Go, and nobody has given written
+permission. Worth a decision before launch.
+
 ## Deploying
 
-Netlify, from `netlify.toml`. Build `npm run build`, publish `dist`.
+**Netlify**, from `netlify.toml` — build `npm run build`, publish `dist`, Node
+pinned to 22. Nothing else needs configuring; Netlify reads that file.
 
-Forms are handled by Netlify Forms and are only detected once deployed —
-they cannot be tested against `localhost`. After the first deploy, submit each
-of the four forms (`contact-en`, `contact-hr`, `short-en`, `short-hr`) and
-confirm delivery.
+The host is not incidental. This site's contact forms are Netlify Forms, which
+is a platform feature, not a standard: `data-netlify="true"` is an instruction
+to Netlify's build step and is inert HTML anywhere else. On a host without it
+there is no code in this project that receives a submission, and messages are
+silently lost. If this ever moves off Netlify, the forms need a real endpoint
+first — see the last paragraph of this section.
+
+### Moving here from somewhere else
+
+The project was briefly deployed on Vercel, where the forms could not work and
+the `netlify.toml` headers were ignored. If any of that is still live:
+
+1. Create the Netlify site from the GitHub repo and let the first deploy run.
+2. Point `justgo.hr` at Netlify, and set `site` in `astro.config.mjs` to match.
+3. **Delete the old deployment.** Two live copies of the same site will get
+   indexed as duplicates, and the one without working forms is the one people
+   will eventually find.
+
+### Forms and where the mail goes
+
+Delivery is Netlify Forms. The markup is done — `data-netlify`, the hidden
+`form-name`, and a honeypot on each of the four forms (`contact-en`,
+`contact-hr`, `short-en`, `short-hr`). Netlify registers a form by parsing the
+*deployed* HTML, so none of this can be tested against `localhost`.
+
+Submissions land in the Netlify dashboard by default. Emailing them to a person
+is a per-site setting that does not live in this repo and cannot be committed:
+
+1. Deploy, then open **Site configuration → Forms** and check all four forms are
+   listed. If they are not, nothing else below will work.
+2. **Forms → Form notifications → Add notification → Email notification.**
+3. Send to `bero.sokac@gmail.com`. Repeat per form, or use the any-form option.
+4. Submit one of each for real and confirm arrival — check Spam and Promotions
+   on the first one.
+
+Each form has a field named `email`, which Netlify uses as the reply-to, so
+replying in Gmail goes to the sender rather than to Netlify. Confirm that on the
+first test.
+
+The free tier caps submissions per month; check the current limit against
+expected volume. Past it, or if the mail needs to come **from** justgo.hr rather
+than from Netlify, move delivery to a Netlify Function calling a mail API
+(Resend, Postmark) — the forms themselves would not need to change.
 
 ## Before launch
 
 Set the real domain in `astro.config.mjs` (`site`) and `public/robots.txt` —
 canonicals, hreflang, sitemap and OG URLs are all derived from it.
+
+**Replace the home hero photograph with a larger original.**
+`src/assets/images/hero-road.jpeg` is 495×619 — the smallest image on the site,
+used in the largest place. It is the LCP element in a section that fills the
+viewport, so on anything above a phone the browser is scaling it up three to
+five times. Astro cannot fix that: the `widths` ladder in
+`src/components/sections/Hero.astro` stops at the intrinsic width, because
+asking for more only re-encodes the same pixels into a larger file. Roughly
+2400px on the long edge, landscape, same composition, would be right.
 
 The remaining open items are listed in IMPLEMENTATION_PLAN.md §15.

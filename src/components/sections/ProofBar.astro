@@ -1,5 +1,7 @@
 ---
 import LogoWall from '@/components/proof/LogoWall.astro';
+import StatRow from '@/components/proof/StatRow.astro';
+import { hasLogos } from '@/data/proof';
 import type { Locale } from '@/i18n/routes';
 
 interface Props { locale: Locale; }
@@ -13,6 +15,15 @@ const label = {
 
 <section class="bg-surface border-b border-rule" aria-label={label}>
   <div class="wrap">
-    <LogoWall locale={locale} tone="light" class="border-x border-rule" />
+    <StatRow locale={locale} tone="light" class="border-x border-rule" />
+
+    {/* The firms, directly under the numbers — names only, no commentary. */}
+    {
+      hasLogos && (
+        <div class="border-x border-t border-rule px-5 py-9 sm:px-8 sm:py-11">
+          <LogoWall locale={locale} tone="light" />
+        </div>
+      )
+    }
   </div>
 </section>

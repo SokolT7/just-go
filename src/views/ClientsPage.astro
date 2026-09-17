@@ -1,7 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
-import LogoWall from '@/components/proof/LogoWall.astro';
+import StatRow from '@/components/proof/StatRow.astro';
 import TestimonialCard from '@/components/proof/TestimonialCard.astro';
 import RunCroatiaPanel from '@/components/sections/RunCroatiaPanel.astro';
 import QuoteBand from '@/components/sections/QuoteBand.astro';
@@ -76,10 +76,10 @@ const copy = {
     </div>
   </section>
 
-  <!-- Logos where permission exists; the hard numbers until then. -->
+  <!-- The hard numbers behind the track record. -->
   <section class="bg-surface border-b border-rule" aria-label={copy.proofLabel}>
     <div class="wrap">
-      <LogoWall locale={locale} tone="light" class="border-x border-rule" />
+      <StatRow locale={locale} tone="light" class="border-x border-rule" />
     </div>
   </section>
 

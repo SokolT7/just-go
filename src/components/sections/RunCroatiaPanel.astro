@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
+import Button from '@/components/ui/Button.astro';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
@@ -22,7 +23,7 @@ const copy = {
       { value: '10', label: 'editions of Zagreb Advent Run' },
       { value: '#1', label: 'Advent race of its kind in Europe' },
     ],
-    link: 'runcroatia.hr',
+    link: 'Visit runcroatia.hr',
   },
   hr: {
     title: 'Gradimo, a ne samo savjetujemo',
@@ -35,7 +36,7 @@ const copy = {
       { value: '10', label: 'izdanja Zagreb Advent Runa' },
       { value: '#1', label: 'adventska utrka te vrste u Europi' },
     ],
-    link: 'runcroatia.hr',
+    link: 'Posjetite runcroatia.hr',
   },
 }[locale];
 ---
@@ -47,16 +48,18 @@ const copy = {
         <p class="eyebrow text-horizon-text mb-4">{t('label.proof')}</p>
         <h2 class="text-h2 text-navy">{copy.title}</h2>
         {copy.body.map((para) => <p class="mt-5 text-body-l text-ink-soft max-w-[56ch]">{para}</p>)}
-        <a
-          href="http://runcroatia.hr/"
+        <Button
+          href="https://www.runcroatia.hr/"
+          variant="onLight"
+          class="mt-8"
           rel="noopener"
-          class="mt-7 inline-flex items-center gap-2 font-display text-[0.95rem] font-semibold text-horizon-text underline underline-offset-4 decoration-1 hover:decoration-2"
+          target="_blank"
         >
           {copy.link}
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
             <path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-        </a>
+        </Button>
       </div>
 
       <dl class="border border-rule divide-y divide-rule reveal">

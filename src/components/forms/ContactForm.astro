@@ -74,6 +74,14 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-in
       <p class="text-small text-ink-soft">{t('promise.sameDay')}</p>
     </div>
 
+    <p
+      class="hidden border-l-2 border-[#A2422B] pl-4 text-small text-[#A2422B]"
+      data-send-error
+      role="alert"
+    >
+      {t('form.errorSend')}
+    </p>
+
     <p class="text-small text-ink-soft pt-1">
       {t('form.orEmail')}{' '}
       <a href="mailto:bero.sokac@gmail.com" class="text-horizon-text underline underline-offset-4">
@@ -123,6 +131,8 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-in
       return ok;
     };
 
+    const sendError = root.querySelector<HTMLElement>('[data-send-error]');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!validate()) return;
@@ -130,19 +140,33 @@ const labelCls = 'block font-mono text-label uppercase tracking-[0.12em] text-in
       const label = submit.textContent;
       submit.disabled = true;
       submit.textContent = submit.dataset.sending ?? '…';
+      sendError?.classList.add('hidden');
 
       try {
-        await fetch('/', {
+        /*
+          `fetch` only rejects on a network failure — a 404 from an unregistered
+          form, or a 500, resolves normally. Without this check the visitor is
+          told "Message sent." while nothing was delivered and the text they
+          typed is thrown away, which is the worst failure this form can have.
+        */
+        const res = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
         });
+        if (!res.ok) throw new Error(String(res.status));
+
         form.classList.add('hidden');
         success.classList.remove('hidden');
         success.focus();
       } catch {
-        // Network failure — fall back to a normal submit so the message is not lost.
-        form.submit();
+        /*
+          Keep the form and everything in it, and say so. Re-submitting natively
+          would only hit the same endpoint, and a browser error page would take
+          the typed message with it.
+        */
+        sendError?.classList.remove('hidden');
+        sendError?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       } finally {
         submit.disabled = false;
         if (label) submit.textContent = label;

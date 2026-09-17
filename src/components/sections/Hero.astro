@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroImage from '@/assets/images/hero-mountains.avif';
+import heroImage from '@/assets/images/hero-road.jpeg';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
 import Button from '@/components/ui/Button.astro';
@@ -42,17 +42,23 @@ const copy = {
 <section class="hero-full relative flex flex-col bg-navy text-snow overflow-hidden">
   <!-- Photograph -->
   <div class="absolute inset-0">
+    <!--
+      The source is 495×619 — small, and portrait. Requesting widths above the
+      intrinsic width only re-encodes the same pixels at a larger file size, so
+      the ladder stops at the source. A larger original would sharpen this
+      considerably on desktop; see the note in the README.
+    -->
     <Image
       src={heroImage}
       alt=""
-      widths={[640, 1024, 1600, 2400]}
+      widths={[320, 495]}
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
       format="avif"
-      quality={72}
-      class="h-full w-full object-cover object-[55%_60%]"
+      quality={80}
+      class="h-full w-full object-cover object-center"
     />
     <!--
       Two overlays: a vertical wash so the headline sits on the clean sky, and a
