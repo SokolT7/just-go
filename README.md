@@ -51,12 +51,18 @@ npx astro check  # type check
 surface, give it a fallback. Populating `src/data/proof.ts` should require zero
 layout work — that is the acceptance test.
 
-## One thing to confirm
+## Image provenance
+
+The home hero is `src/assets/images/hero-road.jpg` — Fabrizio Coco on Unsplash
+(`nieN2PuH_eY`), 5891×3927, licensed for commercial use. It replaced a 495px
+thumbnail that was neither sharp enough nor ours to publish. Keep a licensed
+original for anything that runs full-bleed; the hero is the one image on this
+site that cannot hide a bad source.
 
 The firm logos in `public/logos/` are third-party trademarks, used to show where
 the experience was earned. That is ordinary practice, but these are former
 employers rather than clients of Just Go, and nobody has given written
-permission. Worth a decision before launch.
+permission. **Still worth a decision before launch.**
 
 ## Deploying
 
@@ -111,14 +117,5 @@ than from Netlify, move delivery to a Netlify Function calling a mail API
 
 Set the real domain in `astro.config.mjs` (`site`) and `public/robots.txt` —
 canonicals, hreflang, sitemap and OG URLs are all derived from it.
-
-**Replace the home hero photograph with a larger original.**
-`src/assets/images/hero-road.jpeg` is 495×619 — the smallest image on the site,
-used in the largest place. It is the LCP element in a section that fills the
-viewport, so on anything above a phone the browser is scaling it up three to
-five times. Astro cannot fix that: the `widths` ladder in
-`src/components/sections/Hero.astro` stops at the intrinsic width, because
-asking for more only re-encodes the same pixels into a larger file. Roughly
-2400px on the long edge, landscape, same composition, would be right.
 
 The remaining open items are listed in IMPLEMENTATION_PLAN.md §15.

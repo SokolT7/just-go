@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroImage from '@/assets/images/hero-road.jpeg';
+import heroImage from '@/assets/images/hero-road.jpg';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
 import Button from '@/components/ui/Button.astro';
@@ -43,21 +43,31 @@ const copy = {
   <!-- Photograph -->
   <div class="absolute inset-0">
     <!--
-      The source is 495×619 — small, and portrait. Requesting widths above the
-      intrinsic width only re-encodes the same pixels at a larger file size, so
-      the ladder stops at the source. A larger original would sharpen this
-      considerably on desktop; see the note in the README.
+      Photograph by Fabrizio Coco, Unsplash (nieN2PuH_eY) — 5891×3927, licensed
+      for commercial use. It replaced a 495px thumbnail that could not be
+      sharpened and was not ours to publish.
+
+      The ladder can run its full range again: at 5891px wide nothing here is
+      an upscale, so each step is real detail rather than the same pixels
+      re-encoded larger.
+
+      `width`/`height` are set explicitly because they also decide the fallback
+      `src`. Left off, Astro falls back to the intrinsic 5891px — a 2.2MB AVIF
+      shipped as the LCP image's src. Capping at the top of the ladder keeps the
+      fallback at 304kB, and the ratio here matches the source exactly.
     -->
     <Image
       src={heroImage}
       alt=""
-      widths={[320, 495]}
+      widths={[640, 1024, 1600, 2400]}
+      width={2400}
+      height={1600}
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
       format="avif"
-      quality={80}
+      quality={72}
       class="h-full w-full object-cover object-center"
     />
     <!--

@@ -34,6 +34,10 @@ const { locale, tone = 'light', class: className = '' } = Astro.props;
 
   An entry with no artwork falls back to a wordmark in our own display face, so
   a firm can be added before its logo turns up without leaving a hole.
+
+  The band's own padding lives here rather than in each caller. When it was the
+  caller's job, the home page had it and the contact page did not, and the row
+  sat flush against the section edge looking sliced off.
 */
 const label = {
   en: 'Where the experience was earned',
@@ -50,7 +54,7 @@ const BASE_H = 1.75; /* rem, the wordmark baseline height */
 
 {
   hasLogos && (
-    <div class={className}>
+    <div class={`px-5 py-10 sm:px-8 sm:py-12 ${className}`}>
       <p class={`eyebrow text-center ${labelCls}`}>{label}</p>
 
       <ul
