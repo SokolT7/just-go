@@ -6,7 +6,8 @@ interface Props { locale: Locale; tone?: 'light' | 'dark'; class?: string; }
 const { locale, tone = 'light', class: className = '' } = Astro.props;
 
 /*
-  A single line of firms, marks only — no names, no dates, no links.
+  A single line of firms, marks only — no names, no dates. Each mark links out
+  to the firm's own site, in a new tab so the visitor keeps their place here.
 
   Two things make a row of borrowed artwork read as one design rather than as
   twelve pasted files:
@@ -25,12 +26,15 @@ const { locale, tone = 'light', class: className = '' } = Astro.props;
      otherwise they will not share a baseline — and each carries a `scale` that
      corrects for how big it actually reads at that height. See src/data/proof.ts.
 
-  The layout is a grid and not a wrapping flex row. Left to wrap, twelve marks
-  of twelve different widths break 10-and-2 at desktop and 5-5-2 at tablet, and
-  a short last line reads as a mistake. The column counts below all divide the
-  current twelve exactly — 6×2, 4×3, 3×4, 2×6 — so every row is full at every
-  width. Adding or removing a firm means re-checking that; the counts are the
-  one thing here that is tied to how many there are.
+  The row is a fixed number of equal columns per width, not a free-wrapping
+  line. Left to size themselves, marks of thirteen different widths break
+  wherever they happen to run out of room, and a stray short line reads as a
+  mistake. Thirteen divides by nothing, so instead the counts are picked to
+  leave a short row that is clearly deliberate — 7+6 at desktop, 5+5+3 at
+  tablet — and that row is centred under the full ones. Phones take two
+  columns with the last mark centred alone. Adding or removing a firm means
+  re-checking the counts in the style block; they are the one thing here
+  that is tied to how many there are.
 
   An entry with no artwork falls back to a wordmark in our own display face, so
   a firm can be added before its logo turns up without leaving a hole.
@@ -57,33 +61,37 @@ const BASE_H = 1.75; /* rem, the wordmark baseline height */
     <div class={`px-5 py-10 sm:px-8 sm:py-12 ${className}`}>
       <p class={`eyebrow text-center ${labelCls}`}>{label}</p>
 
-      <ul
-        class="logo-row mt-8 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-8 sm:gap-x-8 sm:gap-y-9 place-items-center"
-      >
-        {logos.map((logo) =>
-          logo.src ? (
-            <li class="flex items-center justify-center w-full">
-              <img
-                src={logo.src}
-                alt={logo.alt ?? logo.name}
-                loading="lazy"
-                decoding="async"
-                class="logo-mark w-auto max-w-full"
-                style={`height:${(BASE_H * (logo.scale ?? 1)).toFixed(3)}rem;${
-                  logo.flatten === false ? '' : `filter:${flatFilter}`
-                }`}
-              />
+      <ul class="logo-row mt-8 flex flex-wrap justify-center items-center">
+        {logos.map((logo) => {
+          const Tag = logo.href ? 'a' : 'span';
+          const link = logo.href
+            ? { href: logo.href, target: '_blank', rel: 'noopener noreferrer' }
+            : {};
+          return (
+            <li class="logo-cell flex items-center justify-center">
+              <Tag {...link} class="logo-link flex items-center justify-center max-w-full">
+                {logo.src ? (
+                  <img
+                    src={logo.src}
+                    alt={logo.alt ?? logo.name}
+                    loading="lazy"
+                    decoding="async"
+                    class="logo-mark w-auto max-w-full"
+                    style={`height:${(BASE_H * (logo.scale ?? 1)).toFixed(3)}rem;${
+                      logo.flatten === false ? '' : `filter:${flatFilter}`
+                    }`}
+                  />
+                ) : (
+                  <span
+                    class={`logo-mark font-display font-semibold text-[0.95rem] sm:text-[1.05rem] leading-none tracking-[-0.015em] ${markCls}`}
+                  >
+                    {logo.name}
+                  </span>
+                )}
+              </Tag>
             </li>
-          ) : (
-            <li class="flex items-center justify-center w-full">
-              <span
-                class={`logo-mark font-display font-semibold text-[0.95rem] sm:text-[1.05rem] leading-none tracking-[-0.015em] ${markCls}`}
-              >
-                {logo.name}
-              </span>
-            </li>
-          ),
-        )}
+          );
+        })}
       </ul>
     </div>
   )
@@ -102,8 +110,42 @@ const BASE_H = 1.75; /* rem, the wordmark baseline height */
     opacity: 0.4;
   }
 
-  .logo-row .logo-mark:hover {
+  .logo-row .logo-mark:hover,
+  .logo-row .logo-link:focus-visible .logo-mark {
     opacity: 1;
+  }
+
+  .logo-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 6px;
+    border-radius: 2px;
+  }
+
+  /* Column counts — see the note in the frontmatter. Each cell is an exact
+     1/n of the row less its share of the gaps, so a short last row centres
+     under the full ones instead of stretching. */
+  .logo-row {
+    --cols: 2;
+    --gap-x: 1.5rem;
+    gap: 2rem var(--gap-x);
+  }
+
+  .logo-cell {
+    width: calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols));
+  }
+
+  @media (min-width: 40rem) {
+    .logo-row {
+      --cols: 5;
+      --gap-x: 2rem;
+      gap: 2.25rem var(--gap-x);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .logo-row {
+      --cols: 7;
+    }
   }
 
   /* Pointer-only: on touch there is no hover, and dimming the row on first

@@ -10,6 +10,8 @@ export interface Logo {
   /* Defaults to `name`. Set it only where the mark says something the name
      does not, e.g. an acquirer's endorsement line. */
   alt?: string;
+  /* The firm's own site. Every mark in the row links out to it. */
+  href?: string;
   /* Optical size, not measured size. Marks are normalised to one HEIGHT, which
      is the only thing that makes a mixed row sit on one line — but height is a
      poor proxy for how big a mark reads. A square icon at the same height as a
@@ -40,26 +42,28 @@ export interface Stat { value: string; label: L; }
 
 /*
   Firms the practice has worked in or for, taken from Berislav's career record.
-  Artwork was sourced from each firm's own site (has·to·be from an archived
-  snapshot — the brand was retired into ChargePoint after the acquisition).
+  Artwork was sourced from each firm's own site. has·to·be no longer exists —
+  the brand was retired into ChargePoint after the acquisition — so the row
+  carries ChargePoint in its place.
 
   Several of these ship only a reversed lockup, drawn white for a dark header.
   Those are invisible on this page's ground, which is the other reason the row
   flattens rather than trusting each file to behave.
 */
 export const logos: Logo[] = [
-  { name: 'Oracle', src: '/logos/oracle.svg' },
-  { name: 'EasyPark Group', src: '/logos/easypark.png', alt: 'EasyPark Group' },
-  { name: 'Q agency', src: '/logos/q-agency.svg', scale: 1.0 },
-  { name: 'Byte Lab', src: '/logos/byte-lab.png', scale: 0.96 },
-  { name: 'Ignit Group', src: '/logos/ignit.svg', scale: 0.96 },
-  { name: 'Ingemark', src: '/logos/ingemark.svg', scale: 1.04 },
-  { name: 'Omnizon Networks', src: '/logos/omnizon.png', scale: 1.16 },
-  { name: 'Megatrend', src: '/logos/megatrend.svg', scale: 0.88 },
-  { name: 'has\u00b7to\u00b7be', src: '/logos/has-to-be.svg', scale: 1.1 },
-  { name: 'Logic Information Systems', src: '/logos/logic.svg', alt: 'Logic Information Systems, part of Accenture', scale: 1.06 },
-  { name: 'InSky Solutions', src: '/logos/insky.svg', scale: 1.14, flatten: false },
-  { name: 'Alfatec', src: '/logos/alfatec.svg' },
+  { name: 'Oracle', src: '/logos/oracle.svg', href: 'https://www.oracle.com' },
+  { name: 'EasyPark Group', src: '/logos/easypark.png', alt: 'EasyPark Group', href: 'https://www.easypark.com' },
+  { name: 'Q agency', src: '/logos/q-agency.svg', scale: 1.0, href: 'https://q.agency' },
+  { name: 'Byte Lab', src: '/logos/byte-lab.png', scale: 0.96, href: 'https://www.byte-lab.com' },
+  { name: 'Ignit Group', src: '/logos/ignit.svg', scale: 0.96, href: 'https://ignit.group' },
+  { name: 'Ingemark', src: '/logos/ingemark.svg', scale: 1.04, href: 'https://www.ingemark.com' },
+  { name: 'Omnizon Networks', src: '/logos/omnizon.png', scale: 1.16, href: 'https://www.omnizon.net' },
+  { name: 'Megatrend', src: '/logos/megatrend.svg', scale: 0.88, href: 'https://www.megatrend.com' },
+  { name: 'ChargePoint', src: '/logos/chargepoint.svg', scale: 0.82, href: 'https://www.chargepoint.com' },
+  { name: 'Logic Information Systems', src: '/logos/logic.svg', alt: 'Logic Information Systems, part of Accenture', scale: 1.06, href: 'https://www.logicinfo.com' },
+  { name: 'InSky Solutions', src: '/logos/insky.svg', scale: 1.14, flatten: false, href: 'https://www.inskysolutions.com' },
+  { name: 'Alfatec', src: '/logos/alfatec.svg', href: 'https://www.alfatec.ai' },
+  { name: 'Traceysport', src: '/logos/traceysport.svg', scale: 1.45, href: 'https://www.traceysport.com' },
 ];
 
 
