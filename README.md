@@ -53,10 +53,10 @@ layout work — that is the acceptance test.
 
 ## Image provenance
 
-The home hero is `src/assets/images/hero-road-porsche-v2.jpg`, an edit (Porsche
-added) of `hero-road.jpg` — Fabrizio Coco on Unsplash (`nieN2PuH_eY`), 5891×3927,
-licensed for commercial use. The edit was exported at 1264×842 and upscaled 4x
-to 5056×3368. The original photo replaced a 495px
+The home hero is `src/assets/images/hero-road-porsche-v4.jpg` (5056×3392), an
+edit (Porsche added) of `hero-road.jpg` — Fabrizio Coco on Unsplash
+(`nieN2PuH_eY`), 5891×3927, licensed for commercial use. The original photo
+replaced a 495px
 thumbnail that was neither sharp enough nor ours to publish. Keep a licensed
 original for anything that runs full-bleed; the hero is the one image on this
 site that cannot hide a bad source.

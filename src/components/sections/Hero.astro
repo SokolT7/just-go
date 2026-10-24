@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroImage from '@/assets/images/hero-road-porsche-v2.jpg';
+import heroImage from '@/assets/images/hero-road-porsche-v4.jpg';
 import { path, type Locale } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/utils';
 import Button from '@/components/ui/Button.astro';
@@ -44,8 +44,7 @@ const copy = {
   <div class="absolute inset-0">
     <!--
       Photograph by Fabrizio Coco, Unsplash (nieN2PuH_eY), edited to add the
-      Porsche. The edit came out at 1264×842 and was upscaled 4x to 5056×3368
-      (v2), so the ladder can run up to 2400px again.
+      Porsche (v4, 5056×3392), so the ladder can run up to 2400px.
 
       `width`/`height` are set explicitly because they also decide the fallback
       `src`. Left off, Astro falls back to the intrinsic 5056px — a multi-MB
@@ -57,19 +56,27 @@ const copy = {
       alt=""
       widths={[640, 1024, 1600, 2400]}
       width={2400}
-      height={1599}
+      height={1610}
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
       format="avif"
       quality={72}
-      class="h-full w-full object-cover object-[58%_100%]"
+      class="h-full w-full object-cover object-[60%_45%] portrait:h-[calc((100%-5.5rem)/0.65)]"
     />
     <!--
-      The crop is anchored on the car, which sits low (79–89% down) and right of
-      centre (53–63% across). Pinned to the bottom edge, wide viewports trim sky
-      instead of the car; at 58% across, tall phone crops still keep it whole.
+      The crop is anchored on the car, which sits 59–65% down and 56–63% across:
+      right of the text column on wide viewports. At 45% down the whole car
+      survives crops up to about 4:1 (a short laptop window); anchoring higher
+      sits it lower in the hero but cuts it off first. At 60% across, tall phone
+      crops are centred on it.
+
+      In portrait the photo fills the hero's height exactly, so there is no
+      vertical slack to move the car and it lands behind the full-width buttons.
+      There the image is made taller than the hero (overflow is clipped) so the
+      car's bottom edge (65% down the photo) sits 5.5rem above the hero's
+      bottom: in the gap between the promise line and the scroll cue.
 
       Two overlays: a vertical wash so the headline sits on the clean sky, and a
       left-weighted gradient so text stays legible on narrow viewports where the
